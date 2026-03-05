@@ -17,6 +17,9 @@ describe('cli cocos success contract', () => {
 
     expect(result.blueprintName).toBe('cocos');
     expect(fs.existsSync(path.join(cwd, 'assets/scripts/entry/GameEntry.ts'))).toBe(true);
-    expect(fs.existsSync(path.join(cwd, 'assets/scripts/modules/sample/SampleModule.ts'))).toBe(true);
+    expect(fs.existsSync(path.join(cwd, 'assets/scripts/core/GameApp.ts'))).toBe(true);
+    expect(fs.existsSync(path.join(cwd, 'assets/scripts/gameplay/GameLoop.ts'))).toBe(true);
+    expect(fs.existsSync(path.join(cwd, 'assets/resources/config/game-config.json'))).toBe(true);
+    expect(fs.existsSync(path.join(cwd, 'tests/game-loop.spec.ts'))).toBe(true);
   });
 });

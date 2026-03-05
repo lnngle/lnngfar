@@ -1,0 +1,7 @@
+{
+  "id": "level-001",
+  "name": "新手关",
+  "goalScore": 120,
+  "description": "保持生存并累计分数，熟悉躲避节奏。",
+  "spawnPattern": [0, 1, 2, 1, 0, 2]
+}

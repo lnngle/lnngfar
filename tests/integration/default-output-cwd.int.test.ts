@@ -11,5 +11,6 @@ describe('default output cwd integration', () => {
 
     await executePipeline({ blueprintName: 'cocos', cwd, repoRoot });
     expect(fs.existsSync(path.join(cwd, 'assets/scripts/entry/GameEntry.ts'))).toBe(true);
+    expect(fs.existsSync(path.join(cwd, 'assets/scripts/platform/MiniGamePlatformAdapter.ts'))).toBe(true);
   });
 });

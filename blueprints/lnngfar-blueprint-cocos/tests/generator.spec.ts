@@ -15,7 +15,10 @@ describe('lnngfar-blueprint-cocos generator', () => {
 
     const paths = artifacts.map((item: { path: string }) => item.path);
     expect(paths).toContain('assets/scripts/entry/GameEntry.ts');
-    expect(paths).toContain('assets/scripts/modules/sample/SampleModule.ts');
+    expect(paths).toContain('assets/scripts/core/GameApp.ts');
+    expect(paths).toContain('assets/scripts/gameplay/GameLoop.ts');
+    expect(paths).toContain('assets/resources/config/game-config.json');
+    expect(paths).toContain('tests/game-loop.spec.ts');
     expect(paths).toContain('tests/sample.spec.ts');
   });
 });

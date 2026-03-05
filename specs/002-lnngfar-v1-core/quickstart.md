@@ -12,6 +12,8 @@
 npm install
 ```
 
+说明：安装后会自动构建 CLI，可直接用 `npx` 或 `npm exec` 调用。
+
 ## 3. 运行核心测试
 
 ```powershell
@@ -25,13 +27,30 @@ npm test
 ### 正常路径
 
 ```powershell
+npx --no-install lnngfar cocos
+# 或
+npm exec -- lnngfar cocos
+```
+
+若需要全局命令：
+
+```powershell
+npm run setup:link
 lnngfar cocos
 ```
 
 期望：
 - 按固定阶段输出执行进度
-- 生成 cocos 工程脚手架
+- 生成完整小游戏工程脚手架（含项目配置、资源配置、玩法循环、平台适配、UI 与测试）
 - 执行 Blueprint 自身测试并通过
+
+关键文件检查（示例）：
+- `README.md`
+- `assets/resources/config/game-config.json`
+- `assets/scripts/core/GameApp.ts`
+- `assets/scripts/gameplay/GameLoop.ts`
+- `assets/scripts/platform/MiniGamePlatformAdapter.ts`
+- `tests/game-loop.spec.ts`
 
 ### 异常路径 1：未知 Blueprint
 

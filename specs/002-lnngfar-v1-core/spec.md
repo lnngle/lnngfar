@@ -14,6 +14,7 @@
 - Q: v1 的 Blueprint 发现范围是什么？ → A: 仅从当前项目本地依赖中发现（含 workspace/link），不扫描全局 npm 包。
 - Q: v1 默认将生成产物写入哪里？ → A: 当前工作目录；要求在空目录执行，检测到冲突即按失败处理。
 - Q: 执行流程第 5 步“运行 Blueprint 相关测试”在 v1 包含哪些内容？ → A: 仅运行 Blueprint 自身自动化测试。
+- Q: `lnngfar-blueprint-cocos` 的项目模板深度应达到什么级别？ → A: 需提供完整小游戏项目骨架（项目配置、资源配置、核心玩法循环、平台适配、UI 与测试），可直接作为小游戏项目起点。
 
 ## 用户场景与测试 *(必填)*
 
@@ -97,7 +98,8 @@
 - **FR-008**: 系统必须校验 `blueprint.json` 包含 `name`、`packageName`、`version`、`description`、`target`、`language`、`engine`、`testFramework`。
 - **FR-009**: 系统必须拒绝不符合命名规则或元信息规则的 Blueprint，并禁止进入生成阶段。
 - **FR-010**: 系统必须内置并可执行 `lnngfar-blueprint-cocos`，用于生成基于 oops-framework 的 Cocos Creator 工程脚手架。
-- **FR-011**: `lnngfar-blueprint-cocos` 生成结果必须至少包含标准目录结构、基础入口代码、oops-framework 初始化代码、示例模块、示例测试代码；其中标准目录结构最少包括 `assets/`、`assets/scripts/`、`assets/scripts/entry/`、`assets/scripts/modules/sample/`、`tests/`。
+- **FR-011**: `lnngfar-blueprint-cocos` 生成结果必须包含完整小游戏项目骨架：项目级配置文件、资源配置、入口代码、核心应用层、玩法循环层、平台适配层、UI 层与测试代码。
+- **FR-025**: `lnngfar-blueprint-cocos` 生成结果必须至少包含以下关键路径：`README.md`、`package.json`、`tsconfig.json`、`jest.config.cjs`、`assets/resources/config/game-config.json`、`assets/resources/levels/level-001.json`、`assets/scripts/entry/GameEntry.ts`、`assets/scripts/core/GameApp.ts`、`assets/scripts/gameplay/GameLoop.ts`、`assets/scripts/platform/MiniGamePlatformAdapter.ts`、`assets/scripts/ui/HudView.ts`、`tests/game-loop.spec.ts`。
 - **FR-012**: 系统必须保证生成过程确定性：相同输入在相同版本下输出一致。
 - **FR-013**: 系统必须在生成完成后执行 Blueprint 自身自动化测试（v1 默认不在该步骤执行生成工程内的示例测试）。
 - **FR-014**: 当任一测试失败时，系统必须立即中断并返回失败状态。

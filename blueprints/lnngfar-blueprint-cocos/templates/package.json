@@ -2,7 +2,17 @@
   "name": "{{PROJECT_NAME}}",
   "version": "0.1.0",
   "private": true,
+  "description": "基于 lnngfar-blueprint-cocos 生成的小游戏项目模板",
   "scripts": {
-    "test": "jest --runInBand"
+    "build": "tsc -p tsconfig.json",
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch",
+    "lint": "echo \"请按团队规范接入 ESLint\""
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.7.3"
   }
 }

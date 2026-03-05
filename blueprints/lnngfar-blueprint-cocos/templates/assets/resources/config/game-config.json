@@ -1,0 +1,9 @@
+{
+  "sceneName": "MainScene",
+  "targetFps": 60,
+  "spawnIntervalMs": 800,
+  "obstacleSpeed": 6,
+  "arenaDistance": 12,
+  "laneCount": 3,
+  "maxHitPoint": 3
+}

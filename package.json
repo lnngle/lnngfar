@@ -9,6 +9,9 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "postinstall": "npm run build",
+    "setup:link": "npm run build && npm link",
+    "setup:unlink": "npm unlink -g lnngfar",
     "test": "jest --runInBand",
     "lint": "eslint . --ext .ts,.js",
     "format": "prettier --write ."
