@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lnngfar.dev/schemas/blueprint.schema.json",
+  "title": "lnngfar Blueprint Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "packageName",
+    "version",
+    "description",
+    "target",
+    "language",
+    "engine",
+    "testFramework"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "packageName": {
+      "type": "string",
+      "pattern": "^lnngfar-blueprint-[a-z0-9-]+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-.]+)?(?:\\+[0-9A-Za-z-.]+)?$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language": {
+      "type": "string",
+      "minLength": 1
+    },
+    "engine": {
+      "type": "string",
+      "minLength": 1
+    },
+    "testFramework": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
