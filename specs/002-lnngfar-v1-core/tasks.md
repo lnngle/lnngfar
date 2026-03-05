@@ -18,12 +18,12 @@ description: "lnngfar v1 实现任务清单"
 
 **目的**: 建立 TypeScript CLI 项目与统一开发工具链
 
-- [ ] T001 创建项目基础目录结构于 `src/`、`tests/`、`blueprints/lnngfar-blueprint-cocos/`
-- [ ] T002 初始化 npm 项目并写入基础脚本到 `./package.json`
-- [ ] T003 [P] 配置 TypeScript 编译选项到 `./tsconfig.json`
-- [ ] T004 [P] 配置 Jest 测试框架到 `./jest.config.ts`
-- [ ] T005 [P] 配置 ESLint/Prettier 到 `eslint.config.js` 与 `.prettierrc`
-- [ ] T006 配置 CLI 入口映射到 `./package.json` 的 `bin.lnngfar`
+- [X] T001 创建项目基础目录结构于 `src/`、`tests/`、`blueprints/lnngfar-blueprint-cocos/`
+- [X] T002 初始化 npm 项目并写入基础脚本到 `./package.json`
+- [X] T003 [P] 配置 TypeScript 编译选项到 `./tsconfig.json`
+- [X] T004 [P] 配置 Jest 测试框架到 `./jest.config.ts`
+- [X] T005 [P] 配置 ESLint/Prettier 到 `eslint.config.js` 与 `.prettierrc`
+- [X] T006 配置 CLI 入口映射到 `./package.json` 的 `bin.lnngfar`
 
 ---
 
@@ -31,18 +31,18 @@ description: "lnngfar v1 实现任务清单"
 
 **目的**: 实现所有用户故事共享的核心执行骨架与契约门禁
 
-- [ ] T007 定义阶段与错误模型到 `src/errors/stage-error.ts`
-- [ ] T008 [P] 实现 Node.js 版本校验器到 `src/core/env-check.ts`
-- [ ] T009 [P] 实现本地依赖 Blueprint 发现器到 `src/discovery/local-blueprint-resolver.ts`
-- [ ] T010 [P] 实现 Blueprint 名称映射器到 `src/discovery/blueprint-name-mapper.ts`
-- [ ] T011 [P] 集成 JSON Schema 校验器到 `src/validation/manifest-validator.ts`
-- [ ] T012 实现 Blueprint 结构校验器到 `src/validation/structure-validator.ts`
-- [ ] T013 [P] 实现目录冲突检测器到 `src/execution/conflict-detector.ts`
-- [ ] T014 [P] 实现确定性写入器到 `src/execution/deterministic-writer.ts`
-- [ ] T015 实现 Blueprint 测试执行器到 `src/execution/blueprint-test-runner.ts`
-- [ ] T016 实现固定阶段流水线到 `src/core/pipeline.ts`
-- [ ] T017 集成 CLI 调度入口到 `src/cli/index.ts`
-- [ ] T018 建立内置 Blueprint 基础清单到 `blueprints/lnngfar-blueprint-cocos/blueprint.json`
+- [X] T007 定义阶段与错误模型到 `src/errors/stage-error.ts`
+- [X] T008 [P] 实现 Node.js 版本校验器到 `src/core/env-check.ts`
+- [X] T009 [P] 实现本地依赖 Blueprint 发现器到 `src/discovery/local-blueprint-resolver.ts`
+- [X] T010 [P] 实现 Blueprint 名称映射器到 `src/discovery/blueprint-name-mapper.ts`
+- [X] T011 [P] 集成 JSON Schema 校验器到 `src/validation/manifest-validator.ts`
+- [X] T012 实现 Blueprint 结构校验器到 `src/validation/structure-validator.ts`
+- [X] T013 [P] 实现目录冲突检测器到 `src/execution/conflict-detector.ts`
+- [X] T014 [P] 实现确定性写入器到 `src/execution/deterministic-writer.ts`
+- [X] T015 实现 Blueprint 测试执行器到 `src/execution/blueprint-test-runner.ts`
+- [X] T016 实现固定阶段流水线到 `src/core/pipeline.ts`
+- [X] T017 集成 CLI 调度入口到 `src/cli/index.ts`
+- [X] T018 建立内置 Blueprint 基础清单到 `blueprints/lnngfar-blueprint-cocos/blueprint.json`
 
 **检查点**: 核心阶段流水线可运行，且所有用户故事可在其上展开
 
@@ -55,22 +55,22 @@ description: "lnngfar v1 实现任务清单"
 
 ### 测试任务（先写并先失败）
 
-- [ ] T019 [P] [US1] 编写 CLI 成功路径契约测试到 `tests/contract/cli-cocos-success.contract.test.ts`
-- [ ] T020 [P] [US1] 编写确定性生成集成测试到 `tests/integration/deterministic-generation.int.test.ts`
-- [ ] T021 [P] [US1] 编写目录冲突失败集成测试到 `tests/integration/generation-conflict.int.test.ts`
+- [X] T019 [P] [US1] 编写 CLI 成功路径契约测试到 `tests/contract/cli-cocos-success.contract.test.ts`
+- [X] T020 [P] [US1] 编写确定性生成集成测试到 `tests/integration/deterministic-generation.int.test.ts`
+- [X] T021 [P] [US1] 编写目录冲突失败集成测试到 `tests/integration/generation-conflict.int.test.ts`
 
 ### 实现任务
 
-- [ ] T022 [US1] 实现 cocos Blueprint 生成入口到 `blueprints/lnngfar-blueprint-cocos/generators/index.ts`
-- [ ] T023 [P] [US1] 添加工程基础模板到 `blueprints/lnngfar-blueprint-cocos/templates/`
-- [ ] T024 [P] [US1] 添加 oops-framework 初始化模板到 `blueprints/lnngfar-blueprint-cocos/templates/src/entry/`
-- [ ] T025 [P] [US1] 添加示例模块与示例测试模板到 `blueprints/lnngfar-blueprint-cocos/templates/src/modules/sample/`
-- [ ] T026 [US1] 接入生成阶段执行逻辑到 `src/execution/generate-from-blueprint.ts`
-- [ ] T027 [US1] 在流水线中接入冲突检测与确定性写入到 `src/core/pipeline.ts`
-- [ ] T028 [US1] 更新生成成功输出信息到 `src/cli/output.ts`
-- [ ] T053 [P] [US1] 编写默认输出到当前工作目录的集成测试到 `tests/integration/default-output-cwd.int.test.ts`
-- [ ] T054 [US1] 在生成入口中固化默认输出目录为当前工作目录到 `src/execution/generate-from-blueprint.ts`
-- [ ] T055 [US1] 增加内置 Blueprint 自身测试用例到 `blueprints/lnngfar-blueprint-cocos/tests/generator.spec.ts`
+- [X] T022 [US1] 实现 cocos Blueprint 生成入口到 `blueprints/lnngfar-blueprint-cocos/generators/index.ts`
+- [X] T023 [P] [US1] 添加工程基础模板到 `blueprints/lnngfar-blueprint-cocos/templates/`
+- [X] T024 [P] [US1] 添加 oops-framework 初始化模板到 `blueprints/lnngfar-blueprint-cocos/templates/src/entry/`
+- [X] T025 [P] [US1] 添加示例模块与示例测试模板到 `blueprints/lnngfar-blueprint-cocos/templates/src/modules/sample/`
+- [X] T026 [US1] 接入生成阶段执行逻辑到 `src/execution/generate-from-blueprint.ts`
+- [X] T027 [US1] 在流水线中接入冲突检测与确定性写入到 `src/core/pipeline.ts`
+- [X] T028 [US1] 更新生成成功输出信息到 `src/cli/output.ts`
+- [X] T053 [P] [US1] 编写默认输出到当前工作目录的集成测试到 `tests/integration/default-output-cwd.int.test.ts`
+- [X] T054 [US1] 在生成入口中固化默认输出目录为当前工作目录到 `src/execution/generate-from-blueprint.ts`
+- [X] T055 [US1] 增加内置 Blueprint 自身测试用例到 `blueprints/lnngfar-blueprint-cocos/tests/generator.spec.ts`
 
 **检查点**: US1 可单独交付并通过独立验证（MVP）
 
@@ -83,17 +83,17 @@ description: "lnngfar v1 实现任务清单"
 
 ### 测试任务（先写并先失败）
 
-- [ ] T029 [P] [US2] 编写本地依赖发现契约测试到 `tests/contract/local-discovery.contract.test.ts`
-- [ ] T030 [P] [US2] 编写包名前缀拒绝契约测试到 `tests/contract/prefix-validation.contract.test.ts`
-- [ ] T031 [P] [US2] 编写 manifest 缺字段集成测试到 `tests/integration/manifest-validation.int.test.ts`
+- [X] T029 [P] [US2] 编写本地依赖发现契约测试到 `tests/contract/local-discovery.contract.test.ts`
+- [X] T030 [P] [US2] 编写包名前缀拒绝契约测试到 `tests/contract/prefix-validation.contract.test.ts`
+- [X] T031 [P] [US2] 编写 manifest 缺字段集成测试到 `tests/integration/manifest-validation.int.test.ts`
 
 ### 实现任务
 
-- [ ] T032 [US2] 在发现器中强制本地依赖扫描到 `src/discovery/local-blueprint-resolver.ts`
-- [ ] T033 [US2] 在校验阶段串联 schema 与结构校验到 `src/validation/index.ts`
-- [ ] T034 [US2] 在流水线中实现非法 Blueprint 快速失败到 `src/core/pipeline.ts`
-- [ ] T035 [US2] 提供第三方 Blueprint 接入示例到 `blueprints/examples/lnngfar-blueprint-example/blueprint.json`
-- [ ] T036 [US2] 编写接入说明文档到 `docs/blueprint-authoring.md`
+- [X] T032 [US2] 在发现器中强制本地依赖扫描到 `src/discovery/local-blueprint-resolver.ts`
+- [X] T033 [US2] 在校验阶段串联 schema 与结构校验到 `src/validation/index.ts`
+- [X] T034 [US2] 在流水线中实现非法 Blueprint 快速失败到 `src/core/pipeline.ts`
+- [X] T035 [US2] 提供第三方 Blueprint 接入示例到 `blueprints/examples/lnngfar-blueprint-example/blueprint.json`
+- [X] T036 [US2] 编写接入说明文档到 `docs/blueprint-authoring.md`
 
 **检查点**: US2 可单独验证第三方接入能力，不依赖 US3/US4
 
@@ -106,16 +106,16 @@ description: "lnngfar v1 实现任务清单"
 
 ### 测试任务（先写并先失败）
 
-- [ ] T037 [P] [US3] 编写环境失败阶段测试到 `tests/integration/error-stage-environment.int.test.ts`
-- [ ] T038 [P] [US3] 编写 Blueprint 失败阶段测试到 `tests/integration/error-stage-blueprint.int.test.ts`
-- [ ] T039 [P] [US3] 编写测试失败阶段测试到 `tests/integration/error-stage-testing.int.test.ts`
+- [X] T037 [P] [US3] 编写环境失败阶段测试到 `tests/integration/error-stage-environment.int.test.ts`
+- [X] T038 [P] [US3] 编写 Blueprint 失败阶段测试到 `tests/integration/error-stage-blueprint.int.test.ts`
+- [X] T039 [P] [US3] 编写测试失败阶段测试到 `tests/integration/error-stage-testing.int.test.ts`
 
 ### 实现任务
 
-- [ ] T040 [US3] 定义统一错误码与建议文案到 `src/errors/error-codes.ts`
-- [ ] T041 [US3] 实现阶段化错误格式化输出到 `src/errors/error-presenter.ts`
-- [ ] T042 [US3] 在 CLI 中落实非零退出码策略到 `src/cli/index.ts`
-- [ ] T043 [US3] 在生成冲突场景补充修复建议输出到 `src/execution/conflict-detector.ts`
+- [X] T040 [US3] 定义统一错误码与建议文案到 `src/errors/error-codes.ts`
+- [X] T041 [US3] 实现阶段化错误格式化输出到 `src/errors/error-presenter.ts`
+- [X] T042 [US3] 在 CLI 中落实非零退出码策略到 `src/cli/index.ts`
+- [X] T043 [US3] 在生成冲突场景补充修复建议输出到 `src/execution/conflict-detector.ts`
 
 **检查点**: US3 独立运行时可完整验证失败可观测性
 
@@ -128,14 +128,14 @@ description: "lnngfar v1 实现任务清单"
 
 ### 测试任务（先写并先失败）
 
-- [ ] T044 [P] [US4] 编写第三方扩展集成测试到 `tests/integration/third-party-extension.int.test.ts`
+- [X] T044 [P] [US4] 编写第三方扩展集成测试到 `tests/integration/third-party-extension.int.test.ts`
 
 ### 实现任务
 
-- [ ] T045 [US4] 提炼 Blueprint 加载契约类型到 `src/core/contracts/blueprint-contract.ts`
-- [ ] T046 [US4] 实现可扩展阶段运行器到 `src/core/stage-runner.ts`
-- [ ] T047 [US4] 补充架构边界说明到 `./README.md`
-- [ ] T056 [P] [US4] 编写 Blueprint 升级兼容回归测试到 `tests/integration/blueprint-upgrade-compat.int.test.ts`
+- [X] T045 [US4] 提炼 Blueprint 加载契约类型到 `src/core/contracts/blueprint-contract.ts`
+- [X] T046 [US4] 实现可扩展阶段运行器到 `src/core/stage-runner.ts`
+- [X] T047 [US4] 补充架构边界说明到 `./README.md`
+- [X] T056 [P] [US4] 编写 Blueprint 升级兼容回归测试到 `tests/integration/blueprint-upgrade-compat.int.test.ts`
 
 **检查点**: US4 独立验证通过后，扩展路径闭环
 
@@ -145,13 +145,13 @@ description: "lnngfar v1 实现任务清单"
 
 **目的**: 收敛跨故事质量项，完成交付基线
 
-- [ ] T048 [P] 补充核心单元测试覆盖到 `tests/unit/`
-- [ ] T049 [P] 补充契约测试矩阵到 `tests/contract/`
-- [ ] T050 更新快速验证步骤与命令到 `specs/002-lnngfar-v1-core/quickstart.md`
-- [ ] T051 配置 CI 执行测试门禁到 `.github/workflows/ci.yml`
-- [ ] T052 更新交付说明与版本记录到 `./README.md`
-- [ ] T057 [P] 补充 CLI 生成性能基准测试到 `tests/performance/cli-cocos-benchmark.perf.test.ts`
-- [ ] T058 设计新手首跑成功率验证脚本到 `tests/e2e/first-run-success.e2e.test.ts`
+- [X] T048 [P] 补充核心单元测试覆盖到 `tests/unit/`
+- [X] T049 [P] 补充契约测试矩阵到 `tests/contract/`
+- [X] T050 更新快速验证步骤与命令到 `specs/002-lnngfar-v1-core/quickstart.md`
+- [X] T051 配置 CI 执行测试门禁到 `.github/workflows/ci.yml`
+- [X] T052 更新交付说明与版本记录到 `./README.md`
+- [X] T057 [P] 补充 CLI 生成性能基准测试到 `tests/performance/cli-cocos-benchmark.perf.test.ts`
+- [X] T058 设计新手首跑成功率验证脚本到 `tests/e2e/first-run-success.e2e.test.ts`
 
 ---
 

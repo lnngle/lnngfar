@@ -1,0 +1,11 @@
+{
+  "name": "example",
+  "packageName": "lnngfar-blueprint-example",
+  "version": "0.1.0",
+  "description": "第三方 Blueprint 示例",
+  "target": "demo",
+  "language": "TypeScript",
+  "engine": "none",
+  "testFramework": "jest",
+  "generatorEntry": "generators/index.js"
+}

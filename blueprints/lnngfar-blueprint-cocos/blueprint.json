@@ -1,0 +1,11 @@
+{
+  "name": "cocos",
+  "packageName": "lnngfar-blueprint-cocos",
+  "version": "1.0.0",
+  "description": "生成基于 oops-framework 的 Cocos Creator 工程脚手架",
+  "target": "cocos-creator",
+  "language": "TypeScript",
+  "engine": "oops-framework",
+  "testFramework": "jest",
+  "generatorEntry": "generators/index.js"
+}
