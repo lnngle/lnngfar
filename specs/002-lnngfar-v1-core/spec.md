@@ -97,12 +97,12 @@
 - **FR-008**: 系统必须校验 `blueprint.json` 包含 `name`、`packageName`、`version`、`description`、`target`、`language`、`engine`、`testFramework`。
 - **FR-009**: 系统必须拒绝不符合命名规则或元信息规则的 Blueprint，并禁止进入生成阶段。
 - **FR-010**: 系统必须内置并可执行 `lnngfar-blueprint-cocos`，用于生成基于 oops-framework 的 Cocos Creator 工程脚手架。
-- **FR-011**: `lnngfar-blueprint-cocos` 生成结果必须至少包含标准目录结构、基础入口代码、oops-framework 初始化代码、示例模块、示例测试代码。
+- **FR-011**: `lnngfar-blueprint-cocos` 生成结果必须至少包含标准目录结构、基础入口代码、oops-framework 初始化代码、示例模块、示例测试代码；其中标准目录结构最少包括 `assets/`、`assets/scripts/`、`assets/scripts/entry/`、`assets/scripts/modules/sample/`、`tests/`。
 - **FR-012**: 系统必须保证生成过程确定性：相同输入在相同版本下输出一致。
 - **FR-013**: 系统必须在生成完成后执行 Blueprint 自身自动化测试（v1 默认不在该步骤执行生成工程内的示例测试）。
 - **FR-014**: 当任一测试失败时，系统必须立即中断并返回失败状态。
 - **FR-015**: 在任意失败场景下，系统必须输出失败阶段（环境/Blueprint/生成/测试）与可理解错误信息。
-- **FR-016**: 系统必须禁止静默失败，所有失败均需有可见错误输出。
+- **FR-016**: 系统必须禁止静默失败；所有失败都必须写入 `stderr`，并包含可追踪错误码。
 - **FR-017**: 系统架构必须支持第三方在不修改核心代码前提下新增 Blueprint。
 - **FR-018**: Blueprint 升级不得要求同步修改核心流程即可维持兼容执行。
 - **FR-019**: lnngfar 核心模块必须具备自动化测试，且核心测试可独立运行。
