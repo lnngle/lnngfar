@@ -1,50 +1,60 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+同步影响报告
+- 版本变更：0.0.0（占位模板） → 1.0.0
+- 变更原则：新增并固化 5 条核心原则（Blueprint 一等公民、确定性生成、测试优先、失败可观测、AI 友好简洁）
+- 新增章节：技术与交付约束、开发流程与质量门禁
+- 涉及模板检查：.specify/templates/plan-template.md、.specify/templates/spec-template.md、.specify/templates/tasks-template.md（结构兼容，无需修改）
+- 待办项：无
+-->
 
-## Core Principles
+# lnngfar 项目宪章
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+## 核心原则
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### I. Blueprint 一等公民（MUST）
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+lnngfar 核心仅负责 CLI 调度、Blueprint 发现、Blueprint 校验、Blueprint 执行，不得在核心中内置具体技术栈生成逻辑。任何技术栈能力必须通过 Blueprint 提供。新增能力优先通过新增 Blueprint 完成，而非改写核心流程。
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. 确定性生成（MUST）
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+相同输入在相同版本下必须生成一致结果。生成流程禁止随机行为、隐式时间依赖和不可追踪外部副作用。涉及文件冲突时采用显式失败策略，不得静默覆盖。
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### III. 测试优先与质量门禁（MUST）
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+lnngfar 核心模块必须具备自动化测试；每个 Blueprint 必须自带自动化测试；Blueprint 生成工程必须包含示例测试。执行流程中测试失败即整体失败，禁止绕过测试门禁合并或发布。
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### IV. 失败可观测与快速失败（MUST）
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+任意失败必须明确阶段（环境/Blueprint/生成/测试）与可理解原因，禁止 silent failure。系统应优先在早期阶段终止错误输入，避免将问题放大到后续阶段。
 
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+### V. AI 友好与简洁演进（SHOULD）
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+架构需保持分层清晰、命名明确、职责单一，避免不必要抽象。设计以“可读、可测、可增量演进”为优先，保证 AI 与开发者都能低成本理解并安全扩展。
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+## 技术与交付约束
+
+- 运行环境基线：Node.js `>= 18 LTS`。
+- Blueprint 包名必须以 `lnngfar-blueprint-` 为前缀。
+- v1 默认输出到当前工作目录；检测到冲突文件或目录必须失败退出并给出修复建议。
+- v1 的 Blueprint 发现范围仅限当前项目本地依赖（含 workspace/link），不扫描全局 npm 包。
+- 所有交互回复、生成文档与新增代码注释默认使用中文；标识符、协议字段、第三方专有名词可保留英文。
+
+## 开发流程与质量门禁
+
+1. 需求与规格阶段：必须先产出 `spec.md`，并完成关键歧义澄清。
+2. 计划阶段：必须通过宪章检查后再进入实现计划。
+3. 任务阶段：任务必须可执行、可验证，且与用户故事映射。
+4. 实现阶段：遵循“先测试后实现”的质量约束；非并行阻塞任务失败时立即停止。
+5. 验收阶段：必须验证生成确定性、失败可观测性、Blueprint 可扩展性三类关键结果。
+
+## 治理
+
+- 本宪章优先级高于常规开发习惯与临时流程。
+- 任何违反 MUST 条款的变更不得合并。
+- 宪章修订必须在同一变更中包含：修订理由、影响范围、迁移方案与版本变更说明。
+- 版本遵循语义化：
+	- MAJOR：治理模型或核心原则发生不兼容变更
+	- MINOR：新增原则或约束章节，且向后兼容
+	- PATCH：文字澄清、错别字修订、非语义变更
+
+**Version**: 1.0.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-05
