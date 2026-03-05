@@ -24,6 +24,9 @@ describe('cocos minigame template integration', () => {
       'assets/scripts/gameplay/systems/ObstacleSystem.ts',
       'assets/scripts/platform/MiniGamePlatformAdapter.ts',
       'assets/scripts/ui/HudView.ts',
+      'tests/player-state.spec.ts',
+      'tests/systems.spec.ts',
+      'tests/game-app.spec.ts',
       'tests/game-loop.spec.ts',
       'tests/config-loading.spec.ts',
       'tests/sample.spec.ts'

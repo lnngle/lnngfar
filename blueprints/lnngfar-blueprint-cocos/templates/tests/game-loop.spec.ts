@@ -2,6 +2,17 @@ import { gameConfig, GameConfig } from '../assets/scripts/config/GameConfig';
 import { GameLoop } from '../assets/scripts/gameplay/GameLoop';
 
 describe('game loop', () => {
+  test('非正时间步不会推进状态', () => {
+    const loop = new GameLoop(gameConfig);
+    const before = loop.getSnapshot();
+
+    const after = loop.tick(0);
+
+    expect(after.elapsedMs).toBe(before.elapsedMs);
+    expect(after.score).toBe(before.score);
+    expect(after.obstacleCount).toBe(before.obstacleCount);
+  });
+
   test('固定步长下可稳定产出障碍与得分', () => {
     const loop = new GameLoop(gameConfig);
 

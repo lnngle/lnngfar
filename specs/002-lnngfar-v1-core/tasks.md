@@ -154,6 +154,7 @@ description: "lnngfar v1 实现任务清单"
 - [X] T058 设计新手首跑成功率验证脚本到 `tests/e2e/first-run-success.e2e.test.ts`
 - [X] T059 [US1] 将 cocos Blueprint 升级为完整小游戏项目模板并补齐关键集成校验
 - [X] T060 [US1] 增强 CLI 安装可用性并补齐 README 使用与排错文档
+- [X] T061 [US1] 增加模板行为测试并在 lnngfar 集成测试中执行生成项目测试
 
 ---
 

@@ -6,6 +6,11 @@ export function createTempDir(prefix = 'lnngfar-'): string {
   return fs.mkdtempSync(path.join(os.tmpdir(), prefix));
 }
 
+export function createRepoTempDir(repoRoot: string, prefix = '.lnngfar-'): string {
+  fs.ensureDirSync(repoRoot);
+  return fs.mkdtempSync(path.join(repoRoot, prefix));
+}
+
 export function collectFileContents(root: string): Record<string, string> {
   const result: Record<string, string> = {};
   const stack = [''];

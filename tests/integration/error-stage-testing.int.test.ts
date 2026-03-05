@@ -8,6 +8,9 @@ describe('error stage testing integration', () => {
     const repoRoot = path.resolve(__dirname, '../..');
     const cwd = createTempDir('lnngfar-testing-fail-');
     const forceFail = path.join(repoRoot, 'blueprints/lnngfar-blueprint-cocos/tests/force-fail.spec.ts');
+    const previousSkip = process.env.LNNGFAR_SKIP_BLUEPRINT_TESTS;
+
+    delete process.env.LNNGFAR_SKIP_BLUEPRINT_TESTS;
 
     fs.writeFileSync(forceFail, "test('force fail', () => { expect(1).toBe(2); });", 'utf-8');
 
@@ -18,6 +21,11 @@ describe('error stage testing integration', () => {
         }
       });
     } finally {
+      if (previousSkip === undefined) {
+        delete process.env.LNNGFAR_SKIP_BLUEPRINT_TESTS;
+      } else {
+        process.env.LNNGFAR_SKIP_BLUEPRINT_TESTS = previousSkip;
+      }
       fs.removeSync(forceFail);
     }
   });

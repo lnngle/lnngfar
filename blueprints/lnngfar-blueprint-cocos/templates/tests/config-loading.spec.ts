@@ -8,6 +8,7 @@ describe('project configuration', () => {
     expect(gameConfig.sceneName).toBe('MainScene');
     expect(gameConfig.laneCount).toBe(3);
     expect(level001.id).toBe('level-001');
+    expect(Object.isFrozen(gameConfig)).toBe(true);
   });
 
   test('应用可启动并返回 HUD 状态', () => {

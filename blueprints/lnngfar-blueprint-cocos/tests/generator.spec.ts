@@ -18,6 +18,9 @@ describe('lnngfar-blueprint-cocos generator', () => {
     expect(paths).toContain('assets/scripts/core/GameApp.ts');
     expect(paths).toContain('assets/scripts/gameplay/GameLoop.ts');
     expect(paths).toContain('assets/resources/config/game-config.json');
+    expect(paths).toContain('tests/player-state.spec.ts');
+    expect(paths).toContain('tests/systems.spec.ts');
+    expect(paths).toContain('tests/game-app.spec.ts');
     expect(paths).toContain('tests/game-loop.spec.ts');
     expect(paths).toContain('tests/sample.spec.ts');
   });
