@@ -14,14 +14,19 @@ describe('cocos minigame template integration', () => {
     const requiredFiles = [
       'README.md',
       'package.json',
+      'LICENSE',
+      'yarn.lock',
       'tsconfig.json',
-      'tsconfig.test.json',
-      'jest.config.cjs',
+      '.creator/asset-template/typescript/Custom Script Template Help Documentation.url',
+      'excel/Language.xlsx',
+      'update-oops-plugin-framework.bat',
+      'update-oops-plugin-framework.sh',
       'settings/v2/packages/project.json',
       'settings/v2/packages/program.json',
       'settings/v2/packages/builder.json',
       'settings/v2/packages/engine.json',
       'settings/v2/packages/device.json',
+      'settings/v2/packages/oops-plugin-excel-to-json.json',
       'assets/main.scene',
       'assets/main.scene.meta',
       'assets/bundle.meta',
@@ -33,13 +38,10 @@ describe('cocos minigame template integration', () => {
       'assets/script/Main.ts',
       'assets/script/Main.ts.meta',
       'assets/script.meta',
-      'assets/script/game/common/SingletonModuleComp.ts',
+      'assets/script/game/account/Account.ts',
       'assets/script/game/common/config/GameUIConfig.ts',
       'assets/script/game/initialize/Initialize.ts',
-      'assets/script/game/initialize/bll/InitRes.ts',
-      'tests/unit/game-ui-config.test.ts',
-      'tests/unit/init-res.test.ts',
-      'tests/integration/initialize-flow.test.ts'
+      'assets/script/game/initialize/bll/InitRes.ts'
     ];
 
     for (const relativePath of requiredFiles) {

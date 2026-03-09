@@ -20,11 +20,11 @@
 
 ### 用户故事 1 - 一键生成 cocos 工程（优先级：P1）
 
-作为项目开发者，我希望执行 `lnngfar cocos` 后可直接得到可打开、可开发、带 oops 风格初始化骨架和测试模板的 Cocos Creator 工程脚手架，以便我立刻开始业务开发。
+作为项目开发者，我希望执行 `lnngfar cocos` 后可直接得到可打开、可开发、与 oops-game-kit 对齐的 Cocos Creator 工程脚手架，以便我立刻开始业务开发。
 
 **优先级说明**: 这是 v1 的核心交付能力，若无法稳定生成工程，其他扩展能力均无意义。
 
-**独立测试**: 在全新目录执行 `lnngfar cocos`，验证生成目录结构、Creator 工程元数据、`bundle/libs/resources` 资源目录、入口场景、初始化代码与单元/集成测试模板均存在且可运行。
+**独立测试**: 在全新目录执行 `lnngfar cocos`，验证生成目录结构、Creator 工程元数据、`bundle/libs/resources` 资源目录与入口场景，并与 oops-game-kit 模板关键内容一致。
 
 **验收场景**:
 
@@ -99,7 +99,7 @@
 - **FR-009**: 系统必须拒绝不符合命名规则或元信息规则的 Blueprint，并禁止进入生成阶段。
 - **FR-010**: 系统必须内置并可执行 `lnngfar-blueprint-cocos`，用于生成基于 oops-framework 的 Cocos Creator 工程脚手架。
 - **FR-011**: `lnngfar-blueprint-cocos` 生成结果必须包含可被 Cocos Creator Dashboard 直接导入的工程骨架：Creator 版本声明、项目设置、`bundle/libs/resources` 资源目录、启动场景与入口脚本。
-- **FR-025**: `lnngfar-blueprint-cocos` 生成结果必须至少包含以下关键路径：`README.md`、`package.json`、`tsconfig.json`、`tsconfig.test.json`、`jest.config.cjs`、`settings/v2/packages/project.json`、`settings/v2/packages/program.json`、`settings/v2/packages/builder.json`、`settings/v2/packages/engine.json`、`settings/v2/packages/device.json`、`assets/main.scene`、`assets/main.scene.meta`、`assets/script/Main.ts`、`assets/script/Main.ts.meta`、`assets/script.meta`、`assets/script/game/initialize/Initialize.ts`、`assets/script/game/common/config/GameUIConfig.ts`、`assets/bundle/common/texture/bg_window.png`、`assets/libs/seedrandom/seedrandom.min.js`、`assets/resources/config.json`、`tests/unit/game-ui-config.test.ts`、`tests/integration/initialize-flow.test.ts`。
+- **FR-025**: `lnngfar-blueprint-cocos` 生成结果必须至少包含以下关键路径：`README.md`、`package.json`、`tsconfig.json`、`settings/v2/packages/project.json`、`settings/v2/packages/program.json`、`settings/v2/packages/builder.json`、`settings/v2/packages/engine.json`、`settings/v2/packages/device.json`、`settings/v2/packages/oops-plugin-excel-to-json.json`、`assets/main.scene`、`assets/main.scene.meta`、`assets/script/Main.ts`、`assets/script/Main.ts.meta`、`assets/script/game/account/Account.ts`、`assets/script/game/common/config/GameUIConfig.ts`、`assets/script/game/initialize/Initialize.ts`、`assets/bundle/common/texture/bg_window.png`、`assets/libs/seedrandom/seedrandom.min.js`、`assets/resources/config.json`、`excel/Language.xlsx`。
 - **FR-012**: 系统必须保证生成过程确定性：相同输入在相同版本下输出一致。
 - **FR-013**: 系统必须在生成完成后执行 Blueprint 自身自动化测试（v1 默认不在该步骤执行生成工程内的示例测试）。
 - **FR-014**: 当任一测试失败时，系统必须立即中断并返回失败状态。
@@ -108,7 +108,7 @@
 - **FR-017**: 系统架构必须支持第三方在不修改核心代码前提下新增 Blueprint。
 - **FR-018**: Blueprint 升级不得要求同步修改核心流程即可维持兼容执行。
 - **FR-019**: lnngfar 核心模块必须具备自动化测试，且核心测试可独立运行。
-- **FR-020**: 每个 Blueprint 必须自带自动化测试；生成工程必须内置单元测试与集成测试模板，且可在 Node.js 环境执行。
+- **FR-020**: 每个 Blueprint 必须自带自动化测试；仓库侧必须提供生成结果与模板一致性的集成测试。
 - **FR-021**: 当生成目标目录存在任意冲突文件或目录时，系统必须终止生成并返回失败状态，不得执行覆盖写入。
 - **FR-022**: FR-021 触发时，系统必须输出明确修复建议（在空目录执行或先清理冲突文件后重试）。
 - **FR-023**: Blueprint 发现阶段必须仅扫描当前项目本地依赖（含 workspace/link），不得将全局 npm 包纳入发现结果。
@@ -130,4 +130,4 @@
 - **SC-003**: 针对环境、Blueprint、生成、测试四类失败场景，错误阶段识别准确率达到 100%。
 - **SC-004**: v1 交付时，lnngfar 核心与内置 Blueprint 的自动化测试通过率达到 100%。
 - **SC-005**: 在不修改核心代码前提下，新增一个符合规范的第三方 Blueprint 并通过完整流程的成功率达到 100%。
-- **SC-006**: 新接手开发者按照 README 首次完成 `lnngfar cocos` 生成，并在 Creator 中成功导入预览且通过模板测试的成功率达到 90% 以上。
+- **SC-006**: 新接手开发者按照 README 首次完成 `lnngfar cocos` 生成，并在 Creator 中成功导入预览的成功率达到 90% 以上。

@@ -58,19 +58,14 @@ lnngfar cocos
 - `settings/v2/packages/project.json`
 - `settings/v2/packages/program.json`
 - `settings/v2/packages/builder.json`
+- `settings/v2/packages/oops-plugin-excel-to-json.json`
 - `assets/main.scene`
 - `assets/script/Main.ts`
+- `assets/script/game/account/Account.ts`
 - `assets/bundle/common/texture/bg_window.png`
 - `assets/libs/seedrandom/seedrandom.min.js`
 - `assets/resources/config.json`
-
-在生成目录执行模板测试：
-
-```powershell
-npm install
-npm run test:unit
-npm run test:integration
-```
+- `excel/Language.xlsx`
 
 ### 异常路径 1：未知 Blueprint
 

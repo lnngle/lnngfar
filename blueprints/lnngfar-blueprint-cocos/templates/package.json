@@ -1,22 +1,13 @@
 {
-  "name": "{{PROJECT_NAME}}",
-  "version": "0.1.0",
-  "private": true,
-  "description": "基于 lnngfar-blueprint-cocos 生成的 Cocos Creator 3.x 小游戏模板",
+  "_sourceId": "c30b28da-749e-479b-bcb6-cecd8d7be9e3",
   "creator": {
-    "version": "{{CREATOR_VERSION}}"
+    "version": "3.8.7"
   },
-  "scripts": {
-    "test": "jest --runInBand",
-    "test:unit": "jest --runInBand tests/unit",
-    "test:integration": "jest --runInBand tests/integration",
-    "check:ts": "tsc -p tsconfig.json --noEmit",
-    "prepare": "echo 请使用 Cocos Creator Dashboard 导入并运行本项目"
+  "dependencies": {
+    "crypto-es": "^1.2.7"
   },
-  "devDependencies": {
-    "@types/jest": "^29.5.14",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.2.5",
-    "typescript": "^5.7.3"
-  }
+  "description": "游戏项目模板",
+  "name": "oops-game-kit",
+  "uuid": "00d7d957-a3e8-4ad6-80f4-2fcfb235bca4",
+  "version": "3.6.3"
 }

@@ -1,39 +1,92 @@
-# {{PROJECT_NAME}}
+# oops-game-kit
 
-基于 `lnngfar-blueprint-cocos` 生成的 Cocos Creator 3.x 小游戏模板。
+### 介绍
+基于 Oops Framework 提供的游戏项目开发模板，项目中提供了最新版本 Cocos Creator 3.x 插件与游戏资源初始化通用逻辑。
 
-## 环境要求
+### 使用Oops Framework创建游戏模板项目
+1. 下载模板项目
+```
+git clone https://gitee.com/dgflash/oops-game-kit.git
+```
 
-- 已安装 Cocos Creator（生成时会自动探测本机版本并写入 `package.json.creator.version`）
-- 如需强制指定版本，可在生成前设置环境变量：`LNNGFAR_COCOS_CREATOR_VERSION=3.x.y`
+2. 下载框架插件
+#### windows
+- 执行 update-oops-plugin-framework.bat 克隆与更新框架插件
+- 执行 update-oops-plugin-hot-update.bat 克隆与更新热更新插件
+- 执行 update-oops-plugin-excel-to-json.bat 克隆与更新Excel转Json格式插件
 
-## 快速开始
+#### mac
+- 执行 update-oops-plugin-framework.sh 克隆与更新框架插件
+- 执行 update-oops-plugin-hot-update.sh 克隆与更新热更新插件
+- 执行 update-oops-plugin-excel-to-json.sh 克隆与更新Excel转Json格式插件
 
-1. 打开 Cocos Creator Dashboard。
-2. 点击 `导入项目`，选择本项目根目录。
-3. 打开项目后点击 `预览运行`，确认默认场景可启动。
+### 模板项目目录结构
+```
+res                         - 预制引用的静态资源
+resources                   - 动态加载引用的资源
+    audio                       - 音乐资源
+    common                      - 公共资源
+    config                      - 配置资源
+        game                        - 游戏自定义内容配置数据表
+        config.json                 - 框架默认配置资源（可扩展内容）
+    content                     - 自定义动态加载内容资源
+    game                        - 核心玩法内容资源
+    gui                         - 界面资源
+        loading                     - 游戏初次加载界面
+    language                    - 多语言资源
+script                      - 游戏脚本
+    game                        - 游戏业务模块
+        common                      - 游戏公共模块
+            config                      - 游戏配置
+                GameEvent.ts                - 全局事件配置
+                GameUIConfig.ts             - 界面窗口配置（提供oops.gui模块使用的配置数据）
+            table                       - 游戏配置表对象(可通过oops-plugin-excel-to-json自动生成)
+        initialize                  - 游戏初始化模块
+        SingletonModuleComp.ts      - 游戏单例业务模块
+    Main.ts                     - 游戏入口脚本
+```
 
-## 调试与发布
+根据上面的目录结构，在开发游戏时，可将资源存放到对应的文件夹中管理。这套模板项目自带以下游戏必备功能。
+- 屏幕自适应
+- 游戏本地配置数据获取
+- 游戏地址查询参数获取
+- 游戏初始化业务流程
+    - 初始可自定义资源加载提示界面
+- 加载与现实第一个游戏自定义界面
 
-- 调试：在 Creator 中使用浏览器预览或模拟器预览。
-- 发布：在 Creator 中进入 `构建发布`，选择目标平台（Web、微信小游戏等）并构建。
+### 屏幕自适应
+Cocos Creator 菜单->项目->项目设置
+#### 横屏自适应
+![](https://oops-1255342636.cos.ap-shanghai.myqcloud.com/img/kit/1.jpg)
 
-## 测试
+#### 竖屏自适应
+![](https://oops-1255342636.cos.ap-shanghai.myqcloud.com/img/kit/2.jpg)
 
-- 单元测试：`npm run test:unit`
-- 集成测试：`npm run test:integration`
-- 全量测试：`npm test`
+设置好后，其它的交给框架自动处理即可。
 
-## 目录说明
+### 游戏初始化模块
+#### 游戏启动时加载的必备资源
+initialize/bll/InitRes.ts
 
-- `assets/bundle/`：动态分包资源目录（界面、通用素材等）。
-- `assets/libs/`：第三方运行库资源（示例：`seedrandom`）。
-- `assets/resources/`：默认资源与配置目录。
-- `assets/main.scene`：默认启动场景。
-- `assets/script/Main.ts`：默认入口组件脚本，内置三段启动模板方法：`initializeResources`、`initializeUi`、`openFirstScreen`。
-- `assets/script/game/initialize/`：初始化流程骨架（资源预加载入口等）。
-- `assets/script/game/common/config/GameUIConfig.ts`：UI 启动配置样例。
-- `settings/v2/packages/project.json`：项目分辨率与通用配置。
-- `settings/v2/packages/builder.json`：构建相关配置。
-- `tests/unit/`：模板单元测试样例。
-- `tests/integration/`：模板集成测试样例。
+这个脚本管理游戏启动时加载的必备资源，此处要注意的是，这里配置的资源尽量小一些，避免无提示加载阶段黑屏时间过长，导致游戏体验下降。
+- 加载公共资源
+- 加载多语言包（可选）
+- 加载自定义资源（可选）
+
+initialize/view/LoadingViewComp.ts
+
+这个脚本是游戏内容资源加载界面的控制脚本，游戏内容资源一般较大，会有加载进度条提示来提高游戏体验。所有资源加载完后，会通过执行以下脚本来显示游戏第一个自定义界面。
+```
+oops.gui.open(UIID.Demo);
+```
+
+### QQ群
+- 798575969（1群 - 满）
+- 621415300（2群 - 满）
+- 628575875（3群 - 满）
+- 226524184（4群-推荐）
+- 741197640（5群-推荐）
+
+### QQ频道：q366856bf5
+
+### [点击了解作者其它产品](https://store.cocos.com/app/search?name=oops)

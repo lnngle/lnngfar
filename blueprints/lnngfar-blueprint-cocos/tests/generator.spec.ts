@@ -17,43 +17,34 @@ describe('lnngfar-blueprint-cocos generator', () => {
         manifestName: 'cocos'
       });
 
-    const paths = artifacts.map((item: { path: string }) => item.path);
-    expect(paths).toContain('jest.config.cjs');
-    expect(paths).toContain('tsconfig.test.json');
-    expect(paths).toContain('tests/unit/game-ui-config.test.ts');
-    expect(paths).toContain('tests/unit/init-res.test.ts');
-    expect(paths).toContain('tests/integration/initialize-flow.test.ts');
-    expect(paths).toContain('package.json');
-    expect(paths).toContain('settings/v2/packages/project.json');
-    expect(paths).toContain('settings/v2/packages/program.json');
-    expect(paths).toContain('settings/v2/packages/builder.json');
-    expect(paths).toContain('settings/v2/packages/engine.json');
-    expect(paths).toContain('settings/v2/packages/device.json');
-    expect(paths).toContain('assets/main.scene');
-    expect(paths).toContain('assets/main.scene.meta');
-    expect(paths).toContain('assets/script/Main.ts');
-    expect(paths).toContain('assets/script/Main.ts.meta');
-    expect(paths).toContain('assets/script.meta');
-    expect(paths).toContain('assets/bundle.meta');
-    expect(paths).toContain('assets/libs.meta');
-    expect(paths).toContain('assets/resources.meta');
-    expect(paths).toContain('assets/bundle/common/texture/bg_window.png');
-    expect(paths).toContain('assets/resources/config.json');
-    expect(paths).toContain('assets/libs/seedrandom/seedrandom.min.js');
-    expect(paths).toContain('assets/script/game/common/SingletonModuleComp.ts');
-    expect(paths).toContain('assets/script/game/common/config/GameUIConfig.ts');
-    expect(paths).toContain('assets/script/game/initialize/Initialize.ts');
-    expect(paths).toContain('assets/script/game/initialize/bll/InitRes.ts');
+      const paths = artifacts.map((item: { path: string }) => item.path);
+      expect(paths).toContain('.creator/asset-template/typescript/Custom Script Template Help Documentation.url');
+      expect(paths).toContain('package.json');
+      expect(paths).toContain('LICENSE');
+      expect(paths).toContain('yarn.lock');
+      expect(paths).toContain('excel/Language.xlsx');
+      expect(paths).toContain('update-oops-plugin-framework.bat');
+      expect(paths).toContain('update-oops-plugin-framework.sh');
+      expect(paths).toContain('settings/v2/packages/project.json');
+      expect(paths).toContain('settings/v2/packages/oops-plugin-excel-to-json.json');
+      expect(paths).toContain('assets/main.scene');
+      expect(paths).toContain('assets/bundle/common/texture/bg_window.png');
+      expect(paths).toContain('assets/libs/seedrandom/seedrandom.min.js');
+      expect(paths).toContain('assets/resources/config.json');
+      expect(paths).toContain('assets/script/Main.ts');
+      expect(paths).toContain('assets/script/game/account/Account.ts');
+      expect(paths).toContain('assets/script/game/initialize/bll/InitRes.ts');
 
-    const pngArtifact = artifacts.find((item: { path: string }) => item.path === 'assets/bundle/common/texture/bg_window.png') as {
-      contentEncoding?: string;
-    };
-    expect(pngArtifact.contentEncoding).toBe('base64');
+      const pngArtifact = artifacts.find((item: { path: string }) => item.path === 'assets/bundle/common/texture/bg_window.png') as {
+        contentEncoding?: string;
+      };
+      expect(pngArtifact.contentEncoding).toBe('base64');
 
       const packageArtifact = artifacts.find((item: { path: string }) => item.path === 'package.json') as {
         content: string;
       };
-      expect(packageArtifact.content).toContain('"version": "3.8.4"');
+      const packageJson = JSON.parse(packageArtifact.content) as { creator?: { version?: string } };
+      expect(packageJson.creator?.version).toBe('3.8.4');
     } finally {
       if (previousCreatorVersion === undefined) {
         delete process.env.LNNGFAR_COCOS_CREATOR_VERSION;

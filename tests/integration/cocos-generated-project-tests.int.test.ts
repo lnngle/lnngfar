@@ -1,6 +1,5 @@
 import fs from 'fs-extra';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
 import { executePipeline } from '../../src/core/pipeline';
 import { createRepoTempDir } from '../helpers';
 
@@ -15,8 +14,10 @@ describe('generated cocos project tests integration', () => {
 
       const packageJson = fs.readJsonSync(path.join(cwd, 'package.json')) as {
         creator?: { version?: string };
+        name?: string;
       };
       expect(packageJson.creator?.version).toMatch(/^\d+\.\d+\.\d+$/);
+      expect(packageJson.name).toBe('oops-game-kit');
 
       const projectSettings = fs.readJsonSync(path.join(cwd, 'settings/v2/packages/project.json')) as {
         general?: {
@@ -41,25 +42,13 @@ describe('generated cocos project tests integration', () => {
       expect(fs.existsSync(path.join(cwd, 'assets/bundle/common/texture/bg_window.png'))).toBe(true);
       expect(fs.existsSync(path.join(cwd, 'assets/libs/seedrandom/seedrandom.min.js'))).toBe(true);
       expect(fs.existsSync(path.join(cwd, 'assets/resources/config.json'))).toBe(true);
+      expect(fs.existsSync(path.join(cwd, '.creator/asset-template/typescript/Custom Script Template Help Documentation.url'))).toBe(true);
+      expect(fs.existsSync(path.join(cwd, 'excel/Language.xlsx'))).toBe(true);
+      expect(fs.existsSync(path.join(cwd, 'settings/v2/packages/oops-plugin-excel-to-json.json'))).toBe(true);
 
       const mainScript = fs.readFileSync(path.join(cwd, 'assets/script/Main.ts'), 'utf-8');
-      expect(mainScript).toContain('initializeResources');
-      expect(mainScript).toContain('initializeUi');
-      expect(mainScript).toContain('openFirstScreen');
-
-      const jestBin = path.join(repoRoot, 'node_modules', 'jest', 'bin', 'jest.js');
-      const jestConfig = path.join(cwd, 'jest.config.cjs');
-      const unitResult = spawnSync(process.execPath, [jestBin, '--runInBand', '--config', jestConfig, 'tests/unit'], {
-        cwd,
-        encoding: 'utf-8'
-      });
-      expect(unitResult.status).toBe(0);
-
-      const integrationResult = spawnSync(process.execPath, [jestBin, '--runInBand', '--config', jestConfig, 'tests/integration'], {
-        cwd,
-        encoding: 'utf-8'
-      });
-      expect(integrationResult.status).toBe(0);
+      expect(mainScript).toContain('oops-plugin-framework');
+      expect(mainScript).toContain('class Main extends Root');
     } finally {
       fs.removeSync(cwd);
     }

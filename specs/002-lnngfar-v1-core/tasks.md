@@ -159,7 +159,7 @@ description: "lnngfar v1 实现任务清单"
 - [X] T063 [US1] 为生成内核增加二进制产物写入能力并支持 blueprint 生成器输出 base64 内容
 - [X] T064 [US1] 补齐 oops 资源目录 `assets/bundle`、`assets/libs`、`assets/resources` 及对应集成校验
 - [X] T065 [US1] 增加 Creator 版本探测与 `LNNGFAR_COCOS_CREATOR_VERSION` 覆盖能力
-- [X] T066 [US1] 为生成工程补齐单元测试与集成测试模板并接入仓库级回归校验
+- [X] T066 [US1] 完善仓库级单元/集成测试，覆盖 Creator 版本注入与模板一致性回归
 
 ---
 
