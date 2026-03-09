@@ -4,12 +4,15 @@ import os from 'node:os';
 import { GeneratedArtifact } from '../core/contracts/blueprint-contract';
 import { writeArtifactsDeterministically } from './deterministic-writer';
 
-export async function writeArtifactsTransactionally(outputDir: string, artifacts: GeneratedArtifact[]): Promise<void> {
+export async function withTransactionalOutput(
+  outputDir: string,
+  writer: (stagingDir: string) => Promise<void>
+): Promise<void> {
   const parentDir = path.dirname(outputDir);
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'lnngfar-txn-'));
 
   try {
-    await writeArtifactsDeterministically(tempDir, artifacts);
+    await writer(tempDir);
     await fs.ensureDir(parentDir);
 
     if (await fs.pathExists(outputDir)) {
@@ -21,4 +24,10 @@ export async function writeArtifactsTransactionally(outputDir: string, artifacts
     await fs.remove(tempDir);
     throw error;
   }
+}
+
+export async function writeArtifactsTransactionally(outputDir: string, artifacts: GeneratedArtifact[]): Promise<void> {
+  await withTransactionalOutput(outputDir, async (stagingDir) => {
+    await writeArtifactsDeterministically(stagingDir, artifacts);
+  });
 }

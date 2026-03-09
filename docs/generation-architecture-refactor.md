@@ -109,6 +109,16 @@
 - 串联变量解析、渲染配置、计划构建、计划执行、冲突检测、事务写入。
 - 对外维持原有错误模型与返回结构。
 
+性能增强：
+- 分批渲染 + 分批写入，降低大规模模板生成时峰值内存占用。
+- 写入阶段支持并发，提升大量小文件场景的 I/O 吞吐。
+- 支持性能 trace 日志，便于定位计划构建、渲染、写入各阶段耗时。
+
+性能调优环境变量：
+- `LNNGFAR_RENDER_BATCH_SIZE`：每批渲染与写入的文件数，默认 `500`。
+- `LNNGFAR_WRITE_CONCURRENCY`：写入并发度，默认 `8`。
+- `LNNGFAR_TRACE_PERF=1`：启用性能阶段日志。
+
 ## 蓝图侧改造
 
 ### 1) 渲染配置落地
@@ -149,6 +159,10 @@
 - 契约：CLI 成功路径、外部 cwd、bin 入口
 - 集成：默认输出、冲突、确定性、模板一致性、cocos 关键骨架
 - 蓝图生成器：`lnngfar-blueprint-cocos/tests/generator.spec.ts`
+
+性能测试：
+- 新增 `tests/performance/rendering-large-template.perf.test.ts` 基准测试样例。
+- 该测试默认 `skip`，用于本地手动压测与参数调优对比。
 
 ## 已知边界与后续建议
 

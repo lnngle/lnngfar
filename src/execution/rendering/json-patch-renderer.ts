@@ -58,6 +58,11 @@ function setJsonPathValue(target: Record<string, any>, path: string, value: stri
 }
 
 export function renderJsonPatch(content: string, rules: JsonPatchRule[], variables: VariableContext): string {
+  const resolvedRules = rules.filter((rule) => variables[rule.variable] !== undefined);
+  if (resolvedRules.length === 0) {
+    return content;
+  }
+
   let parsed: Record<string, any>;
   try {
     parsed = JSON.parse(content);
@@ -65,7 +70,7 @@ export function renderJsonPatch(content: string, rules: JsonPatchRule[], variabl
     return content;
   }
 
-  for (const rule of rules) {
+  for (const rule of resolvedRules) {
     const value = variables[rule.variable];
     if (value !== undefined) {
       setJsonPathValue(parsed, rule.path, value);

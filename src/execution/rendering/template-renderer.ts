@@ -1,11 +1,14 @@
 import { VariableContext } from '../contracts/generation-plan';
 
+const TEMPLATE_TOKEN_REGEX = /\{\{([A-Za-z0-9_]+)\}\}/g;
+
 export function renderTemplate(content: string, variables: VariableContext): string {
-  let rendered = content;
-  for (const [key, value] of Object.entries(variables)) {
-    const token = `{{${key}}}`;
-    rendered = rendered.split(token).join(value);
+  if (!content.includes('{{')) {
+    return content;
   }
 
-  return rendered;
+  return content.replace(TEMPLATE_TOKEN_REGEX, (token, key: string) => {
+    const value = variables[key];
+    return value === undefined ? token : value;
+  });
 }
