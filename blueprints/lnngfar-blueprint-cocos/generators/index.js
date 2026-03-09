@@ -157,18 +157,18 @@ function isProbablyText(buffer) {
   return true;
 }
 
-function patchPackageJsonCreatorVersion(content, creatorVersion) {
+function patchPackageJson(content, creatorVersion) {
   try {
     const parsed = JSON.parse(content);
     const currentVersion = parsed?.creator?.version;
-    if (currentVersion === creatorVersion) {
-      return content;
-    }
-
     if (!parsed.creator || typeof parsed.creator !== 'object') {
       parsed.creator = {};
     }
-    parsed.creator.version = creatorVersion;
+
+    if (currentVersion !== creatorVersion) {
+      parsed.creator.version = creatorVersion;
+    }
+
     return `${JSON.stringify(parsed, null, 2)}\n`;
   } catch {
     return content;
@@ -178,12 +178,7 @@ function patchPackageJsonCreatorVersion(content, creatorVersion) {
 async function generate(ctx) {
   const templateRoot = path.join(ctx.blueprintRootPath, 'templates');
   const templateFiles = walkFiles(templateRoot).sort((a, b) => a.localeCompare(b));
-  const projectName = ctx.manifestName;
   const creatorVersion = resolveCreatorVersion();
-  const replacements = {
-    '{{PROJECT_NAME}}': projectName,
-    '{{CREATOR_VERSION}}': creatorVersion
-  };
 
   return templateFiles.map((filePath) => {
     const relative = path.relative(templateRoot, filePath).replace(/\\/g, '/');
@@ -191,12 +186,9 @@ async function generate(ctx) {
 
     if (isProbablyText(buffer)) {
       let content = buffer.toString('utf-8');
-      for (const [key, value] of Object.entries(replacements)) {
-        content = content.split(key).join(value);
-      }
 
       if (relative === 'package.json') {
-        content = patchPackageJsonCreatorVersion(content, creatorVersion);
+        content = patchPackageJson(content, creatorVersion);
       }
 
       return {

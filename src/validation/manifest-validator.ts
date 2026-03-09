@@ -21,7 +21,8 @@ const schema: JSONSchemaType<BlueprintManifest> = {
     language: { type: 'string', minLength: 1 },
     engine: { type: 'string', minLength: 1 },
     testFramework: { type: 'string', minLength: 1 },
-    generatorEntry: { type: 'string', nullable: true }
+    generatorEntry: { type: 'string', nullable: true },
+    renderConfigEntry: { type: 'string', nullable: true }
   }
 };
 

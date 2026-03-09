@@ -47,8 +47,20 @@ describe('lnngfar-blueprint-cocos generator', () => {
       const packageArtifact = artifacts.find((item: { path: string }) => item.path === 'package.json') as {
         content: string;
       };
-      const packageJson = JSON.parse(packageArtifact.content) as { creator?: { version?: string } };
+      const packageJson = JSON.parse(packageArtifact.content) as { creator?: { version?: string }; name?: string; description?: string };
       expect(packageJson.creator?.version).toBe('3.8.4');
+      expect(packageJson.name).toBe('{{PROJECT_NAME}}');
+      expect(packageJson.description).toBe('{{PROJECT_DESCRIPTION}}');
+
+      const packageLockArtifact = artifacts.find((item: { path: string }) => item.path === 'package-lock.json') as {
+        content: string;
+      };
+      const packageLock = JSON.parse(packageLockArtifact.content) as {
+        name?: string;
+        packages?: Record<string, { name?: string }>;
+      };
+      expect(packageLock.name).toBe('{{PROJECT_NAME}}');
+      expect(packageLock.packages?.['']?.name).toBe('{{PROJECT_NAME}}');
     } finally {
       if (previousCreatorVersion === undefined) {
         delete process.env.LNNGFAR_COCOS_CREATOR_VERSION;

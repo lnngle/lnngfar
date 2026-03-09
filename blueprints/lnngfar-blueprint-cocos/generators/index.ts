@@ -2,6 +2,8 @@ export interface GeneratorContext {
   outputDir: string;
   blueprintRootPath: string;
   manifestName: string;
+  projectName: string;
+  variables: Record<string, string>;
 }
 
 export interface GeneratedArtifact {

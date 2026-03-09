@@ -7,5 +7,6 @@
   "language": "TypeScript",
   "engine": "oops-framework",
   "testFramework": "jest",
-  "generatorEntry": "generators/index.js"
+  "generatorEntry": "generators/index.js",
+  "renderConfigEntry": "render.config.json"
 }

@@ -46,6 +46,14 @@
     "testFramework": {
       "type": "string",
       "minLength": 1
+    },
+    "generatorEntry": {
+      "type": "string",
+      "minLength": 1
+    },
+    "renderConfigEntry": {
+      "type": "string",
+      "minLength": 1
     }
   }
 }

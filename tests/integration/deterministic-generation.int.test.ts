@@ -12,8 +12,8 @@ describe('deterministic generation integration', () => {
     await executePipeline({ blueprintName: 'cocos', cwd: cwdA, repoRoot });
     await executePipeline({ blueprintName: 'cocos', cwd: cwdB, repoRoot });
 
-    const a = collectFileContents(cwdA);
-    const b = collectFileContents(cwdB);
+    const a = collectFileContents(path.join(cwdA, 'cocos-project'));
+    const b = collectFileContents(path.join(cwdB, 'cocos-project'));
     expect(a).toEqual(b);
   });
 });

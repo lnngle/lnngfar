@@ -21,7 +21,7 @@ describe('cli external cwd contract', () => {
       const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
       expect(result.status).toBe(0);
       expect(output).toContain('生成成功');
-      expect(fs.existsSync(path.join(cwd, 'assets/script/Main.ts'))).toBe(true);
+      expect(fs.existsSync(path.join(cwd, 'cocos-project/assets/script/Main.ts'))).toBe(true);
     } finally {
       fs.removeSync(cwd);
     }

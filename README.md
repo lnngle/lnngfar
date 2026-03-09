@@ -11,7 +11,8 @@ lnngfar 是一个 Blueprint 驱动的代码生成器内核。
 
 - 核心只负责：CLI 调度、Blueprint 发现、Blueprint 校验、Blueprint 执行。
 - 技术栈能力由 Blueprint 提供，不内置在核心。
-- 默认输出目录是当前工作目录，存在任意冲突文件或目录时直接失败。
+- 默认输出目录是当前工作目录下的“项目名子目录”，存在冲突文件或目录时直接失败。
+- 执行生成命令时会有英文交互输入项目名；直接回车使用默认值。
 
 ## 环境要求
 
@@ -36,6 +37,15 @@ npx --prefix ..\lnngfar --no-install lnngfar cocos
 # 或
 npm exec --prefix ..\lnngfar -- lnngfar cocos
 ```
+
+命令执行时会出现英文交互提示，例如：
+
+```text
+Enter project name (default: cocos-project):
+```
+
+默认项目名规则：`<blueprint后缀>-project`。
+例如 `lnngfar-blueprint-cocos` 的后缀为 `cocos`，默认项目名即 `cocos-project`。
 
 ### 方式 B：全局命令态
 
@@ -68,6 +78,10 @@ cd ..\demo-cocos-game
 # 使用仓库开发态命令
 npx --prefix ..\lnngfar --no-install lnngfar cocos
 ```
+
+若直接回车不输入，默认使用 `cocos-project` 作为项目名。
+
+最终生成目录示例：`<当前目录>/cocos-project`。
 
 生成后将包含完整小游戏骨架，例如：
 
@@ -102,13 +116,18 @@ npm run build
 - 原因：目标目录已存在同名文件或目录。
 - 处理：切换到空目录执行，或清理冲突文件后重试。
 
-### 3) 导入 Cocos Creator Dashboard 提示“缺失编辑器”
+### 3) 交互输入项目名时输错格式
+
+- 原因：项目名仅允许字母、数字、`-`、`_`。
+- 处理：按提示重新输入；若多次输入非法，将自动回退默认项目名。
+
+### 4) 导入 Cocos Creator Dashboard 提示“缺失编辑器”
 
 - 原因：本机未安装模板指定的 Creator 版本，或 `package.json` 中 `creator.version` 与本机版本不一致。
 - 处理：安装匹配版本，或将 `package.json` 的 `creator.version` 修改为本机已安装版本后重新导入。
 - 可选：生成前设置环境变量 `LNNGFAR_COCOS_CREATOR_VERSION=3.x.y`，让模板按指定版本生成。
 
-### 4) 初次执行较慢
+### 5) 初次执行较慢
 
 - 原因：首次安装后会自动构建 TypeScript 产物。
 - 处理：属于预期行为，后续重复执行会更快。

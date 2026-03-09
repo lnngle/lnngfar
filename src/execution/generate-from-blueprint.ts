@@ -1,17 +1,12 @@
 import fs from 'fs-extra';
 import { BlueprintPackage, GeneratedArtifact } from '../core/contracts/blueprint-contract';
+import { GeneratorFn } from './contracts/generation-plan';
 import { ErrorCodes } from '../errors/error-codes';
 import { PipelineError } from '../errors/stage-error';
 import { detectPathConflicts } from './conflict-detector';
-import { writeArtifactsDeterministically } from './deterministic-writer';
-
-interface GenerateContext {
-  outputDir: string;
-  blueprintRootPath: string;
-  manifestName: string;
-}
-
-type GeneratorFn = (ctx: GenerateContext) => Promise<GeneratedArtifact[]> | GeneratedArtifact[];
+import { buildRenderPlan, loadRenderConfig, renderPlan } from './rendering';
+import { writeArtifactsTransactionally } from './transactional-writer';
+import { resolveVariables } from './variables/variable-resolver';
 
 function getGenerator(moduleObject: any): GeneratorFn | null {
   if (typeof moduleObject.generate === 'function') {
@@ -29,7 +24,11 @@ function getGenerator(moduleObject: any): GeneratorFn | null {
   return null;
 }
 
-export async function generateFromBlueprint(blueprintPackage: BlueprintPackage, outputDir = process.cwd()): Promise<GeneratedArtifact[]> {
+export async function generateFromBlueprint(
+  blueprintPackage: BlueprintPackage,
+  outputDir = process.cwd(),
+  projectName = `${blueprintPackage.manifest.name}-project`
+): Promise<GeneratedArtifact[]> {
   const generatorEntryPath = blueprintPackage.generatorEntryPath;
 
   try {
@@ -54,10 +53,17 @@ export async function generateFromBlueprint(blueprintPackage: BlueprintPackage, 
       });
     }
 
+    const variables = resolveVariables({
+      blueprintPackage,
+      projectName
+    });
+
     const artifacts = await generator({
       outputDir,
       blueprintRootPath: blueprintPackage.rootPath,
-      manifestName: blueprintPackage.manifest.name
+      manifestName: blueprintPackage.manifest.name,
+      projectName,
+      variables
     });
 
     const normalizedArtifacts = (artifacts ?? []).map((item) => ({
@@ -66,7 +72,11 @@ export async function generateFromBlueprint(blueprintPackage: BlueprintPackage, 
       contentEncoding: item.contentEncoding ?? 'utf-8'
     }));
 
-    const conflicts = detectPathConflicts(outputDir, normalizedArtifacts.map((item) => item.path));
+    const renderConfig = loadRenderConfig(blueprintPackage);
+    const plan = buildRenderPlan(normalizedArtifacts, variables, renderConfig);
+    const renderedArtifacts = plan.artifacts.length > 0 ? renderPlan(plan) : [];
+
+    const conflicts = detectPathConflicts(outputDir, renderedArtifacts.map((item) => item.path));
     if (conflicts.length > 0) {
       throw new PipelineError({
         stage: 'generation',
@@ -76,8 +86,8 @@ export async function generateFromBlueprint(blueprintPackage: BlueprintPackage, 
       });
     }
 
-    await writeArtifactsDeterministically(outputDir, normalizedArtifacts);
-    return normalizedArtifacts;
+    await writeArtifactsTransactionally(outputDir, renderedArtifacts);
+    return renderedArtifacts;
   } catch (error) {
     if (error instanceof PipelineError) {
       throw error;

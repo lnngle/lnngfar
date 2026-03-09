@@ -8,19 +8,22 @@ describe('cocos minigame template integration', () => {
     process.env.LNNGFAR_SKIP_BLUEPRINT_TESTS = '1';
     const repoRoot = path.resolve(__dirname, '../..');
     const cwd = createTempDir('lnngfar-cocos-full-');
+    const outputDir = path.join(cwd, 'cocos-project');
 
     await executePipeline({ blueprintName: 'cocos', cwd, repoRoot });
 
     const requiredFiles = [
       'README.md',
       'package.json',
+      'package-lock.json',
       'LICENSE',
       'yarn.lock',
+      '.c8rc.json',
+      '.prettierignore',
       'tsconfig.json',
       '.creator/asset-template/typescript/Custom Script Template Help Documentation.url',
       'excel/Language.xlsx',
-      'update-oops-plugin-framework.bat',
-      'update-oops-plugin-framework.sh',
+      'tools/update-plugins.js',
       'settings/v2/packages/project.json',
       'settings/v2/packages/program.json',
       'settings/v2/packages/builder.json',
@@ -45,7 +48,7 @@ describe('cocos minigame template integration', () => {
     ];
 
     for (const relativePath of requiredFiles) {
-      expect(fs.existsSync(path.join(cwd, relativePath))).toBe(true);
+      expect(fs.existsSync(path.join(outputDir, relativePath))).toBe(true);
     }
 
     const removedLegacyPaths = [
@@ -53,7 +56,7 @@ describe('cocos minigame template integration', () => {
     ];
 
     for (const relativePath of removedLegacyPaths) {
-      expect(fs.existsSync(path.join(cwd, relativePath))).toBe(false);
+      expect(fs.existsSync(path.join(outputDir, relativePath))).toBe(false);
     }
   });
 });

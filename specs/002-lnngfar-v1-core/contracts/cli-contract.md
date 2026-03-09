@@ -6,6 +6,14 @@
 lnngfar <blueprint>
 ```
 
+执行命令时，CLI 会以英文交互提示输入项目名：
+
+```text
+Enter project name (default: <blueprint>-project):
+```
+
+若直接回车，默认项目名为 `<blueprint后缀>-project`。
+
 ## v1 支持矩阵
 
 - 支持：`lnngfar cocos`
@@ -16,14 +24,16 @@ lnngfar <blueprint>
 1. 环境校验（Node.js `>=18 LTS`）
 2. Blueprint 发现与加载（仅本地依赖）
 3. Blueprint 合法性校验（结构 + manifest）
-4. Blueprint 生成执行（默认输出到当前工作目录）
+4. Blueprint 生成执行（默认输出到当前工作目录下的项目名子目录）
 5. Blueprint 自身自动化测试
 6. 输出成功/失败结果
 
 ## 输入约束
 
 - `blueprint` 为必填位置参数。
-- 当前工作目录必须不存在冲突文件/目录；否则立即失败。
+- 项目名交互仅允许字母、数字、`-`、`_`。
+- 非 TTY 环境自动使用默认项目名，不进入交互。
+- 当前工作目录下目标项目名子目录若存在冲突文件/目录则立即失败。
 
 ## 输出约束
 

@@ -1,0 +1,41 @@
+{
+  "templatePatterns": [
+    "**/*"
+  ],
+  "passthroughPatterns": [
+    "assets/**/*.png",
+    "assets/**/*.jpg",
+    "assets/**/*.jpeg",
+    "assets/**/*.webp",
+    "assets/**/*.mp3",
+    "assets/**/*.ogg",
+    "assets/**/*.wav",
+    "assets/**/*.ttf",
+    "assets/**/*.otf",
+    "assets/**/*.woff",
+    "assets/**/*.woff2",
+    "assets/**/*.bin"
+  ],
+  "jsonPatch": {
+    "package.json": [
+      {
+        "path": "$.name",
+        "variable": "PROJECT_NAME"
+      },
+      {
+        "path": "$.description",
+        "variable": "PROJECT_DESCRIPTION"
+      }
+    ],
+    "package-lock.json": [
+      {
+        "path": "$.name",
+        "variable": "PROJECT_NAME"
+      },
+      {
+        "path": "$.packages.\"\".name",
+        "variable": "PROJECT_NAME"
+      }
+    ]
+  }
+}

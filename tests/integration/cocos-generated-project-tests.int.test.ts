@@ -10,16 +10,27 @@ describe('generated cocos project tests integration', () => {
     const cwd = createRepoTempDir(repoRoot, '.lnngfar-generated-');
 
     try {
-      await executePipeline({ blueprintName: 'cocos', cwd, repoRoot });
+      const result = await executePipeline({ blueprintName: 'cocos', cwd, repoRoot });
+      const outputDir = path.join(cwd, 'cocos-project');
+      expect(result.outputDir).toBe(outputDir);
 
-      const packageJson = fs.readJsonSync(path.join(cwd, 'package.json')) as {
+      const packageJson = fs.readJsonSync(path.join(outputDir, 'package.json')) as {
         creator?: { version?: string };
         name?: string;
+        description?: string;
       };
       expect(packageJson.creator?.version).toMatch(/^\d+\.\d+\.\d+$/);
-      expect(packageJson.name).toBe('oops-game-kit');
+      expect(packageJson.name).toBe('cocos-project');
+      expect(packageJson.description).toBe('cocos-project project');
 
-      const projectSettings = fs.readJsonSync(path.join(cwd, 'settings/v2/packages/project.json')) as {
+      const packageLock = fs.readJsonSync(path.join(outputDir, 'package-lock.json')) as {
+        name?: string;
+        packages?: Record<string, { name?: string }>;
+      };
+      expect(packageLock.name).toBe('cocos-project');
+      expect(packageLock.packages?.['']?.name).toBe('cocos-project');
+
+      const projectSettings = fs.readJsonSync(path.join(outputDir, 'settings/v2/packages/project.json')) as {
         general?: {
           designResolution?: {
             width?: number;
@@ -30,24 +41,24 @@ describe('generated cocos project tests integration', () => {
       expect(projectSettings.general?.designResolution?.width).toBe(1200);
       expect(projectSettings.general?.designResolution?.height).toBe(720);
 
-      const deviceSettings = fs.readJsonSync(path.join(cwd, 'settings/v2/packages/device.json')) as {
+      const deviceSettings = fs.readJsonSync(path.join(outputDir, 'settings/v2/packages/device.json')) as {
         __version__?: string;
       };
       expect(deviceSettings.__version__).toBe('1.0.1');
 
-      const sceneText = fs.readFileSync(path.join(cwd, 'assets/main.scene'), 'utf-8');
+      const sceneText = fs.readFileSync(path.join(outputDir, 'assets/main.scene'), 'utf-8');
       expect(sceneText).toContain('cc.SceneAsset');
       expect(sceneText).toContain('cc.Canvas');
 
-      expect(fs.existsSync(path.join(cwd, 'assets/bundle/common/texture/bg_window.png'))).toBe(true);
-      expect(fs.existsSync(path.join(cwd, 'assets/libs/seedrandom/seedrandom.min.js'))).toBe(true);
-      expect(fs.existsSync(path.join(cwd, 'assets/resources/config.json'))).toBe(true);
-      expect(fs.existsSync(path.join(cwd, '.creator/asset-template/typescript/Custom Script Template Help Documentation.url'))).toBe(true);
-      expect(fs.existsSync(path.join(cwd, 'excel/Language.xlsx'))).toBe(true);
-      expect(fs.existsSync(path.join(cwd, 'settings/v2/packages/oops-plugin-excel-to-json.json'))).toBe(true);
+      expect(fs.existsSync(path.join(outputDir, 'assets/bundle/common/texture/bg_window.png'))).toBe(true);
+      expect(fs.existsSync(path.join(outputDir, 'assets/libs/seedrandom/seedrandom.min.js'))).toBe(true);
+      expect(fs.existsSync(path.join(outputDir, 'assets/resources/config.json'))).toBe(true);
+      expect(fs.existsSync(path.join(outputDir, '.creator/asset-template/typescript/Custom Script Template Help Documentation.url'))).toBe(true);
+      expect(fs.existsSync(path.join(outputDir, 'excel/Language.xlsx'))).toBe(true);
+      expect(fs.existsSync(path.join(outputDir, 'settings/v2/packages/oops-plugin-excel-to-json.json'))).toBe(true);
 
-      const mainScript = fs.readFileSync(path.join(cwd, 'assets/script/Main.ts'), 'utf-8');
-      expect(mainScript).toContain('oops-plugin-framework');
+      const mainScript = fs.readFileSync(path.join(outputDir, 'assets/script/Main.ts'), 'utf-8');
+      expect(mainScript).toContain("db://oops-framework");
       expect(mainScript).toContain('class Main extends Root');
     } finally {
       fs.removeSync(cwd);

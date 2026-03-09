@@ -11,8 +11,22 @@ import { PipelineError } from '../errors/stage-error';
 
 interface PipelineOptions {
   blueprintName: string;
+  projectName?: string;
   cwd?: string;
   repoRoot?: string;
+}
+
+function resolveProjectName(blueprintName: string, input?: string): string {
+  const normalized = input?.trim();
+  if (normalized) {
+    return normalized;
+  }
+
+  return `${blueprintName}-project`;
+}
+
+function resolveOutputDir(baseDir: string, projectName: string): string {
+  return path.join(baseDir, projectName);
 }
 
 function findRepoRoot(startDir: string, fallbackDir?: string): string {
@@ -70,7 +84,9 @@ export async function executePipeline(options: PipelineOptions): Promise<Pipelin
 
   checkNodeVersion();
   const blueprintPackage = ensureBlueprintAvailable(options.blueprintName, repoRoot);
-  const artifacts = await generateFromBlueprint(blueprintPackage, cwd);
+  const projectName = resolveProjectName(options.blueprintName, options.projectName);
+  const outputDir = resolveOutputDir(cwd, projectName);
+  const artifacts = await generateFromBlueprint(blueprintPackage, outputDir, projectName);
 
   const testResult = runBlueprintTests(blueprintPackage.testsPath, repoRoot);
   if (!testResult.ok) {
@@ -84,7 +100,7 @@ export async function executePipeline(options: PipelineOptions): Promise<Pipelin
 
   return {
     blueprintName: options.blueprintName,
-    outputDir: cwd,
+    outputDir,
     artifacts
   };
 }

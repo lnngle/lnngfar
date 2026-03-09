@@ -15,10 +15,12 @@ describe('cli cocos success contract', () => {
       repoRoot
     });
 
+    const outputDir = path.join(cwd, 'cocos-project');
     expect(result.blueprintName).toBe('cocos');
-    expect(fs.existsSync(path.join(cwd, 'package.json'))).toBe(true);
-    expect(fs.existsSync(path.join(cwd, 'settings/v2/packages/project.json'))).toBe(true);
-    expect(fs.existsSync(path.join(cwd, 'assets/main.scene'))).toBe(true);
-    expect(fs.existsSync(path.join(cwd, 'assets/script/Main.ts'))).toBe(true);
+    expect(result.outputDir).toBe(outputDir);
+    expect(fs.existsSync(path.join(outputDir, 'package.json'))).toBe(true);
+    expect(fs.existsSync(path.join(outputDir, 'settings/v2/packages/project.json'))).toBe(true);
+    expect(fs.existsSync(path.join(outputDir, 'assets/main.scene'))).toBe(true);
+    expect(fs.existsSync(path.join(outputDir, 'assets/script/Main.ts'))).toBe(true);
   });
 });

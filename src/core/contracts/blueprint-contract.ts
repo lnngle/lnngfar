@@ -8,6 +8,7 @@ export interface BlueprintManifest {
   engine: string;
   testFramework: string;
   generatorEntry?: string;
+  renderConfigEntry?: string;
 }
 
 export interface BlueprintPackage {

@@ -3,6 +3,7 @@ import { executePipeline } from '../core/pipeline';
 import { printFailure, printStage, printSuccess } from './output';
 import { PipelineError } from '../errors/stage-error';
 import { ErrorCodes } from '../errors/error-codes';
+import { resolveProjectName } from './project-name';
 
 export async function runCli(argv: string[]): Promise<number> {
   let blueprintName = '';
@@ -39,6 +40,8 @@ export async function runCli(argv: string[]): Promise<number> {
     return 1;
   }
 
+  const projectName = await resolveProjectName(blueprintName);
+
   try {
     printStage('环境校验');
     printStage('Blueprint 发现加载');
@@ -48,6 +51,7 @@ export async function runCli(argv: string[]): Promise<number> {
 
     const result = await executePipeline({
       blueprintName,
+      projectName,
       cwd: process.cwd(),
       repoRoot: process.env.LNNGFAR_REPO_ROOT
     });
