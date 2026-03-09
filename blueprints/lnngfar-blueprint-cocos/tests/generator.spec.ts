@@ -22,9 +22,13 @@ describe('lnngfar-blueprint-cocos generator', () => {
       expect(paths).toContain('package.json');
       expect(paths).toContain('LICENSE');
       expect(paths).toContain('yarn.lock');
+      expect(paths).toContain('package-lock.json');
       expect(paths).toContain('excel/Language.xlsx');
-      expect(paths).toContain('update-oops-plugin-framework.bat');
-      expect(paths).toContain('update-oops-plugin-framework.sh');
+      expect(paths).toContain('.c8rc.json');
+      expect(paths).toContain('eslint.config.cjs');
+      expect(paths).toContain('prettier.config.cjs');
+      expect(paths).toContain('tools/update-plugins.js');
+      expect(paths).toContain('tests/tools/checkers.test.js');
       expect(paths).toContain('settings/v2/packages/project.json');
       expect(paths).toContain('settings/v2/packages/oops-plugin-excel-to-json.json');
       expect(paths).toContain('assets/main.scene');

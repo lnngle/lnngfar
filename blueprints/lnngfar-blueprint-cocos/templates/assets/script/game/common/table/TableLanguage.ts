@@ -1,13 +1,20 @@
 
-import { JsonUtil } from "../../../../../extensions/oops-plugin-framework/assets/core/utils/JsonUtil";
+import { JsonUtil } from "db://oops-framework/core/utils/JsonUtil";
+
+interface LanguageRow {
+    zh: string;
+    en: string;
+}
+
+type LanguageTable = Record<number, LanguageRow>;
 
 export class TableLanguage {
     static TableName: string = "Language";
 
-    private data: any;
+    private data: LanguageRow = { zh: "", en: "" };
 
     init(id: number) {
-        var table = JsonUtil.get(TableLanguage.TableName);
+        const table = JsonUtil.get(TableLanguage.TableName) as LanguageTable;
         this.data = table[id];
         this.id = id;
     }

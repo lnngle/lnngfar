@@ -7,33 +7,46 @@
 import { _decorator } from "cc";
 import { gui } from "db://oops-framework/core/gui/Gui";
 import { LayerType } from "db://oops-framework/core/gui/layer/LayerEnum";
-import { oops } from "db://oops-framework/core/Oops";
 import { ecs } from "db://oops-framework/libs/ecs/ECS";
 import { CCViewVM } from "db://oops-framework/module/common/CCViewVM";
 import { DemoViewComp } from "../../account/view/DemoViewComp";
 import { smc } from "../../common/SingletonModuleComp";
+import { logger } from "../../common/utils/Logger";
+import { ResourceLoader } from "../../../framework/ResourceLoader";
+import { LoadingProgressPresenter, LoadingViewData } from "../components/LoadingProgressPresenter";
 import { Initialize } from "../Initialize";
+import { LoadingLayoutController } from "../layouts/LoadingLayoutController";
 
-const { ccclass, property } = _decorator;
+const { ccclass } = _decorator;
+const GAME_LOAD_TIMEOUT_MS = 20000;
+const GAME_LOAD_RETRY_COUNT = 2;
+const GAME_LOAD_DIRS: readonly string[] = ["game"];
 
 /** 游戏资源加载 */
 @ccclass('LoadingViewComp')
 @ecs.register('LoadingView', false)
-@gui.register('LoadingView', { layer: LayerType.UI, prefab: "gui/loading/loading" })
+@gui.register('LoadingView', { layer: LayerType.UI, prefab: "gui/layouts/loading/loading" })
 export class LoadingViewComp extends CCViewVM<Initialize> {
     /** VM 组件绑定数据 */
-    data: any = {
+    data: LoadingViewData = {
         /** 加载资源当前进度 */
         finished: 0,
         /** 加载资源最大进度 */
         total: 0,
         /** 加载资源进度比例值 */
-        progress: "0",
+        progress: "0.00",
         /** 加载流程中提示文本 */
         prompt: ""
     };
 
-    private progress: number = 0;
+    private readonly presenter = new LoadingProgressPresenter(this.data);
+    private readonly resourceLoader = new ResourceLoader();
+    private readonly layoutController = new LoadingLayoutController(
+        GAME_LOAD_DIRS,
+        GAME_LOAD_TIMEOUT_MS,
+        GAME_LOAD_RETRY_COUNT,
+        this.resourceLoader,
+    );
 
     start() {
         this.enter();
@@ -44,43 +57,42 @@ export class LoadingViewComp extends CCViewVM<Initialize> {
     }
 
     /** 加载资源 */
-    private async loadRes() {
-        this.data.progress = 0;
-        await this.loadCustom();
-        this.loadGameRes();
+    private async loadRes(): Promise<void> {
+        this.presenter.reset();
+        this.loadCustom();
+
+        try {
+            await this.loadGameRes();
+            await this.onCompleteCallback();
+        } catch (error) {
+            this.onLoadFailed(error);
+        }
     }
 
     /** 加载游戏本地JSON数据（自定义内容） */
-    private loadCustom() {
-        // 加载游戏本地JSON数据的多语言提示文本
-        this.data.prompt = oops.language.getLangByID("loading_load_json");
+    private loadCustom(): void {
+        this.presenter.showPromptByLang("loading_load_json");
     }
 
     /** 加载初始游戏内容资源 */
-    private loadGameRes() {
-        // 加载初始游戏内容资源的多语言提示文本
-        this.data.prompt = oops.language.getLangByID("loading_load_game");
-        oops.res.loadDir("game", this.onProgressCallback.bind(this), this.onCompleteCallback.bind(this));
-    }
-
-    /** 加载进度事件 */
-    private onProgressCallback(finished: number, total: number, item: any) {
-        this.data.finished = finished;
-        this.data.total = total;
-
-        var progress = finished / total;
-        if (progress > this.progress) {
-            this.progress = progress;
-            this.data.progress = (progress * 100).toFixed(2);
-        }
+    private async loadGameRes(): Promise<void> {
+        this.presenter.showPromptByLang("loading_load_game");
+        await this.layoutController.load((finished, total) => {
+            this.presenter.updateProgress(finished, total);
+        });
     }
 
     /** 加载完成事件 */
     private async onCompleteCallback() {
-        // 获取用户信息的多语言提示文本
-        this.data.prompt = oops.language.getLangByID("loading_load_player");
+        this.presenter.showPromptByLang("loading_load_player");
         await smc.account.addUi(DemoViewComp);
         this.remove();
+    }
+
+    private onLoadFailed(error: unknown): void {
+        this.layoutController.markFailed(error);
+        logger.debug("[LoadingViewComp] 当前加载状态", Array.from(this.layoutController.snapshot().entries()));
+        this.presenter.setPrompt("资源加载失败，请检查网络后重试");
     }
 
     reset(): void { }

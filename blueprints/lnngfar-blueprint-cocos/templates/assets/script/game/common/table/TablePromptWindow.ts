@@ -5,16 +5,25 @@
  * @LastEditTime: 2022-08-02 14:26:35
  */
 
-import { JsonUtil } from "../../../../../extensions/oops-plugin-framework/assets/core/utils/JsonUtil";
+import { JsonUtil } from "db://oops-framework/core/utils/JsonUtil";
+
+interface PromptWindowRow {
+    title: string;
+    describe: string;
+    array: unknown[];
+    hp: number;
+}
+
+type PromptWindowTable = Record<number, Record<number, Record<number, PromptWindowRow>>>;
 
 /** 演示oops-plugin-excel-to-json插件生成的配置表数据结构（可删除） */
 export class TablePromptWindow {
     static TableName: string = "PromptWindow";
 
-    private data: any;
+    private data: PromptWindowRow = { title: "", describe: "", array: [], hp: 0 };
 
     init(id: number, id1: number, id2: number) {
-        var table = JsonUtil.get(TablePromptWindow.TableName);
+        const table = JsonUtil.get(TablePromptWindow.TableName) as PromptWindowTable;
         this.data = table[id][id1][id2];
         this.id = id;
         this.id1 = id1;
@@ -31,7 +40,7 @@ export class TablePromptWindow {
     get describe(): string {
         return this.data.describe;
     }
-    get array(): any {
+    get array(): unknown[] {
         return this.data.array;
     }
     get hp(): number {

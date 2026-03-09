@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "remoteManifestUrl": "https://example.com/manifest.json",
+  "assets": {
+    "main.bundle": {
+      "md5": "abc123",
+      "size": 1024
+    }
+  }
+}

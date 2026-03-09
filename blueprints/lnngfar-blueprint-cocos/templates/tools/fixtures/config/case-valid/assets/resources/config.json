@@ -1,0 +1,20 @@
+{
+  "type": "dev",
+  "config": {
+    "dev": { "stats": true },
+    "test": { "stats": false },
+    "prod": { "stats": false }
+  },
+  "language": {
+    "default": "zh",
+    "type": ["zh", "en"],
+    "path": {
+      "json": "language/json",
+      "texture": "language/texture",
+      "spine": ""
+    }
+  },
+  "bundle": {
+    "default": "bundle"
+  }
+}

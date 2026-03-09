@@ -14,9 +14,9 @@ import { ecs } from "db://oops-framework/libs/ecs/ECS";
 @ecs.register('AccountModel')
 export class AccountModelComp extends ecs.Comp {
     /** 账号名 */
-    AccountName: string = null!;
+    AccountName: string = "";
 
     reset() {
-        this.AccountName = null!;
+        this.AccountName = "";
     }
 }

@@ -7,8 +7,15 @@
 import { oops } from "db://oops-framework/core/Oops";
 import { AsyncQueue, NextFunction } from "db://oops-framework/libs/collection/AsyncQueue";
 import { ecs } from "db://oops-framework/libs/ecs/ECS";
+import { ResourceLoader } from "../../../framework/ResourceLoader";
+import { RuntimeConfigService } from "../../common/config/RuntimeConfigService";
+import { logger } from "../../common/utils/Logger";
 import { Initialize } from "../Initialize";
 import { LoadingViewComp } from "../view/LoadingViewComp";
+
+const PRELOAD_DIRS: readonly string[] = ["common"];
+const PRELOAD_RETRY_COUNT = 2;
+const PRELOAD_TIMEOUT_MS = 15000;
 
 /** 初始化游戏公共资源 */
 @ecs.register('InitRes')
@@ -19,12 +26,14 @@ export class InitResComp extends ecs.Comp {
 /** 初始化资源逻辑注册到Initialize模块中 */
 @ecs.register('Initialize')
 export class InitResSystem extends ecs.ComblockSystem implements ecs.IEntityEnterSystem {
+    private readonly resourceLoader = new ResourceLoader();
+
     filter(): ecs.IMatcher {
         return ecs.allOf(InitResComp);
     }
 
     entityEnter(e: Initialize): void {
-        var queue: AsyncQueue = new AsyncQueue();
+        const queue = new AsyncQueue();
 
         // 加载多语言包加载多语言包
         this.loadLanguage(queue);
@@ -38,23 +47,27 @@ export class InitResSystem extends ecs.ComblockSystem implements ecs.IEntityEnte
 
     /** 加载化语言包（可选） */
     private loadLanguage(queue: AsyncQueue) {
-        queue.push((next: NextFunction, params: any, args: any) => {
-            // 设置默认语言
-            let lan = oops.storage.get("language");
-            if (lan == null || lan == "") {
-                lan = "zh";
-                oops.storage.set("language", lan);
-            }
-
-            // 加载语言包资源
-            oops.language.setLanguage(lan, next);
+        queue.push((next: NextFunction) => {
+            void this.prepareLanguage()
+                .catch((error) => {
+                    logger.error("[InitResSystem] 语言初始化失败", error);
+                })
+                .finally(() => {
+                    next();
+                });
         });
     }
 
     /** 加载公共资源（必备） */
     private loadCommon(queue: AsyncQueue) {
-        queue.push((next: NextFunction, params: any, args: any) => {
-            oops.res.loadDir("common", next);
+        queue.push((next: NextFunction) => {
+            void this.preloadCommon()
+                .catch((error) => {
+                    logger.error("[InitResSystem] 公共资源预加载失败", error);
+                })
+                .finally(() => {
+                    next();
+                });
         });
     }
 
@@ -64,5 +77,27 @@ export class InitResSystem extends ecs.ComblockSystem implements ecs.IEntityEnte
             await e.addUi(LoadingViewComp);
             e.remove(InitResComp);
         };
+    }
+
+    private async prepareLanguage(): Promise<void> {
+        await RuntimeConfigService.preload();
+        RuntimeConfigService.ensureLanguagePathsValid();
+
+        const language = RuntimeConfigService.resolveLanguage("zh");
+        oops.storage.set("language", language);
+
+        await new Promise<void>((resolve) => {
+            oops.language.setLanguage(language, resolve);
+        });
+    }
+
+    private async preloadCommon(): Promise<void> {
+        for (const dir of PRELOAD_DIRS) {
+            await this.resourceLoader.loadDirWithRetry({
+                dir,
+                timeoutMs: PRELOAD_TIMEOUT_MS,
+                retryCount: PRELOAD_RETRY_COUNT,
+            });
+        }
     }
 }

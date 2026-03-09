@@ -1,92 +1,127 @@
 # oops-game-kit
 
-### 介绍
-基于 Oops Framework 提供的游戏项目开发模板，项目中提供了最新版本 Cocos Creator 3.x 插件与游戏资源初始化通用逻辑。
+## 项目简介
+`oops-game-kit` 是基于 Oops Framework 的 Cocos Creator 3.x 游戏模板，当前版本已经完成以下工程化建设：
+- 启动链路分层与模块边界约束。
+- 配置/资源/架构/构建/热更新门禁检查。
+- fixtures 样例防回退机制。
+- 统一插件更新命令（不再依赖 `.bat` / `.sh`）。
 
-### 使用Oops Framework创建游戏模板项目
-1. 下载模板项目
-```
+## 快速开始
+### 1. 获取项目
+```bash
 git clone https://gitee.com/dgflash/oops-game-kit.git
 ```
 
-2. 下载框架插件
-#### windows
-- 执行 update-oops-plugin-framework.bat 克隆与更新框架插件
-- 执行 update-oops-plugin-hot-update.bat 克隆与更新热更新插件
-- 执行 update-oops-plugin-excel-to-json.bat 克隆与更新Excel转Json格式插件
-
-#### mac
-- 执行 update-oops-plugin-framework.sh 克隆与更新框架插件
-- 执行 update-oops-plugin-hot-update.sh 克隆与更新热更新插件
-- 执行 update-oops-plugin-excel-to-json.sh 克隆与更新Excel转Json格式插件
-
-### 模板项目目录结构
-```
-res                         - 预制引用的静态资源
-resources                   - 动态加载引用的资源
-    audio                       - 音乐资源
-    common                      - 公共资源
-    config                      - 配置资源
-        game                        - 游戏自定义内容配置数据表
-        config.json                 - 框架默认配置资源（可扩展内容）
-    content                     - 自定义动态加载内容资源
-    game                        - 核心玩法内容资源
-    gui                         - 界面资源
-        loading                     - 游戏初次加载界面
-    language                    - 多语言资源
-script                      - 游戏脚本
-    game                        - 游戏业务模块
-        common                      - 游戏公共模块
-            config                      - 游戏配置
-                GameEvent.ts                - 全局事件配置
-                GameUIConfig.ts             - 界面窗口配置（提供oops.gui模块使用的配置数据）
-            table                       - 游戏配置表对象(可通过oops-plugin-excel-to-json自动生成)
-        initialize                  - 游戏初始化模块
-        SingletonModuleComp.ts      - 游戏单例业务模块
-    Main.ts                     - 游戏入口脚本
+### 2. 更新插件
+```bash
+npm run update:framework   # 克隆或更新 oops-plugin-framework
+npm run update:hot-update  # 克隆或更新 oops-plugin-hot-update
+npm run update:excel       # 克隆或更新 oops-plugin-excel-to-json
+npm run update:all         # 一次性更新全部插件
 ```
 
-根据上面的目录结构，在开发游戏时，可将资源存放到对应的文件夹中管理。这套模板项目自带以下游戏必备功能。
-- 屏幕自适应
-- 游戏本地配置数据获取
-- 游戏地址查询参数获取
-- 游戏初始化业务流程
-    - 初始可自定义资源加载提示界面
-- 加载与现实第一个游戏自定义界面
+### 3. 打开项目
+- 在 Cocos Creator 中打开项目根目录。
+- 若首次导入异常，建议删除 `temp/` 与 `library/` 后重开。
 
-### 屏幕自适应
-Cocos Creator 菜单->项目->项目设置
-#### 横屏自适应
-![](https://oops-1255342636.cos.ap-shanghai.myqcloud.com/img/kit/1.jpg)
+## 启动与环境
+### 启动管线
+`Main.ts` 使用阶段化管线：
+- `配置预热`
+- `模块绑定`
+- `GUI 初始化`
 
-#### 竖屏自适应
-![](https://oops-1255342636.cos.ap-shanghai.myqcloud.com/img/kit/2.jpg)
+### 环境优先级
+- `globalThis.LNNGFAR_ENV`
+- `oops.storage('env')`
+- `assets/resources/config.json` 中的 `type`
 
-设置好后，其它的交给框架自动处理即可。
+支持值：`dev`、`test`、`prod`。
 
-### 游戏初始化模块
-#### 游戏启动时加载的必备资源
-initialize/bll/InitRes.ts
+### 调试与性能开关
+- Profiler 是否显示由 `DEBUG` 与 `config.<env>.stats` 共同决定。
 
-这个脚本管理游戏启动时加载的必备资源，此处要注意的是，这里配置的资源尽量小一些，避免无提示加载阶段黑屏时间过长，导致游戏体验下降。
-- 加载公共资源
-- 加载多语言包（可选）
-- 加载自定义资源（可选）
+## 架构边界
+### 模块边界
+- `assets/script/game/initialize`: 启动、资源预加载、首屏引导。
+- `assets/script/game/initialize/view`: 仅做界面编排与流程跳转。
+- `assets/script/game/initialize/components`: 可复用展示逻辑（如进度 Presenter）。
+- `assets/script/game/initialize/layouts`: 布局级流程控制（如目录加载与状态跟踪）。
+- `assets/script/game/account`: 账号域模型与账号界面。
+- `assets/script/game/account/view`: 仅做账号界面编排。
+- `assets/script/game/account/components`: 账号界面复用展示逻辑。
+- `assets/script/game/account/layouts`: 账号界面布局控制逻辑。
+- `assets/script/game/common`: 全局配置、类型、工具、单例容器。
+- `assets/script/framework`: 对外部框架适配封装。
 
-initialize/view/LoadingViewComp.ts
+### 配置分层
+- `RuntimeConfigGuards.ts`: 配置结构守卫。
+- `RuntimeEnvResolver.ts`: 环境解析策略。
+- `RuntimeConfigService.ts`: 配置加载缓存与运行时访问。
+- `runtime-config-schema.ts`: 兼容导出门面。
 
-这个脚本是游戏内容资源加载界面的控制脚本，游戏内容资源一般较大，会有加载进度条提示来提高游戏体验。所有资源加载完后，会通过执行以下脚本来显示游戏第一个自定义界面。
+### 资源加载策略
+- 启动预加载白名单：当前默认 `common`。
+- 目录加载统一支持超时与重试。
+- `framework/ResourceLoader.ts` 为统一资源加载入口。
+
+## 目录结构
+```text
+assets/
+    bundle/
+        gui/
+            screens/      # 业务界面入口资源
+            layouts/      # 复用布局资源
+            components/   # 可复用组件资源
+    resources/
+        config.json     # 运行时配置
+    script/
+        Main.ts
+        framework/
+        game/
+            account/
+            common/
+            initialize/
 ```
-oops.gui.open(UIID.Demo);
-```
 
-### QQ群
-- 798575969（1群 - 满）
-- 621415300（2群 - 满）
-- 628575875（3群 - 满）
-- 226524184（4群-推荐）
-- 741197640（5群-推荐）
+## 工程命令
+### 更新命令
+- `npm run update:framework`
+- `npm run update:hot-update`
+- `npm run update:excel`
+- `npm run update:all`
 
-### QQ频道：q366856bf5
+### 测试与质量门禁
+- `npm run test`: 执行全量门禁链路。
+- `npm run test:unit`: 执行 Node 原生测试。
+- `npm run test:coverage`: 覆盖率检查，门禁为：
+    - `lines >= 90%`
+    - `functions >= 90%`
+    - `statements >= 90%`
+    - `branches >= 80%`
+- `npm run ci`: 类型检查 + 全量测试 + 风格检查。
 
-### [点击了解作者其它产品](https://store.cocos.com/app/search?name=oops)
+### 分项门禁
+- `npm run check:config`
+- `npm run check:config-fixtures`
+- `npm run check:config-structure`
+- `npm run check:assets`
+- `npm run check:assets-fixtures`
+- `npm run check:architecture`
+- `npm run check:architecture-fixtures`
+- `npm run check:builder`
+- `npm run check:builder-fixtures`
+- `npm run check:hot-update`
+- `npm run check:hot-update-fixtures`
+- `npm run check:bootstrap`
+
+## 架构门禁规则
+`check:architecture` 当前包含：
+- `components/layouts` 不允许反向依赖 `view`。
+- `account` 域不允许依赖 `initialize` 域。
+- `initialize` 域不允许依赖 `account/components`、`account/layouts`、`account/model` 实现层。
+
+## 其他
+- `npm run generate:table-types`: 从表数据生成 `generated-tables.d.ts`。
+- `npm run typecheck`: 需先由 Creator 生成 `temp/tsconfig.cocos.json`。

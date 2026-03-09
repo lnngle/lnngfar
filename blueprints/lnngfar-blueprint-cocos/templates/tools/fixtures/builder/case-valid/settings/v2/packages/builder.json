@@ -1,0 +1,13 @@
+{
+  "bundleConfig": {
+    "custom": {
+      "bundleA": {
+        "configs": {
+          "native": {},
+          "miniGame": {},
+          "web": {}
+        }
+      }
+    }
+  }
+}

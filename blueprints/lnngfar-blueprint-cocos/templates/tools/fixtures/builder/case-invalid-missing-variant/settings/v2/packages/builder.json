@@ -1,0 +1,12 @@
+{
+  "bundleConfig": {
+    "custom": {
+      "bundleA": {
+        "configs": {
+          "native": {},
+          "web": {}
+        }
+      }
+    }
+  }
+}

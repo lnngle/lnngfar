@@ -3,20 +3,28 @@ import { gui } from "db://oops-framework/core/gui/Gui";
 import { LayerType } from "db://oops-framework/core/gui/layer/LayerEnum";
 import { ecs } from "db://oops-framework/libs/ecs/ECS";
 import { CCView } from "db://oops-framework/module/common/CCView";
+import { DemoViewPresenter } from "../components/DemoViewPresenter";
+import { DemoLayoutController } from "../layouts/DemoLayoutController";
 import { Account } from "../Account";
 
-const { ccclass, property } = _decorator;
+const { ccclass } = _decorator;
 
 /** 视图层对象 */
 @ccclass('DemoViewComp')
 @ecs.register('DemoView', false)
-@gui.register('DemoView', { layer: LayerType.UI, prefab: "gui/demo/demo" })
+@gui.register('DemoView', { layer: LayerType.UI, prefab: "gui/screens/demo/demo" })
 export class DemoViewComp extends CCView<Account> {
-    start() {
+    private readonly presenter = new DemoViewPresenter();
+    private readonly layoutController = new DemoLayoutController();
 
+    start() {
+        this.layoutController.enter();
+        this.presenter.onEnter();
     }
 
     reset() {
+        this.presenter.onExit();
+        this.layoutController.exit();
         this.node.destroy();
     }
 }

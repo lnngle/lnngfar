@@ -1,0 +1,22 @@
+{
+  "all": true,
+  "include": [
+    "tools/check-config.js",
+    "tools/check-assets.js",
+    "tools/check-architecture.js",
+    "tools/check-builder-variants.js",
+    "tools/check-hot-update-manifest.js"
+  ],
+  "exclude": [
+    "tools/fixtures/**"
+  ],
+  "reporter": [
+    "text-summary",
+    "text"
+  ],
+  "check-coverage": true,
+  "lines": 90,
+  "functions": 90,
+  "statements": 90,
+  "branches": 80
+}
