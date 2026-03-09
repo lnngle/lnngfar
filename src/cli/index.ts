@@ -48,7 +48,8 @@ export async function runCli(argv: string[]): Promise<number> {
 
     const result = await executePipeline({
       blueprintName,
-      cwd: process.cwd()
+      cwd: process.cwd(),
+      repoRoot: process.env.LNNGFAR_REPO_ROOT
     });
 
     printSuccess(`生成成功: ${result.blueprintName} -> ${result.outputDir}`);

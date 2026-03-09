@@ -15,25 +15,35 @@ describe('cocos minigame template integration', () => {
       'README.md',
       'package.json',
       'tsconfig.json',
-      'jest.config.cjs',
-      'assets/resources/config/game-config.json',
-      'assets/resources/levels/level-001.json',
-      'assets/scripts/entry/GameEntry.ts',
-      'assets/scripts/core/GameApp.ts',
-      'assets/scripts/gameplay/GameLoop.ts',
-      'assets/scripts/gameplay/systems/ObstacleSystem.ts',
-      'assets/scripts/platform/MiniGamePlatformAdapter.ts',
-      'assets/scripts/ui/HudView.ts',
-      'tests/player-state.spec.ts',
-      'tests/systems.spec.ts',
-      'tests/game-app.spec.ts',
-      'tests/game-loop.spec.ts',
-      'tests/config-loading.spec.ts',
-      'tests/sample.spec.ts'
+      'settings/v2/packages/project.json',
+      'settings/v2/packages/program.json',
+      'settings/v2/packages/builder.json',
+      'settings/v2/packages/engine.json',
+      'settings/v2/packages/device.json',
+      'assets/main.scene',
+      'assets/main.scene.meta',
+      'assets/script/Main.ts',
+      'assets/script/Main.ts.meta',
+      'assets/script.meta',
+      'assets/script/game/common/SingletonModuleComp.ts',
+      'assets/script/game/common/config/GameUIConfig.ts',
+      'assets/script/game/initialize/Initialize.ts',
+      'assets/script/game/initialize/bll/InitRes.ts'
     ];
 
     for (const relativePath of requiredFiles) {
       expect(fs.existsSync(path.join(cwd, relativePath))).toBe(true);
+    }
+
+    const removedLegacyPaths = [
+      'assets/scripts',
+      'assets/resources',
+      'tests',
+      'jest.config.cjs'
+    ];
+
+    for (const relativePath of removedLegacyPaths) {
+      expect(fs.existsSync(path.join(cwd, relativePath))).toBe(false);
     }
   });
 });

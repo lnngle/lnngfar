@@ -15,7 +15,7 @@ interface PipelineOptions {
   repoRoot?: string;
 }
 
-function findRepoRoot(startDir: string): string {
+function findRepoRoot(startDir: string, fallbackDir?: string): string {
   let current = path.resolve(startDir);
   while (true) {
     if (fs.existsSync(path.join(current, 'package.json'))) {
@@ -23,14 +23,24 @@ function findRepoRoot(startDir: string): string {
     }
     const parent = path.dirname(current);
     if (parent === current) {
-      return startDir;
+      break;
     }
     current = parent;
   }
+
+  if (fallbackDir) {
+    const normalizedFallback = path.resolve(fallbackDir);
+    if (fs.existsSync(path.join(normalizedFallback, 'package.json'))) {
+      return normalizedFallback;
+    }
+  }
+
+  return startDir;
 }
 
 function ensureBlueprintAvailable(name: string, cwd: string): BlueprintPackage {
   const discovered = resolveBlueprintByName(name, cwd);
+
   if (!discovered) {
     const available = resolveBlueprints(cwd).map((item) => item.blueprintName).join(', ') || '无';
     throw new PipelineError({
@@ -56,7 +66,7 @@ function ensureBlueprintAvailable(name: string, cwd: string): BlueprintPackage {
 
 export async function executePipeline(options: PipelineOptions): Promise<PipelineResult> {
   const cwd = options.cwd ?? process.cwd();
-  const repoRoot = options.repoRoot ?? findRepoRoot(cwd);
+  const repoRoot = options.repoRoot ?? findRepoRoot(cwd, path.resolve(__dirname, '../..'));
 
   checkNodeVersion();
   const blueprintPackage = ensureBlueprintAvailable(options.blueprintName, repoRoot);

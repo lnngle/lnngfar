@@ -22,13 +22,19 @@ lnngfar 是一个 Blueprint 驱动的代码生成器内核。
 
 ### 方式 A：仓库开发态（推荐）
 
-执行 `npm install` 后会自动构建 CLI，可直接使用 `npx` 或 `npm exec` 调用：
+执行 `npm install` 后会自动构建 CLI。为避免与仓库文件冲突，请在目标空目录执行，并通过 `--prefix` 指向仓库：
 
 ```powershell
+# 在 lnngfar 仓库根目录
 npm install
-npx --no-install lnngfar cocos
+
+# 切换到目标空目录（示例）
+mkdir ..\demo-cocos-game
+cd ..\demo-cocos-game
+
+npx --prefix ..\lnngfar --no-install lnngfar cocos
 # 或
-npm exec -- lnngfar cocos
+npm exec --prefix ..\lnngfar -- lnngfar cocos
 ```
 
 ### 方式 B：全局命令态
@@ -65,14 +71,12 @@ npx --prefix ..\lnngfar --no-install lnngfar cocos
 
 生成后将包含完整小游戏骨架，例如：
 
-- `assets/resources/config/game-config.json`
-- `assets/resources/levels/level-001.json`
-- `assets/scripts/entry/GameEntry.ts`
-- `assets/scripts/core/GameApp.ts`
-- `assets/scripts/gameplay/GameLoop.ts`
-- `assets/scripts/platform/MiniGamePlatformAdapter.ts`
-- `assets/scripts/ui/HudView.ts`
-- `tests/game-loop.spec.ts`
+- `package.json`（包含 `creator.version`）
+- `settings/v2/packages/project.json`
+- `settings/v2/packages/program.json`
+- `settings/v2/packages/builder.json`
+- `assets/main.scene`
+- `assets/script/Main.ts`
 
 ## 运行与验证
 
@@ -98,7 +102,12 @@ npm run build
 - 原因：目标目录已存在同名文件或目录。
 - 处理：切换到空目录执行，或清理冲突文件后重试。
 
-### 3) 初次执行较慢
+### 3) 导入 Cocos Creator Dashboard 提示“缺失编辑器”
+
+- 原因：本机未安装模板指定的 Creator 版本，或 `package.json` 中 `creator.version` 与本机版本不一致。
+- 处理：安装匹配版本，或将 `package.json` 的 `creator.version` 修改为本机已安装版本后重新导入。
+
+### 4) 初次执行较慢
 
 - 原因：首次安装后会自动构建 TypeScript 产物。
 - 处理：属于预期行为，后续重复执行会更快。

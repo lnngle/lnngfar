@@ -10,7 +10,7 @@ describe('default output cwd integration', () => {
     const cwd = createTempDir('lnngfar-cwd-');
 
     await executePipeline({ blueprintName: 'cocos', cwd, repoRoot });
-    expect(fs.existsSync(path.join(cwd, 'assets/scripts/entry/GameEntry.ts'))).toBe(true);
-    expect(fs.existsSync(path.join(cwd, 'assets/scripts/platform/MiniGamePlatformAdapter.ts'))).toBe(true);
+    expect(fs.existsSync(path.join(cwd, 'settings/v2/packages/project.json'))).toBe(true);
+    expect(fs.existsSync(path.join(cwd, 'assets/main.scene'))).toBe(true);
   });
 });

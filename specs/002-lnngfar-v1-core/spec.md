@@ -98,8 +98,8 @@
 - **FR-008**: 系统必须校验 `blueprint.json` 包含 `name`、`packageName`、`version`、`description`、`target`、`language`、`engine`、`testFramework`。
 - **FR-009**: 系统必须拒绝不符合命名规则或元信息规则的 Blueprint，并禁止进入生成阶段。
 - **FR-010**: 系统必须内置并可执行 `lnngfar-blueprint-cocos`，用于生成基于 oops-framework 的 Cocos Creator 工程脚手架。
-- **FR-011**: `lnngfar-blueprint-cocos` 生成结果必须包含完整小游戏项目骨架：项目级配置文件、资源配置、入口代码、核心应用层、玩法循环层、平台适配层、UI 层与测试代码。
-- **FR-025**: `lnngfar-blueprint-cocos` 生成结果必须至少包含以下关键路径：`README.md`、`package.json`、`tsconfig.json`、`jest.config.cjs`、`assets/resources/config/game-config.json`、`assets/resources/levels/level-001.json`、`assets/scripts/entry/GameEntry.ts`、`assets/scripts/core/GameApp.ts`、`assets/scripts/gameplay/GameLoop.ts`、`assets/scripts/platform/MiniGamePlatformAdapter.ts`、`assets/scripts/ui/HudView.ts`、`tests/game-loop.spec.ts`。
+- **FR-011**: `lnngfar-blueprint-cocos` 生成结果必须包含可被 Cocos Creator Dashboard 直接导入的工程骨架：Creator 版本声明、项目设置、启动场景与入口脚本。
+- **FR-025**: `lnngfar-blueprint-cocos` 生成结果必须至少包含以下关键路径：`README.md`、`package.json`、`tsconfig.json`、`settings/v2/packages/project.json`、`settings/v2/packages/program.json`、`settings/v2/packages/builder.json`、`settings/v2/packages/engine.json`、`settings/v2/packages/device.json`、`assets/main.scene`、`assets/main.scene.meta`、`assets/script/Main.ts`、`assets/script/Main.ts.meta`、`assets/script.meta`。
 - **FR-012**: 系统必须保证生成过程确定性：相同输入在相同版本下输出一致。
 - **FR-013**: 系统必须在生成完成后执行 Blueprint 自身自动化测试（v1 默认不在该步骤执行生成工程内的示例测试）。
 - **FR-014**: 当任一测试失败时，系统必须立即中断并返回失败状态。

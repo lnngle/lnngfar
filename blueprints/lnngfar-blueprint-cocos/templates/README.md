@@ -1,27 +1,27 @@
 # {{PROJECT_NAME}}
 
-基于 `lnngfar-blueprint-cocos` 生成的小游戏项目模板。
+基于 `lnngfar-blueprint-cocos` 生成的 Cocos Creator 3.x 小游戏模板。
 
-## 项目目标
+## 环境要求
 
-- 提供可直接扩展的小游戏代码骨架
-- 按模块分层组织：入口、核心、玩法、平台、UI、资源
-- 内置单元测试样例，便于回归验证
+- 已安装 Cocos Creator 3.8.7（或手动修改 `package.json` 中 `creator.version` 为本机已安装版本）
+
+## 快速开始
+
+1. 打开 Cocos Creator Dashboard。
+2. 点击 `导入项目`，选择本项目根目录。
+3. 打开项目后点击 `预览运行`，确认默认场景可启动。
+
+## 调试与发布
+
+- 调试：在 Creator 中使用浏览器预览或模拟器预览。
+- 发布：在 Creator 中进入 `构建发布`，选择目标平台（Web、微信小游戏等）并构建。
 
 ## 目录说明
 
-- `assets/scripts/entry/`：项目启动入口
-- `assets/scripts/core/`：应用装配与通用类型
-- `assets/scripts/gameplay/`：玩法循环、模型与系统
-- `assets/scripts/platform/`：平台适配器
-- `assets/scripts/ui/`：UI 视图层
-- `assets/resources/`：游戏配置与关卡数据
-- `tests/`：模板基础测试
-
-## 本地开发
-
-```powershell
-npm install
-npm test
-npm run build
-```
+- `assets/main.scene`：默认启动场景。
+- `assets/script/Main.ts`：默认入口组件脚本，内置三段启动模板方法：`initializeResources`、`initializeUi`、`openFirstScreen`。
+- `assets/script/game/initialize/`：初始化流程骨架（资源预加载入口等）。
+- `assets/script/game/common/config/GameUIConfig.ts`：UI 启动配置样例。
+- `settings/v2/packages/project.json`：项目分辨率与通用配置。
+- `settings/v2/packages/builder.json`：构建相关配置。

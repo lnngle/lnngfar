@@ -20,5 +20,11 @@ if (!existsSync(entry)) {
 }
 
 const args = [entry, ...process.argv.slice(2)];
-const result = spawnSync(process.execPath, args, { stdio: 'inherit' });
+const result = spawnSync(process.execPath, args, {
+	stdio: 'inherit',
+	env: {
+		...process.env,
+		LNNGFAR_REPO_ROOT: projectRoot
+	}
+});
 process.exit(result.status ?? 1);

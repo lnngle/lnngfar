@@ -8,7 +8,7 @@ describe('generation conflict integration', () => {
     process.env.LNNGFAR_SKIP_BLUEPRINT_TESTS = '1';
     const repoRoot = path.resolve(__dirname, '../..');
     const cwd = createTempDir('lnngfar-conflict-');
-    const conflictPath = path.join(cwd, 'assets/scripts/entry/GameEntry.ts');
+    const conflictPath = path.join(cwd, 'assets/script/Main.ts');
     fs.ensureDirSync(path.dirname(conflictPath));
     fs.writeFileSync(conflictPath, 'exists', 'utf-8');
 

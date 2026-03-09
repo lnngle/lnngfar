@@ -41,16 +41,17 @@ lnngfar cocos
 
 期望：
 - 按固定阶段输出执行进度
-- 生成完整小游戏工程脚手架（含项目配置、资源配置、玩法循环、平台适配、UI 与测试）
+- 生成可导入 Cocos Creator Dashboard 的工程脚手架（含 Creator 工程元数据、启动场景与入口脚本）
 - 执行 Blueprint 自身测试并通过
 
 关键文件检查（示例）：
 - `README.md`
-- `assets/resources/config/game-config.json`
-- `assets/scripts/core/GameApp.ts`
-- `assets/scripts/gameplay/GameLoop.ts`
-- `assets/scripts/platform/MiniGamePlatformAdapter.ts`
-- `tests/game-loop.spec.ts`
+- `package.json`（包含 `creator.version`）
+- `settings/v2/packages/project.json`
+- `settings/v2/packages/program.json`
+- `settings/v2/packages/builder.json`
+- `assets/main.scene`
+- `assets/script/Main.ts`
 
 ### 异常路径 1：未知 Blueprint
 
