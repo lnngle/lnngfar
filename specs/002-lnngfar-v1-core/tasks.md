@@ -63,8 +63,8 @@ description: "lnngfar v1 实现任务清单"
 
 - [X] T022 [US1] 实现 cocos Blueprint 生成入口到 `blueprints/lnngfar-blueprint-cocos/generators/index.ts`
 - [X] T023 [P] [US1] 添加工程基础模板到 `blueprints/lnngfar-blueprint-cocos/templates/`
-- [X] T024 [P] [US1] 添加 oops-framework 初始化模板到 `blueprints/lnngfar-blueprint-cocos/templates/src/entry/`
-- [X] T025 [P] [US1] 添加示例模块与示例测试模板到 `blueprints/lnngfar-blueprint-cocos/templates/src/modules/sample/`
+- [X] T024 [P] [US1] 添加 oops-framework 初始化模板到 `blueprints/lnngfar-blueprint-cocos/templates/assets/script/`
+- [X] T025 [P] [US1] 添加模板初始模块骨架到 `blueprints/lnngfar-blueprint-cocos/templates/assets/script/game/`
 - [X] T026 [US1] 接入生成阶段执行逻辑到 `src/execution/generate-from-blueprint.ts`
 - [X] T027 [US1] 在流水线中接入冲突检测与确定性写入到 `src/core/pipeline.ts`
 - [X] T028 [US1] 更新生成成功输出信息到 `src/cli/output.ts`
@@ -155,6 +155,9 @@ description: "lnngfar v1 实现任务清单"
 - [X] T059 [US1] 将 cocos Blueprint 升级为完整小游戏项目模板并补齐关键集成校验
 - [X] T060 [US1] 增强 CLI 安装可用性并补齐 README 使用与排错文档
 - [X] T061 [US1] 增加模板行为测试并在 lnngfar 集成测试中执行生成项目测试
+- [X] T062 [US1] 迁移模板为 Creator 可导入骨架并移除遗留 `assets/scripts` 与模板内示例测试目录
+- [X] T063 [US1] 为生成内核增加二进制产物写入能力并支持 blueprint 生成器输出 base64 内容
+- [X] T064 [US1] 补齐 oops 资源目录 `assets/bundle`、`assets/libs`、`assets/resources` 及对应集成校验
 
 ---
 

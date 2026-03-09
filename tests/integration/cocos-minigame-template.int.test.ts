@@ -22,6 +22,12 @@ describe('cocos minigame template integration', () => {
       'settings/v2/packages/device.json',
       'assets/main.scene',
       'assets/main.scene.meta',
+      'assets/bundle.meta',
+      'assets/libs.meta',
+      'assets/resources.meta',
+      'assets/bundle/common/texture/bg_window.png',
+      'assets/libs/seedrandom/seedrandom.min.js',
+      'assets/resources/config.json',
       'assets/script/Main.ts',
       'assets/script/Main.ts.meta',
       'assets/script.meta',
@@ -37,7 +43,6 @@ describe('cocos minigame template integration', () => {
 
     const removedLegacyPaths = [
       'assets/scripts',
-      'assets/resources',
       'tests',
       'jest.config.cjs'
     ];

@@ -24,6 +24,7 @@ export interface BlueprintPackage {
 export interface GeneratedArtifact {
   path: string;
   content: string;
+  contentEncoding?: 'utf-8' | 'base64';
 }
 
 export interface PipelineResult {

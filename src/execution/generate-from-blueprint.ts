@@ -62,7 +62,8 @@ export async function generateFromBlueprint(blueprintPackage: BlueprintPackage, 
 
     const normalizedArtifacts = (artifacts ?? []).map((item) => ({
       path: item.path.replace(/\\\\/g, '/'),
-      content: item.content
+      content: item.content,
+      contentEncoding: item.contentEncoding ?? 'utf-8'
     }));
 
     const conflicts = detectPathConflicts(outputDir, normalizedArtifacts.map((item) => item.path));

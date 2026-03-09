@@ -8,6 +8,11 @@ export async function writeArtifactsDeterministically(outputDir: string, artifac
   for (const artifact of ordered) {
     const targetPath = path.join(outputDir, artifact.path);
     await fs.ensureDir(path.dirname(targetPath));
+    if (artifact.contentEncoding === 'base64') {
+      await fs.writeFile(targetPath, Buffer.from(artifact.content, 'base64'));
+      continue;
+    }
+
     await fs.writeFile(targetPath, artifact.content, 'utf-8');
   }
 }

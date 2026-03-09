@@ -17,6 +17,23 @@ function walkFiles(directory) {
   return files;
 }
 
+function isProbablyText(buffer) {
+  const inspectLength = Math.min(buffer.length, 2048);
+  for (let i = 0; i < inspectLength; i += 1) {
+    const byte = buffer[i];
+    if (byte === 0) {
+      return false;
+    }
+
+    const isControl = byte < 32 && byte !== 9 && byte !== 10 && byte !== 13;
+    if (isControl) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 async function generate(ctx) {
   const templateRoot = path.join(ctx.blueprintRootPath, 'templates');
   const templateFiles = walkFiles(templateRoot).sort((a, b) => a.localeCompare(b));
@@ -24,10 +41,21 @@ async function generate(ctx) {
 
   return templateFiles.map((filePath) => {
     const relative = path.relative(templateRoot, filePath).replace(/\\/g, '/');
-    const content = fs.readFileSync(filePath, 'utf-8').replace(/{{PROJECT_NAME}}/g, projectName);
+    const buffer = fs.readFileSync(filePath);
+
+    if (isProbablyText(buffer)) {
+      const content = buffer.toString('utf-8').replace(/{{PROJECT_NAME}}/g, projectName);
+      return {
+        path: relative,
+        content,
+        contentEncoding: 'utf-8'
+      };
+    }
+
     return {
       path: relative,
-      content
+      content: buffer.toString('base64'),
+      contentEncoding: 'base64'
     };
   });
 }

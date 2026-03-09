@@ -5,6 +5,7 @@
 ## 包含内容
 
 - Creator 工程元数据：`package.json`（含 `creator.version`）、`settings/v2/packages/*.json`
+- oops 资源目录：`assets/bundle/`、`assets/libs/`、`assets/resources/`（含对应 `.meta`）
 - 启动场景：`assets/main.scene`、`assets/main.scene.meta`
 - 入口脚本：`assets/script/Main.ts`、`assets/script/Main.ts.meta`（三段启动模板方法）
 - 初始化骨架：`assets/script/game/initialize/`、`assets/script/game/common/`

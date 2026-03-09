@@ -51,13 +51,13 @@
 - `sessionId`: string
 - `request`: GenerationRequest
 - `blueprint`: BlueprintPackage
-- `stage`: enum(`env`,`discover`,`validate`,`generate`,`test`,`done`,`failed`)
+- `stage`: enum(`environment`,`blueprint`,`generation`,`testing`,`done`,`failed`)
 - `startedAt`: string（ISO 时间）
 - `endedAt`: string | null
 - `errors`: StageError[]
 
 ### 状态迁移
-`env` → `discover` → `validate` → `generate` → `test` → `done`
+`environment` → `blueprint` → `generation` → `testing` → `done`
 
 任意阶段失败：`当前阶段` → `failed`
 
@@ -78,13 +78,13 @@
 
 ### 字段
 - `path`: string，输出路径
-- `type`: enum(`file`,`directory`)
-- `checksum`: string | null
-- `sourceTemplate`: string | null
+- `content`: string（文本内容或 base64 内容）
+- `contentEncoding`: enum(`utf-8`,`base64`)
 
 ### 校验规则
 - 同输入生成时产物集合与顺序必须一致。
 - 写入前若目标路径冲突，直接失败且不覆盖。
+- 当 `contentEncoding=base64` 时，写入器必须按二进制落盘。
 
 ## 实体关系
 

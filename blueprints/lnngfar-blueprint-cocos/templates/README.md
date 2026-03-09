@@ -19,6 +19,9 @@
 
 ## 目录说明
 
+- `assets/bundle/`：动态分包资源目录（界面、通用素材等）。
+- `assets/libs/`：第三方运行库资源（示例：`seedrandom`）。
+- `assets/resources/`：默认资源与配置目录。
 - `assets/main.scene`：默认启动场景。
 - `assets/script/Main.ts`：默认入口组件脚本，内置三段启动模板方法：`initializeResources`、`initializeUi`、`openFirstScreen`。
 - `assets/script/game/initialize/`：初始化流程骨架（资源预加载入口等）。

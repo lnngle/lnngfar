@@ -4,7 +4,8 @@
 
 - 操作系统：Windows/macOS/Linux
 - Node.js：`>= 18 LTS`
-- 在仓库根目录执行命令：`D:\github\lnngfar`
+- 仓库路径示例：`D:\github\lnngfar`
+- 生成命令需在目标空目录执行
 
 ## 2. 安装依赖
 
@@ -27,9 +28,16 @@ npm test
 ### 正常路径
 
 ```powershell
-npx --no-install lnngfar cocos
+# 在仓库根目录安装依赖
+cd D:\github\lnngfar
+npm install
+
+# 切换到目标空目录执行生成
+mkdir D:\tmp\t-cocos-quickstart
+cd D:\tmp\t-cocos-quickstart
+npx --prefix D:\github\lnngfar --no-install lnngfar cocos
 # 或
-npm exec -- lnngfar cocos
+npm exec --prefix D:\github\lnngfar -- lnngfar cocos
 ```
 
 若需要全局命令：
@@ -52,6 +60,9 @@ lnngfar cocos
 - `settings/v2/packages/builder.json`
 - `assets/main.scene`
 - `assets/script/Main.ts`
+- `assets/bundle/common/texture/bg_window.png`
+- `assets/libs/seedrandom/seedrandom.min.js`
+- `assets/resources/config.json`
 
 ### 异常路径 1：未知 Blueprint
 

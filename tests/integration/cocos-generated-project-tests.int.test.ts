@@ -37,6 +37,10 @@ describe('generated cocos project tests integration', () => {
       expect(sceneText).toContain('cc.SceneAsset');
       expect(sceneText).toContain('cc.Canvas');
 
+      expect(fs.existsSync(path.join(cwd, 'assets/bundle/common/texture/bg_window.png'))).toBe(true);
+      expect(fs.existsSync(path.join(cwd, 'assets/libs/seedrandom/seedrandom.min.js'))).toBe(true);
+      expect(fs.existsSync(path.join(cwd, 'assets/resources/config.json'))).toBe(true);
+
       const mainScript = fs.readFileSync(path.join(cwd, 'assets/script/Main.ts'), 'utf-8');
       expect(mainScript).toContain('initializeResources');
       expect(mainScript).toContain('initializeUi');

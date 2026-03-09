@@ -25,9 +25,20 @@ describe('lnngfar-blueprint-cocos generator', () => {
     expect(paths).toContain('assets/script/Main.ts');
     expect(paths).toContain('assets/script/Main.ts.meta');
     expect(paths).toContain('assets/script.meta');
+    expect(paths).toContain('assets/bundle.meta');
+    expect(paths).toContain('assets/libs.meta');
+    expect(paths).toContain('assets/resources.meta');
+    expect(paths).toContain('assets/bundle/common/texture/bg_window.png');
+    expect(paths).toContain('assets/resources/config.json');
+    expect(paths).toContain('assets/libs/seedrandom/seedrandom.min.js');
     expect(paths).toContain('assets/script/game/common/SingletonModuleComp.ts');
     expect(paths).toContain('assets/script/game/common/config/GameUIConfig.ts');
     expect(paths).toContain('assets/script/game/initialize/Initialize.ts');
     expect(paths).toContain('assets/script/game/initialize/bll/InitRes.ts');
+
+    const pngArtifact = artifacts.find((item: { path: string }) => item.path === 'assets/bundle/common/texture/bg_window.png') as {
+      contentEncoding?: string;
+    };
+    expect(pngArtifact.contentEncoding).toBe('base64');
   });
 });
