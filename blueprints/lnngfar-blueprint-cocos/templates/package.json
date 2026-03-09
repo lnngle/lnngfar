@@ -4,10 +4,19 @@
   "private": true,
   "description": "基于 lnngfar-blueprint-cocos 生成的 Cocos Creator 3.x 小游戏模板",
   "creator": {
-    "version": "3.8.7"
+    "version": "{{CREATOR_VERSION}}"
   },
   "scripts": {
+    "test": "jest --runInBand",
+    "test:unit": "jest --runInBand tests/unit",
+    "test:integration": "jest --runInBand tests/integration",
     "check:ts": "tsc -p tsconfig.json --noEmit",
     "prepare": "echo 请使用 Cocos Creator Dashboard 导入并运行本项目"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.7.3"
   }
 }

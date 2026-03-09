@@ -158,6 +158,8 @@ description: "lnngfar v1 实现任务清单"
 - [X] T062 [US1] 迁移模板为 Creator 可导入骨架并移除遗留 `assets/scripts` 与模板内示例测试目录
 - [X] T063 [US1] 为生成内核增加二进制产物写入能力并支持 blueprint 生成器输出 base64 内容
 - [X] T064 [US1] 补齐 oops 资源目录 `assets/bundle`、`assets/libs`、`assets/resources` 及对应集成校验
+- [X] T065 [US1] 增加 Creator 版本探测与 `LNNGFAR_COCOS_CREATOR_VERSION` 覆盖能力
+- [X] T066 [US1] 为生成工程补齐单元测试与集成测试模板并接入仓库级回归校验
 
 ---
 

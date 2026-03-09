@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { executePipeline } from '../../src/core/pipeline';
 import { createRepoTempDir } from '../helpers';
 
@@ -15,7 +16,7 @@ describe('generated cocos project tests integration', () => {
       const packageJson = fs.readJsonSync(path.join(cwd, 'package.json')) as {
         creator?: { version?: string };
       };
-      expect(packageJson.creator?.version).toBe('3.8.7');
+      expect(packageJson.creator?.version).toMatch(/^\d+\.\d+\.\d+$/);
 
       const projectSettings = fs.readJsonSync(path.join(cwd, 'settings/v2/packages/project.json')) as {
         general?: {
@@ -45,6 +46,20 @@ describe('generated cocos project tests integration', () => {
       expect(mainScript).toContain('initializeResources');
       expect(mainScript).toContain('initializeUi');
       expect(mainScript).toContain('openFirstScreen');
+
+      const jestBin = path.join(repoRoot, 'node_modules', 'jest', 'bin', 'jest.js');
+      const jestConfig = path.join(cwd, 'jest.config.cjs');
+      const unitResult = spawnSync(process.execPath, [jestBin, '--runInBand', '--config', jestConfig, 'tests/unit'], {
+        cwd,
+        encoding: 'utf-8'
+      });
+      expect(unitResult.status).toBe(0);
+
+      const integrationResult = spawnSync(process.execPath, [jestBin, '--runInBand', '--config', jestConfig, 'tests/integration'], {
+        cwd,
+        encoding: 'utf-8'
+      });
+      expect(integrationResult.status).toBe(0);
     } finally {
       fs.removeSync(cwd);
     }

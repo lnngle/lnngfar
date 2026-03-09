@@ -4,7 +4,8 @@
 
 ## 环境要求
 
-- 已安装 Cocos Creator 3.8.7（或手动修改 `package.json` 中 `creator.version` 为本机已安装版本）
+- 已安装 Cocos Creator（生成时会自动探测本机版本并写入 `package.json.creator.version`）
+- 如需强制指定版本，可在生成前设置环境变量：`LNNGFAR_COCOS_CREATOR_VERSION=3.x.y`
 
 ## 快速开始
 
@@ -17,6 +18,12 @@
 - 调试：在 Creator 中使用浏览器预览或模拟器预览。
 - 发布：在 Creator 中进入 `构建发布`，选择目标平台（Web、微信小游戏等）并构建。
 
+## 测试
+
+- 单元测试：`npm run test:unit`
+- 集成测试：`npm run test:integration`
+- 全量测试：`npm test`
+
 ## 目录说明
 
 - `assets/bundle/`：动态分包资源目录（界面、通用素材等）。
@@ -28,3 +35,5 @@
 - `assets/script/game/common/config/GameUIConfig.ts`：UI 启动配置样例。
 - `settings/v2/packages/project.json`：项目分辨率与通用配置。
 - `settings/v2/packages/builder.json`：构建相关配置。
+- `tests/unit/`：模板单元测试样例。
+- `tests/integration/`：模板集成测试样例。

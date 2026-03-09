@@ -64,6 +64,14 @@ lnngfar cocos
 - `assets/libs/seedrandom/seedrandom.min.js`
 - `assets/resources/config.json`
 
+在生成目录执行模板测试：
+
+```powershell
+npm install
+npm run test:unit
+npm run test:integration
+```
+
 ### 异常路径 1：未知 Blueprint
 
 ```powershell

@@ -9,11 +9,13 @@
 - 启动场景：`assets/main.scene`、`assets/main.scene.meta`
 - 入口脚本：`assets/script/Main.ts`、`assets/script/Main.ts.meta`（三段启动模板方法）
 - 初始化骨架：`assets/script/game/initialize/`、`assets/script/game/common/`
+- 测试模板：`tests/unit/`、`tests/integration/` 与 `jest.config.cjs`
 - 兼容配置：`.gitignore`、`tsconfig.json`、模板说明文档
 
 ## 模板目标
 
 - 导入 Dashboard 后可直接打开并预览运行
 - 具备可调试、可构建发布的基础工程结构
+- 生成时自动探测本机 Creator 版本并写入 `creator.version`
 - 提供可选 oops 风格启动钩子，并保留无插件降级启动
 - 保持简洁骨架，便于后续接入自定义玩法与资源

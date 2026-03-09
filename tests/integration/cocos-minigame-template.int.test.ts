@@ -15,6 +15,8 @@ describe('cocos minigame template integration', () => {
       'README.md',
       'package.json',
       'tsconfig.json',
+      'tsconfig.test.json',
+      'jest.config.cjs',
       'settings/v2/packages/project.json',
       'settings/v2/packages/program.json',
       'settings/v2/packages/builder.json',
@@ -34,7 +36,10 @@ describe('cocos minigame template integration', () => {
       'assets/script/game/common/SingletonModuleComp.ts',
       'assets/script/game/common/config/GameUIConfig.ts',
       'assets/script/game/initialize/Initialize.ts',
-      'assets/script/game/initialize/bll/InitRes.ts'
+      'assets/script/game/initialize/bll/InitRes.ts',
+      'tests/unit/game-ui-config.test.ts',
+      'tests/unit/init-res.test.ts',
+      'tests/integration/initialize-flow.test.ts'
     ];
 
     for (const relativePath of requiredFiles) {
@@ -42,9 +47,7 @@ describe('cocos minigame template integration', () => {
     }
 
     const removedLegacyPaths = [
-      'assets/scripts',
-      'tests',
-      'jest.config.cjs'
+      'assets/scripts'
     ];
 
     for (const relativePath of removedLegacyPaths) {

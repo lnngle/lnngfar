@@ -106,6 +106,7 @@ npm run build
 
 - 原因：本机未安装模板指定的 Creator 版本，或 `package.json` 中 `creator.version` 与本机版本不一致。
 - 处理：安装匹配版本，或将 `package.json` 的 `creator.version` 修改为本机已安装版本后重新导入。
+- 可选：生成前设置环境变量 `LNNGFAR_COCOS_CREATOR_VERSION=3.x.y`，让模板按指定版本生成。
 
 ### 4) 初次执行较慢
 
