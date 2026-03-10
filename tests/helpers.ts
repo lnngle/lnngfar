@@ -11,6 +11,68 @@ export function createRepoTempDir(repoRoot: string, prefix = '.lnngfar-'): strin
   return fs.mkdtempSync(path.join(repoRoot, prefix));
 }
 
+export function removeDirIfExists(target: string): void {
+  if (fs.existsSync(target)) {
+    fs.removeSync(target);
+  }
+}
+
+export async function withTempDir<T>(
+  prefix: string,
+  run: (dir: string) => Promise<T> | T
+): Promise<T> {
+  const dir = createTempDir(prefix);
+  try {
+    return await run(dir);
+  } finally {
+    removeDirIfExists(dir);
+  }
+}
+
+export async function withRepoTempDir<T>(
+  repoRoot: string,
+  prefix: string,
+  run: (dir: string) => Promise<T> | T
+): Promise<T> {
+  const dir = createRepoTempDir(repoRoot, prefix);
+  try {
+    return await run(dir);
+  } finally {
+    removeDirIfExists(dir);
+  }
+}
+
+export async function withPatchedEnv<T>(
+  patch: Record<string, string | undefined>,
+  run: () => Promise<T> | T
+): Promise<T> {
+  const keys = Object.keys(patch);
+  const previous: Record<string, string | undefined> = {};
+
+  for (const key of keys) {
+    previous[key] = process.env[key];
+    const value = patch[key];
+    if (value === undefined) {
+      delete process.env[key];
+    } else {
+      process.env[key] = value;
+    }
+  }
+
+  try {
+    return await run();
+  } finally {
+    for (const key of keys) {
+      const old = previous[key];
+      if (old === undefined) {
+        delete process.env[key];
+      } else {
+        process.env[key] = old;
+      }
+    }
+  }
+}
+
 export function collectFileContents(root: string): Record<string, string> {
   const result: Record<string, string> = {};
   const stack = [''];

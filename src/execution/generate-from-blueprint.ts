@@ -46,7 +46,6 @@ function logPerf(stage: string, durationMs: number): void {
     return;
   }
 
-  // eslint-disable-next-line no-console
   console.log(`[perf] ${stage}: ${durationMs.toFixed(2)}ms`);
 }
 

@@ -26,11 +26,11 @@ function createVariables(variableCount: number): Record<string, string> {
   return result;
 }
 
-describe.skip('rendering large template benchmark', () => {
+describe('rendering large template benchmark', () => {
   const cases: PerfCase[] = [
-    { fileCount: 1000, variableCount: 10 },
-    { fileCount: 5000, variableCount: 30 },
-    { fileCount: 10000, variableCount: 50 }
+    { fileCount: 500, variableCount: 10 },
+    { fileCount: 2000, variableCount: 30 },
+    { fileCount: 5000, variableCount: 50 }
   ];
 
   test.each(cases)('fileCount=$fileCount variableCount=$variableCount', ({ fileCount, variableCount }) => {
@@ -47,7 +47,6 @@ describe.skip('rendering large template benchmark', () => {
     const rendered = renderPlan(plan);
     const renderMs = Number(process.hrtime.bigint() - startRender) / 1_000_000;
 
-    // eslint-disable-next-line no-console
     console.log(`[perf] files=${fileCount} vars=${variableCount} plan=${planMs.toFixed(2)}ms render=${renderMs.toFixed(2)}ms`);
 
     expect(rendered).toHaveLength(fileCount);

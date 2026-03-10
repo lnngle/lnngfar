@@ -102,10 +102,95 @@ npm run build
 
 常用测试命令：
 
-- `npm run test:coverage`：运行全量测试并统计 `src/**` 覆盖率（门禁为 100%）。
+- `npm run test`：运行 unit + integration 基础测试集。
+- `npm run test:coverage`：运行 unit/integration/contract 与 generator 测试并统计 `src/**` 覆盖率（门禁为 100%）。
 - `npm run test:unit`：仅运行单元测试目录 `tests/unit`。
 - `npm run test:integration`：运行集成与契约测试及 blueprint 生成器测试。
-- `npm run test:all`：按顺序运行 unit + integration。
+- `npm run test:e2e`：运行端到端测试目录 `tests/e2e`。
+- `npm run test:template-tools`：运行 `lnngfar-blueprint-cocos/templates` 内工具测试。
+- `npm run test:perf`：运行性能基准测试目录 `tests/performance`。
+- `npm run test:all`：按顺序运行 `test` + `test:e2e` + `test:template-tools`。
+
+## 测试用例说明（全量）
+
+### 运行入口与分层
+
+| 命令 | 覆盖范围 | 说明 |
+| --- | --- | --- |
+| `npm run test:unit` | `tests/unit/**/*.test.ts` | 核心模块单元行为与分支覆盖 |
+| `npm run test:integration` | `tests/integration/**/*.test.ts` + `tests/contract/**/*.test.ts` + `blueprints/lnngfar-blueprint-cocos/tests/generator.spec.ts` | 集成链路、契约约束与蓝图生成器 |
+| `npm run test:e2e` | `tests/e2e/**/*.test.ts` | 端到端首跑路径 |
+| `npm run test:template-tools` | `blueprints/lnngfar-blueprint-cocos/templates/tests/tools/checkers.test.js` | 模板内工具脚本门禁 |
+| `npm run test:perf` | `tests/performance/**/*.test.ts` | 性能基准与耗时观测 |
+| `npm run test:coverage` | unit + integration + contract + generator | 覆盖率门禁（`src/**` 100%） |
+| `npm run test:all` | `test` + `test:e2e` + `test:template-tools` | 日常全量质量回归 |
+
+### Unit 用例（`tests/unit`）
+
+| 文件 | 验证目标 |
+| --- | --- |
+| `tests/unit/blueprint-test-runner.test.ts` | Blueprint 测试文件收集、执行入口与失败输出行为 |
+| `tests/unit/conflict-detector.test.ts` | 输出目录冲突检测规则 |
+| `tests/unit/discovery-mapper.test.ts` | Blueprint 包名与逻辑名映射规则 |
+| `tests/unit/env-check.test.ts` | Node 版本环境校验逻辑 |
+| `tests/unit/execution-extra.test.ts` | 执行层补充分支（runner fallback、writer 边界等） |
+| `tests/unit/generate-from-blueprint.test.ts` | 生成主流程编排、错误分支与性能参数解析 |
+| `tests/unit/interaction-messages.test.ts` | CLI 交互文案与 locale 分支 |
+| `tests/unit/local-blueprint-resolver.test.ts` | 内置/依赖 Blueprint 发现与解析优先级 |
+| `tests/unit/pipeline.test.ts` | Pipeline 主流程阶段编排与异常转换 |
+| `tests/unit/project-name-resolve.test.ts` | 交互输入下项目名解析与回退策略 |
+| `tests/unit/project-name.test.ts` | 项目名格式校验规则 |
+| `tests/unit/rendering-engine.test.ts` | 渲染器（模板替换、JSON patch）核心行为 |
+| `tests/unit/rendering-validation-extra.test.ts` | 渲染配置加载与 Blueprint 校验补充分支 |
+| `tests/unit/transactional-writer.test.ts` | 事务写入覆盖与原子替换行为 |
+| `tests/unit/variable-resolver.test.ts` | 内置变量解析与环境变量注入策略 |
+
+### Contract 用例（`tests/contract`）
+
+| 文件 | 验证目标 |
+| --- | --- |
+| `tests/contract/cli-bin-entry.contract.test.ts` | `bin/lnngfar.js` 可直接执行并进入流水线 |
+| `tests/contract/cli-cocos-success.contract.test.ts` | `cocos` Blueprint 最小成功契约产物 |
+| `tests/contract/cli-external-cwd.contract.test.ts` | 仓库外目录执行 CLI 的发现与生成契约 |
+| `tests/contract/local-discovery.contract.test.ts` | 本地内置 Blueprint 发现契约 |
+| `tests/contract/prefix-validation.contract.test.ts` | Blueprint 包名前缀约束契约 |
+
+### Integration 用例（`tests/integration`）
+
+| 文件 | 验证目标 |
+| --- | --- |
+| `tests/integration/blueprint-upgrade-compat.int.test.ts` | Manifest 版本升级兼容性 |
+| `tests/integration/cocos-generated-project-tests.int.test.ts` | 生成项目关键配置与资源完整性 |
+| `tests/integration/cocos-minigame-template.int.test.ts` | 小游戏模板关键骨架文件存在性 |
+| `tests/integration/cocos-template-parity.int.test.ts` | 生成结果与模板目录的文件集合/内容一致性 |
+| `tests/integration/default-output-cwd.int.test.ts` | 默认输出目录规则（当前目录下项目子目录） |
+| `tests/integration/deterministic-generation.int.test.ts` | 相同输入下输出确定性 |
+| `tests/integration/error-stage-blueprint.int.test.ts` | Blueprint 阶段错误归类 |
+| `tests/integration/error-stage-environment.int.test.ts` | 环境阶段错误归类 |
+| `tests/integration/error-stage-testing.int.test.ts` | Blueprint 测试失败阶段归类 |
+| `tests/integration/generation-conflict.int.test.ts` | 生成冲突路径阶段归类 |
+| `tests/integration/manifest-validation.int.test.ts` | Manifest 缺字段时整体校验失败 |
+| `tests/integration/third-party-extension.int.test.ts` | `node_modules` 第三方 Blueprint 发现链路 |
+
+### E2E 用例（`tests/e2e`）
+
+| 文件 | 验证目标 |
+| --- | --- |
+| `tests/e2e/first-run-success.e2e.test.ts` | 空目录首跑 CLI 成功生成项目 |
+
+### Performance 用例（`tests/performance`）
+
+| 文件 | 验证目标 |
+| --- | --- |
+| `tests/performance/cli-cocos-benchmark.perf.test.ts` | 完整生成链路耗时基准 |
+| `tests/performance/rendering-large-template.perf.test.ts` | 大规模模板渲染计划与渲染耗时基准 |
+
+### Blueprint 测试用例
+
+| 文件 | 验证目标 |
+| --- | --- |
+| `blueprints/lnngfar-blueprint-cocos/tests/generator.spec.ts` | 生成器产物集合、二进制编码与占位变量行为 |
+| `blueprints/lnngfar-blueprint-cocos/templates/tests/tools/checkers.test.js` | 模板内检查脚本、fixtures 与全链路门禁脚本 |
 
 ## 内置 Blueprint
 
@@ -352,7 +437,7 @@ npm run build
 性能测试：
 
 - 新增 `tests/performance/rendering-large-template.perf.test.ts` 基准测试样例。
-- 该测试默认 `skip`，用于本地手动压测与参数调优对比。
+- 可通过 `npm run test:perf` 执行性能基准测试（默认不纳入 `test:all`）。
 
 ### 已知边界与后续建议
 

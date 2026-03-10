@@ -18,4 +18,6 @@ jobs:
       - run: npm run test:coverage
       - run: npm run test:unit
       - run: npm run test:integration
+      - run: npm run test:e2e
+      - run: npm run test:template-tools
       - run: npm run build

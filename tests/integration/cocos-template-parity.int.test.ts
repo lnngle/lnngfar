@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'node:path';
 import { executePipeline } from '../../src/core/pipeline';
-import { createRepoTempDir } from '../helpers';
+import { withPatchedEnv, withRepoTempDir } from '../helpers';
 
 const IGNORED_DIRS = new Set(['.git', 'node_modules']);
 const PROJECT_NAME = 'cocos-project';
@@ -42,87 +42,85 @@ function listFiles(root: string): string[] {
 
 describe('cocos template parity integration', () => {
   test('生成结果与 blueprint 模板文件集合及内容一致', async () => {
-    process.env.LNNGFAR_SKIP_BLUEPRINT_TESTS = '1';
     const repoRoot = path.resolve(__dirname, '../..');
-    const cwd = createRepoTempDir(repoRoot, '.lnngfar-parity-');
     const templateRoot = path.join(repoRoot, 'blueprints/lnngfar-blueprint-cocos/templates');
 
-    try {
-      const outputDir = path.join(cwd, 'cocos-project');
-      await executePipeline({ blueprintName: 'cocos', cwd, repoRoot });
+    await withPatchedEnv({ LNNGFAR_SKIP_BLUEPRINT_TESTS: '1' }, async () => {
+      await withRepoTempDir(repoRoot, '.lnngfar-parity-', async (cwd) => {
+        const outputDir = path.join(cwd, 'cocos-project');
+        await executePipeline({ blueprintName: 'cocos', cwd, repoRoot });
 
-      const expectedFiles = listFiles(templateRoot);
-      const actualFiles = listFiles(outputDir);
+        const expectedFiles = listFiles(templateRoot);
+        const actualFiles = listFiles(outputDir);
 
-      expect(actualFiles).toEqual(expectedFiles);
+        expect(actualFiles).toEqual(expectedFiles);
 
-      for (const relativePath of expectedFiles) {
-        const expectedPath = path.join(templateRoot, relativePath);
-        const actualPath = path.join(outputDir, relativePath);
+        for (const relativePath of expectedFiles) {
+          const expectedPath = path.join(templateRoot, relativePath);
+          const actualPath = path.join(outputDir, relativePath);
 
-        if (relativePath === 'package.json') {
-          const expectedJson = fs.readJsonSync(expectedPath) as {
-            creator?: { version?: string };
-            name?: string;
-            description?: string;
-          };
-          const actualJson = fs.readJsonSync(actualPath) as {
-            creator?: { version?: string };
-            name?: string;
-            description?: string;
-          };
+          if (relativePath === 'package.json') {
+            const expectedJson = fs.readJsonSync(expectedPath) as {
+              creator?: { version?: string };
+              name?: string;
+              description?: string;
+            };
+            const actualJson = fs.readJsonSync(actualPath) as {
+              creator?: { version?: string };
+              name?: string;
+              description?: string;
+            };
 
-          expect(actualJson.creator?.version).toMatch(/^\d+\.\d+\.\d+$/);
-          expect(actualJson.name).toBe('cocos-project');
-          expect(actualJson.description).toBe('cocos-project project');
-          if (!expectedJson.creator) {
-            expectedJson.creator = {};
-          }
-          expectedJson.creator.version = actualJson.creator?.version;
-          expectedJson.name = actualJson.name;
-          expectedJson.description = actualJson.description;
-          expect(actualJson).toEqual(expectedJson);
-          continue;
-        }
-
-        if (relativePath === 'package-lock.json') {
-          const expectedLock = fs.readJsonSync(expectedPath) as {
-            name?: string;
-            packages?: Record<string, { name?: string }>;
-          };
-          const actualLock = fs.readJsonSync(actualPath) as {
-            name?: string;
-            packages?: Record<string, { name?: string }>;
-          };
-
-          expect(actualLock.name).toBe('cocos-project');
-          expect(actualLock.packages?.['']?.name).toBe('cocos-project');
-
-          expectedLock.name = actualLock.name;
-          if (expectedLock.packages?.['']) {
-            expectedLock.packages[''].name = actualLock.packages?.['']?.name;
+            expect(actualJson.creator?.version).toMatch(/^\d+\.\d+\.\d+$/);
+            expect(actualJson.name).toBe('cocos-project');
+            expect(actualJson.description).toBe('cocos-project project');
+            if (!expectedJson.creator) {
+              expectedJson.creator = {};
+            }
+            expectedJson.creator.version = actualJson.creator?.version;
+            expectedJson.name = actualJson.name;
+            expectedJson.description = actualJson.description;
+            expect(actualJson).toEqual(expectedJson);
+            continue;
           }
 
-          expect(actualLock).toEqual(expectedLock);
-          continue;
-        }
+          if (relativePath === 'package-lock.json') {
+            const expectedLock = fs.readJsonSync(expectedPath) as {
+              name?: string;
+              packages?: Record<string, { name?: string }>;
+            };
+            const actualLock = fs.readJsonSync(actualPath) as {
+              name?: string;
+              packages?: Record<string, { name?: string }>;
+            };
 
-        const expectedBuffer = fs.readFileSync(expectedPath);
-        const actualBuffer = fs.readFileSync(actualPath);
-        if (actualBuffer.equals(expectedBuffer)) {
-          continue;
-        }
+            expect(actualLock.name).toBe('cocos-project');
+            expect(actualLock.packages?.['']?.name).toBe('cocos-project');
 
-        const renderedExpected = renderTemplatePlaceholders(expectedBuffer.toString('utf-8'));
-        const actualText = actualBuffer.toString('utf-8');
-        if (actualText === renderedExpected) {
-          continue;
-        }
+            expectedLock.name = actualLock.name;
+            if (expectedLock.packages?.['']) {
+              expectedLock.packages[''].name = actualLock.packages?.['']?.name;
+            }
 
-        expect(actualBuffer.equals(expectedBuffer)).toBe(true);
-      }
-    } finally {
-      fs.removeSync(cwd);
-    }
+            expect(actualLock).toEqual(expectedLock);
+            continue;
+          }
+
+          const expectedBuffer = fs.readFileSync(expectedPath);
+          const actualBuffer = fs.readFileSync(actualPath);
+          if (actualBuffer.equals(expectedBuffer)) {
+            continue;
+          }
+
+          const renderedExpected = renderTemplatePlaceholders(expectedBuffer.toString('utf-8'));
+          const actualText = actualBuffer.toString('utf-8');
+          if (actualText === renderedExpected) {
+            continue;
+          }
+
+          expect(actualBuffer.equals(expectedBuffer)).toBe(true);
+        }
+      });
+    });
   });
 });
