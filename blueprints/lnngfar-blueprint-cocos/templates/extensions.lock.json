@@ -1,0 +1,20 @@
+{
+  "framework": {
+    "repo": "oops-plugin-framework",
+    "url": "https://gitee.com/dgflash/oops-plugin-framework.git",
+    "branch": "master",
+    "commit": "786498e1b0aca1613772a05bdd0614a202a4e196"
+  },
+  "hot-update": {
+    "repo": "oops-plugin-hot-update",
+    "url": "https://gitee.com/dgflash/oops-plugin-hot-update.git",
+    "branch": "master",
+    "commit": "2aa06d89891a401dd4732400d2601d3dcab9f9a6"
+  },
+  "excel-to-json": {
+    "repo": "oops-plugin-excel-to-json",
+    "url": "https://gitee.com/dgflash/oops-plugin-excel-to-json.git",
+    "branch": "master",
+    "commit": "24ae0451624c322482c9cd588974fcf1476a1578"
+  }
+}
