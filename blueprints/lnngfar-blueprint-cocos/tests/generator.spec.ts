@@ -1,6 +1,33 @@
 import path from 'node:path';
+import fs from 'node:fs';
 
 const generator = require('../generators/index.js');
+
+const IGNORED_DIRS = new Set(['.git', 'node_modules']);
+
+function walkTemplateFiles(rootDir: string): string[] {
+  const result: string[] = [];
+  const stack = [rootDir];
+
+  while (stack.length > 0) {
+    const current = stack.pop() as string;
+    const entries = fs.readdirSync(current, { withFileTypes: true });
+
+    for (const entry of entries) {
+      const absolute = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        if (!IGNORED_DIRS.has(entry.name)) {
+          stack.push(absolute);
+        }
+        continue;
+      }
+
+      result.push(path.relative(rootDir, absolute).replace(/\\/g, '/'));
+    }
+  }
+
+  return result.sort((a, b) => a.localeCompare(b));
+}
 
 describe('lnngfar-blueprint-cocos generator', () => {
   test('返回稳定产物列表', async () => {
@@ -17,7 +44,10 @@ describe('lnngfar-blueprint-cocos generator', () => {
         manifestName: 'cocos'
       });
 
-      const paths = artifacts.map((item: { path: string }) => item.path);
+      const paths = artifacts.map((item: { path: string }) => item.path).sort((a: string, b: string) => a.localeCompare(b));
+      const expectedPaths = walkTemplateFiles(path.join(blueprintRootPath, 'templates'));
+      expect(paths).toEqual(expectedPaths);
+
       expect(paths).toContain('.creator/asset-template/typescript/Custom Script Template Help Documentation.url');
       expect(paths).toContain('package.json');
       expect(paths).toContain('LICENSE');
@@ -27,6 +57,7 @@ describe('lnngfar-blueprint-cocos generator', () => {
       expect(paths).toContain('.c8rc.json');
       expect(paths).toContain('eslint.config.cjs');
       expect(paths).toContain('prettier.config.cjs');
+      expect(paths).toContain('tools/install-all.js');
       expect(paths).toContain('tools/update-plugins.js');
       expect(paths).toContain('tests/tools/checkers.test.js');
       expect(paths).toContain('settings/v2/packages/project.json');

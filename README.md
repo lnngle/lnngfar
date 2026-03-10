@@ -147,6 +147,20 @@ npm run build
 - 路径应为相对路径，内容应为确定性文本。
 - 不得在生成器中引入随机值。
 
+### 生成器入口约定
+
+- 运行时入口以 `blueprint.json.generatorEntry` 为唯一来源。
+- 每个 Blueprint 建议只保留一个运行时入口文件（推荐 `generators/index.js`）。
+- 不建议同时维护同名双入口（如 `generators/index.js` 与 `generators/index.ts`），避免实现漂移。
+- 如需类型声明，建议使用 `*.d.ts` 或独立类型文件，不与运行时入口同名。
+
+### 第三方 Blueprint 接入
+
+- 依赖接入：在项目根目录安装第三方包，例如 `npm install -D lnngfar-blueprint-xxx`。
+- 命名约束：包名必须满足 `lnngfar-blueprint-<name>`。
+- 发现机制：运行时会合并发现内置目录 `blueprints/` 与已安装依赖中的 Blueprint。
+- 执行方式：安装后可直接执行 `lnngfar <name>`，其中 `<name>` 为包名前缀后缀部分。
+
 ## 生成架构说明
 
 以下内容由 `docs/generation-architecture-refactor.md` 合并而来。

@@ -17,3 +17,9 @@
 - 具备可调试、可构建发布的基础工程结构
 - 生成时自动探测本机 Creator 版本并写入 `creator.version`
 - 保持与 `oops-game-kit` 模板结构 1:1 对齐
+
+## 生成器入口
+
+- 本 Blueprint 的运行时入口为 `generators/index.js`。
+- `blueprint.json.generatorEntry` 已固定指向该文件。
+- 为避免双入口漂移，不再维护同名 `index.ts` 运行时实现。
