@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { executePipeline } from '../../src/core/pipeline';
 import { withPatchedEnv, withRepoTempDir } from '../helpers';
 
@@ -58,6 +59,15 @@ describe('generated cocos project tests integration', () => {
         const mainScript = fs.readFileSync(path.join(outputDir, 'assets/script/Main.ts'), 'utf-8');
         expect(mainScript).toContain("db://oops-framework");
         expect(mainScript).toContain('class Main extends Root');
+
+        // 生成项目应通过模板自带门禁脚本，避免产物与脚本规则不一致。
+        const selfCheck = spawnSync(process.execPath, ['tools/run-tests.js'], {
+          cwd: outputDir,
+          encoding: 'utf-8'
+        });
+        const selfCheckOutput = `${selfCheck.stdout ?? ''}${selfCheck.stderr ?? ''}`;
+        expect(selfCheck.status).toBe(0);
+        expect(selfCheckOutput).toContain('全部通过');
       });
     });
   });
