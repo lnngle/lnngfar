@@ -5,6 +5,12 @@ const ROOT = path.resolve(__dirname, "..");
 
 const cases = [
     {
+        name: "缺失config文件用例",
+        root: "tools/fixtures/config/case-invalid-missing-config",
+        expectPass: false,
+        expectedText: "缺少 assets/resources/config.json",
+    },
+    {
         name: "合法配置用例",
         root: "tools/fixtures/config/case-valid",
         expectPass: true,

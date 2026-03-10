@@ -3,6 +3,16 @@ import path from 'node:path';
 import { executePipeline } from '../../src/core/pipeline';
 import { createRepoTempDir } from '../helpers';
 
+const IGNORED_DIRS = new Set(['.git', 'node_modules']);
+const PROJECT_NAME = 'cocos-project';
+const PROJECT_DESCRIPTION = 'cocos-project project';
+
+function renderTemplatePlaceholders(input: string): string {
+  return input
+    .replace(/\{\{PROJECT_NAME\}\}/g, PROJECT_NAME)
+    .replace(/\{\{PROJECT_DESCRIPTION\}\}/g, PROJECT_DESCRIPTION);
+}
+
 function listFiles(root: string): string[] {
   const files: string[] = [];
   const stack = [''];
@@ -13,6 +23,10 @@ function listFiles(root: string): string[] {
     const entries = fs.readdirSync(absolute, { withFileTypes: true });
 
     for (const entry of entries) {
+      if (entry.isDirectory() && IGNORED_DIRS.has(entry.name)) {
+        continue;
+      }
+
       const childRelative = path.join(relative, entry.name).replace(/\\/g, '/');
       const childAbsolute = path.join(root, childRelative);
       if (entry.isDirectory()) {
@@ -95,6 +109,16 @@ describe('cocos template parity integration', () => {
 
         const expectedBuffer = fs.readFileSync(expectedPath);
         const actualBuffer = fs.readFileSync(actualPath);
+        if (actualBuffer.equals(expectedBuffer)) {
+          continue;
+        }
+
+        const renderedExpected = renderTemplatePlaceholders(expectedBuffer.toString('utf-8'));
+        const actualText = actualBuffer.toString('utf-8');
+        if (actualText === renderedExpected) {
+          continue;
+        }
+
         expect(actualBuffer.equals(expectedBuffer)).toBe(true);
       }
     } finally {

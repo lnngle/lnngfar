@@ -87,10 +87,6 @@ export function resolveBlueprints(projectRoot = process.cwd()): DiscoveredBluepr
   const resolved: DiscoveredBlueprint[] = [];
 
   for (const packageName of allNames) {
-    if (!packageName.startsWith('lnngfar-blueprint-')) {
-      continue;
-    }
-
     const blueprintName = toBlueprintName(packageName);
     if (!blueprintName) {
       continue;

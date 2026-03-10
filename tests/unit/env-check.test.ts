@@ -6,6 +6,10 @@ describe('env-check', () => {
     expect(parseNodeMajor('18.20.4')).toBe(18);
   });
 
+  test('非法版本字符串返回 0', () => {
+    expect(parseNodeMajor('invalid')).toBe(0);
+  });
+
   test('低版本抛出环境错误', () => {
     expect(() => checkNodeVersion('16.0.0', 18)).toThrow(PipelineError);
   });

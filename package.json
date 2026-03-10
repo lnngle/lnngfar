@@ -13,6 +13,10 @@
     "setup:link": "npm run build && npm link",
     "setup:unlink": "npm unlink -g lnngfar",
     "test": "jest --runInBand",
+    "test:coverage": "jest --runInBand --coverage",
+    "test:unit": "jest --runInBand tests/unit",
+    "test:integration": "jest --runInBand tests/integration tests/contract blueprints/lnngfar-blueprint-cocos/tests/generator.spec.ts",
+    "test:all": "npm run test:unit && npm run test:integration",
     "lint": "eslint . --ext .ts,.js",
     "format": "prettier --write ."
   },

@@ -5,6 +5,12 @@ const ROOT = path.resolve(__dirname, "..");
 
 const cases = [
     {
+        name: "缺失builder文件用例",
+        root: "tools/fixtures/builder/case-invalid-missing-builder",
+        expectPass: false,
+        expectedText: "缺少 settings/v2/packages/builder.json",
+    },
+    {
         name: "合法构建变体用例",
         root: "tools/fixtures/builder/case-valid",
         expectPass: true,
@@ -20,6 +26,12 @@ const cases = [
         root: "tools/fixtures/builder/case-invalid-missing-custom",
         expectPass: false,
         expectedText: "bundleConfig.custom 缺失",
+    },
+    {
+        name: "缺失configs配置用例",
+        root: "tools/fixtures/builder/case-invalid-missing-configs",
+        expectPass: false,
+        expectedText: "缺少构建变体: native",
     },
 ];
 

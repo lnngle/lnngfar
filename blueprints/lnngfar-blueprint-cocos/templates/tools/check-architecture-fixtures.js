@@ -21,6 +21,18 @@ const cases = [
         expectPass: false,
         expectedText: "不允许依赖 initialize 域",
     },
+    {
+        name: "initialize依赖account实现层违规用例",
+        root: "tools/fixtures/architecture/case-invalid-initialize-account-impl/assets/script/game",
+        expectPass: false,
+        expectedText: "不允许依赖 account 实现层",
+    },
+    {
+        name: "layouts依赖view违规用例",
+        root: "tools/fixtures/architecture/case-invalid-layout/assets/script/game",
+        expectPass: false,
+        expectedText: "不允许在 layouts 中依赖 view",
+    },
 ];
 
 function runCase(testCase) {

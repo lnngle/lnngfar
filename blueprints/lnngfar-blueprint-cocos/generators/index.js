@@ -1,6 +1,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
+const IGNORED_DIRS = new Set(['.git', 'node_modules']);
+
 function parseSemver(version) {
   const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
   if (!match) {
@@ -129,6 +131,10 @@ function walkFiles(directory) {
   const files = [];
 
   for (const entry of entries) {
+    if (entry.isDirectory() && IGNORED_DIRS.has(entry.name)) {
+      continue;
+    }
+
     const absolutePath = path.join(directory, entry.name);
     if (entry.isDirectory()) {
       files.push(...walkFiles(absolutePath));

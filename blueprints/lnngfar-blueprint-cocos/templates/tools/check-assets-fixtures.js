@@ -5,9 +5,21 @@ const ROOT = path.resolve(__dirname, "..");
 
 const cases = [
     {
+        name: "缺少assets目录用例",
+        root: "tools/fixtures/assets/case-invalid-no-assets",
+        expectPass: false,
+        expectedText: "缺少 assets 目录",
+    },
+    {
         name: "合法资源用例",
         root: "tools/fixtures/assets/case-valid",
         expectPass: true,
+    },
+    {
+        name: "大写prefab命名告警用例",
+        root: "tools/fixtures/assets/case-warning-uppercase",
+        expectPass: true,
+        expectedText: "建议使用小写命名",
     },
     {
         name: "孤立meta违规用例",
@@ -50,6 +62,12 @@ function runCase(testCase) {
 
     if (!testCase.expectPass && testCase.expectedText && !output.includes(testCase.expectedText)) {
         console.error(`[check-assets-fixtures] ${testCase.name} 未命中预期错误文本`);
+        console.error(output);
+        return false;
+    }
+
+    if (testCase.expectPass && testCase.expectedText && !output.includes(testCase.expectedText)) {
+        console.error(`[check-assets-fixtures] ${testCase.name} 未命中预期输出文本`);
         console.error(output);
         return false;
     }

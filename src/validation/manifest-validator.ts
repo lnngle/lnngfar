@@ -32,9 +32,10 @@ const validate = ajv.compile(schema);
 export function validateBlueprintManifest(raw: unknown): ValidationResult {
   const ok = validate(raw);
   if (!ok) {
+    const validationErrors = validate.errors as NonNullable<typeof validate.errors>;
     return {
       valid: false,
-      errors: (validate.errors ?? []).map((item) => `${item.instancePath} ${item.message}`.trim())
+      errors: validationErrors.map((item) => `${item.instancePath} ${item.message}`.trim())
     };
   }
 

@@ -100,6 +100,13 @@ npm test
 npm run build
 ```
 
+常用测试命令：
+
+- `npm run test:coverage`：运行全量测试并统计 `src/**` 覆盖率（门禁为 100%）。
+- `npm run test:unit`：仅运行单元测试目录 `tests/unit`。
+- `npm run test:integration`：运行集成与契约测试及 blueprint 生成器测试。
+- `npm run test:all`：按顺序运行 unit + integration。
+
 ## 内置 Blueprint
 
 - `lnngfar-blueprint-cocos`

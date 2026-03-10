@@ -30,7 +30,7 @@ export function loadRenderConfig(blueprintPackage: BlueprintPackage): RenderConf
     ...DEFAULT_RENDER_CONFIG,
     ...userConfig,
     jsonPatch: {
-      ...(DEFAULT_RENDER_CONFIG.jsonPatch ?? {}),
+      ...DEFAULT_RENDER_CONFIG.jsonPatch,
       ...(userConfig.jsonPatch ?? {})
     }
   };
