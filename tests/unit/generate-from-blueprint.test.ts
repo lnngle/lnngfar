@@ -236,6 +236,23 @@ describe('generate-from-blueprint', () => {
     );
   });
 
+  test('aiSkills=false 时由核心过滤 ai 目录产物', async () => {
+    const entry = writeGeneratorFile(
+      'generator-ai-filter.js',
+      'module.exports = { generate: async () => ([{ path: "ai/README.md", content: "x", contentEncoding: "utf-8" }, { path: "assets/keep.txt", content: "ok", contentEncoding: "utf-8" }]) };'
+    );
+    const pkg = { ...blueprintPackage, generatorEntryPath: entry };
+
+    await generateFromBlueprint(pkg, path.join(tempRoot, 'out-ai-filter'), 'demo-project', false);
+
+    const conflictPaths = mockDetectPathConflicts.mock.calls[0][1] as string[];
+    expect(conflictPaths).toEqual(['assets/keep.txt']);
+
+    const firstBatch = mockBuildRenderPlan.mock.calls[0][0] as Array<{ path: string }>;
+    expect(firstBatch).toHaveLength(1);
+    expect(firstBatch[0].path).toBe('assets/keep.txt');
+  });
+
   test('withTransactionalOutput 抛出 PipelineError 时透传', async () => {
     const entry = writeGeneratorFile('generator-txn-error.js', 'module.exports = { generate: async () => ([{ path: "x.txt", content: "x", contentEncoding: "utf-8" }]) };');
     const pkg = { ...blueprintPackage, generatorEntryPath: entry };

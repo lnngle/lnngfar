@@ -36,6 +36,9 @@ cd ..\demo-cocos-game
 npx --prefix ..\lnngfar --no-install lnngfar cocos
 # 或
 npm exec --prefix ..\lnngfar -- lnngfar cocos
+
+# 顶级覆盖参数：关闭 AI skills 目录
+npx --prefix ..\lnngfar --no-install lnngfar cocos --ai-skills no
 ```
 
 命令执行时会出现英文交互提示，例如：
@@ -79,6 +82,10 @@ cd ..\demo-cocos-game
 npx --prefix ..\lnngfar --no-install lnngfar cocos
 ```
 
+可选参数：
+
+- `--ai-skills yes|no`：lnngfar 顶级覆盖参数。默认值为 `no`（即不传时按 Blueprint 规范生成，默认会有 `ai/` 目录）；传 `--ai-skills no` 可关闭 `ai/` 目录生成。
+
 若直接回车不输入，默认使用 `cocos-project` 作为项目名。
 
 最终生成目录示例：`<当前目录>/cocos-project`。
@@ -91,6 +98,7 @@ npx --prefix ..\lnngfar --no-install lnngfar cocos
 - `settings/v2/packages/builder.json`
 - `assets/main.scene`
 - `assets/script/Main.ts`
+- `ai/skills`（多 AI Code 通用技能与策略模板，默认生成）
 
 ## 运行与验证
 

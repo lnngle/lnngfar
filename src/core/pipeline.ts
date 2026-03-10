@@ -12,6 +12,7 @@ import { PipelineError } from '../errors/stage-error';
 interface PipelineOptions {
   blueprintName: string;
   projectName?: string;
+  aiSkills?: boolean;
   cwd?: string;
   repoRoot?: string;
 }
@@ -85,8 +86,9 @@ export async function executePipeline(options: PipelineOptions): Promise<Pipelin
   checkNodeVersion();
   const blueprintPackage = ensureBlueprintAvailable(options.blueprintName, repoRoot);
   const projectName = resolveProjectName(options.blueprintName, options.projectName);
+  const aiSkills = options.aiSkills !== false;
   const outputDir = resolveOutputDir(cwd, projectName);
-  const artifacts = await generateFromBlueprint(blueprintPackage, outputDir, projectName);
+  const artifacts = await generateFromBlueprint(blueprintPackage, outputDir, projectName, aiSkills);
 
   const testResult = runBlueprintTests(blueprintPackage.testsPath, repoRoot);
   if (!testResult.ok) {

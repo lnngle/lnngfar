@@ -8,6 +8,18 @@
 - fixtures 样例防回退机制。
 - 统一插件同步命令（跨平台，不依赖 `.bat` / `.sh`）。
 - `extensions.lock.json` 固定插件提交，确保可复现。
+- 内置 `ai/` 多 AI Code 通用技能工作台（可用于 Copilot、Qoder、CodeBuddy、Trae 等）。
+
+## AI Skills 工作台
+
+项目根目录 `ai/` 提供统一的 AI 开发上下文、目录边界策略与 12 个技能模板，用于不同 AI 工具协同开发同一项目。
+
+- 先读：`ai/context/*`
+- 再读：`ai/policies/*`
+- 选择：`ai/skills/*`
+- 复用：`ai/templates/*`
+
+如果生成项目时使用 `--ai-skills no`，该目录不会生成。
 
 ## 快速开始
 
@@ -107,6 +119,11 @@ npm run test
 .c8rc.json                                 # c8 覆盖率阈值与报告配置
 .creator/                                  # Creator 工程内部模板目录
     asset-template/                        # Creator 资源创建模板
+ai/                                        # 多 AI Code 技能工作台
+    context/                               # 项目与架构上下文
+    policies/                              # 可改目录、门禁与安全策略
+    skills/                                # 12 个可组合开发技能
+    templates/                             # 任务卡、测试计划模板
 extensions.lock.json                       # 插件提交锁定文件（可复现）
 .gitignore                                 # Git 忽略规则
 .prettierignore                            # Prettier 忽略规则

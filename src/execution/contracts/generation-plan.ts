@@ -39,6 +39,7 @@ export interface GeneratorContext {
   blueprintRootPath: string;
   manifestName: string;
   projectName: string;
+  aiSkills?: boolean;
   variables: VariableContext;
 }
 

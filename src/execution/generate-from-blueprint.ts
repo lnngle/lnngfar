@@ -11,6 +11,7 @@ import { resolveVariables } from './variables/variable-resolver';
 
 const DEFAULT_RENDER_BATCH_SIZE = 200;
 const DEFAULT_WRITE_CONCURRENCY = 8;
+const AI_DIRECTORY_PREFIX = 'ai/';
 
 function nowNs(): bigint {
   return process.hrtime.bigint();
@@ -68,7 +69,8 @@ function getGenerator(moduleObject: any): GeneratorFn | null {
 export async function generateFromBlueprint(
   blueprintPackage: BlueprintPackage,
   outputDir = process.cwd(),
-  projectName = `${blueprintPackage.manifest.name}-project`
+  projectName = `${blueprintPackage.manifest.name}-project`,
+  aiSkills = true
 ): Promise<GeneratedArtifact[]> {
   const generatorEntryPath = blueprintPackage.generatorEntryPath;
   const totalStart = nowNs();
@@ -99,7 +101,8 @@ export async function generateFromBlueprint(
 
     const variables = resolveVariables({
       blueprintPackage,
-      projectName
+      projectName,
+      aiSkills
     });
 
     const generateRawStart = nowNs();
@@ -108,13 +111,17 @@ export async function generateFromBlueprint(
       blueprintRootPath: blueprintPackage.rootPath,
       manifestName: blueprintPackage.manifest.name,
       projectName,
+      aiSkills,
       variables
     });
     logPerf('generate-raw-artifacts', elapsedMs(generateRawStart));
 
     const rawArtifacts = artifacts ?? [];
+    const filteredArtifacts = aiSkills
+      ? rawArtifacts
+      : rawArtifacts.filter((item) => !item.path.replace(/\\/g, '/').startsWith(AI_DIRECTORY_PREFIX));
     const pathNormalizeStart = nowNs();
-    const normalizedPaths = rawArtifacts.map((item) => item.path.replace(/\\/g, '/'));
+    const normalizedPaths = filteredArtifacts.map((item) => item.path.replace(/\\/g, '/'));
     logPerf('normalize-paths', elapsedMs(pathNormalizeStart));
 
     const renderConfig = loadRenderConfig(blueprintPackage);
@@ -139,8 +146,8 @@ export async function generateFromBlueprint(
     let writeDurationMs = 0;
 
     await withTransactionalOutput(outputDir, async (stagingDir) => {
-      for (let start = 0; start < rawArtifacts.length; start += renderBatchSize) {
-        const batch = rawArtifacts.slice(start, start + renderBatchSize).map((item) => ({
+      for (let start = 0; start < filteredArtifacts.length; start += renderBatchSize) {
+        const batch = filteredArtifacts.slice(start, start + renderBatchSize).map((item) => ({
           path: item.path.replace(/\\/g, '/'),
           content: item.content,
           contentEncoding: item.contentEncoding ?? 'utf-8'

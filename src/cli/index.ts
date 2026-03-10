@@ -5,13 +5,29 @@ import { PipelineError } from '../errors/stage-error';
 import { ErrorCodes } from '../errors/error-codes';
 import { resolveProjectName } from './project-name';
 
+function parseAiSkillsOption(raw: string | undefined): boolean {
+  const normalized = (raw ?? '').trim().toLowerCase();
+  if (['yes', 'y', 'true', '1', 'on'].includes(normalized)) {
+    return true;
+  }
+
+  if (['no', 'n', 'false', '0', 'off'].includes(normalized)) {
+    return false;
+  }
+
+  throw new Error(`无效的 aiSkills 参数: ${raw}`);
+}
+
 export async function runCli(argv: string[]): Promise<number> {
   let blueprintName = '';
+  let aiSkills: boolean | undefined;
+  const aiSkillsOptionSpecified = argv.includes('--ai-skills');
 
   const program = new Command();
   program
     .name('lnngfar')
     .argument('<blueprint>', 'Blueprint 名称')
+    .option('--ai-skills <value>', '是否生成 AI skills（yes/no，默认 no；不传按 blueprint 规范）', 'no')
     .action((name: string) => {
       blueprintName = name;
     })
@@ -40,6 +56,21 @@ export async function runCli(argv: string[]): Promise<number> {
     return 1;
   }
 
+  try {
+    const opts = program.opts<{ aiSkills?: string }>();
+    if (aiSkillsOptionSpecified) {
+      aiSkills = parseAiSkillsOption(opts.aiSkills);
+    }
+  } catch (error) {
+    printFailure({
+      stage: 'blueprint',
+      code: ErrorCodes.BLUEPRINT_NOT_FOUND,
+      message: (error as Error).message,
+      suggestion: '请使用 --ai-skills yes 或 --ai-skills no，或不传此参数使用 blueprint 默认'
+    });
+    return 1;
+  }
+
   const projectName = await resolveProjectName(blueprintName);
 
   try {
@@ -52,6 +83,7 @@ export async function runCli(argv: string[]): Promise<number> {
     const result = await executePipeline({
       blueprintName,
       projectName,
+      aiSkills,
       cwd: process.cwd(),
       repoRoot: process.env.LNNGFAR_REPO_ROOT
     });

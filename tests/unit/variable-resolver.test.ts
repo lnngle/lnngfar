@@ -29,6 +29,7 @@ describe('variable-resolver', () => {
     expect(result.PROJECT_DESCRIPTION).toBe('cocos-project project');
     expect(result.BLUEPRINT_NAME).toBe('cocos');
     expect(result.BLUEPRINT_PACKAGE_NAME).toBe('lnngfar-blueprint-cocos');
+    expect(result.AI_SKILLS_ENABLED).toBe('true');
   });
 
   test('仅在环境变量存在时注入CREATOR_VERSION', () => {
@@ -67,5 +68,33 @@ describe('variable-resolver', () => {
         process.env.LNNGFAR_COCOS_CREATOR_VERSION = previous;
       }
     }
+  });
+
+  test('aiSkills 为 false 时写入 AI_SKILLS_ENABLED=false', () => {
+    const result = resolveVariables({
+      blueprintPackage: {
+        manifest: {
+          name: 'cocos',
+          packageName: 'lnngfar-blueprint-cocos',
+          version: '1.0.0',
+          description: 'desc',
+          target: 'cocos',
+          language: 'ts',
+          engine: 'oops',
+          testFramework: 'jest'
+        },
+        rootPath: 'x',
+        templatesPath: 'x',
+        generatorsPath: 'x',
+        testsPath: 'x',
+        readmePath: 'x',
+        generatorEntryPath: 'x',
+        status: 'validated'
+      },
+      projectName: 'demo-project',
+      aiSkills: false
+    });
+
+    expect(result.AI_SKILLS_ENABLED).toBe('false');
   });
 });

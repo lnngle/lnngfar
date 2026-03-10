@@ -84,7 +84,7 @@ describe('pipeline', () => {
     });
 
     expect(result.outputDir).toBe(path.join(cwd, 'custom-name'));
-    expect(mockGenerateFromBlueprint).toHaveBeenCalledWith(blueprintPackage, path.join(cwd, 'custom-name'), 'custom-name');
+    expect(mockGenerateFromBlueprint).toHaveBeenCalledWith(blueprintPackage, path.join(cwd, 'custom-name'), 'custom-name', true);
   });
 
   test('未找到 blueprint 时抛出 blueprint not found', async () => {
@@ -162,11 +162,24 @@ describe('pipeline', () => {
       expect(mockGenerateFromBlueprint).toHaveBeenCalledWith(
         blueprintPackage,
         path.join('D:/mock-cwd', 'cocos-project'),
-        'cocos-project'
+        'cocos-project',
+        true
       );
     } finally {
       cwdSpy.mockRestore();
     }
+  });
+
+  test('aiSkills 显式关闭时传递 false 给生成阶段', async () => {
+    const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'lnngfar-pipeline-ai-off-'));
+    await executePipeline({ blueprintName: 'cocos', cwd, repoRoot: cwd, aiSkills: false });
+
+    expect(mockGenerateFromBlueprint).toHaveBeenCalledWith(
+      blueprintPackage,
+      path.join(cwd, 'cocos-project'),
+      'cocos-project',
+      false
+    );
   });
 
   test('checkNodeVersion 抛出 PipelineError 时直接透传', async () => {
