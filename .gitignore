@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.turbo/
+*.tsbuildinfo
+.env
+.lnngfar/cache/
+.lnngfar/ai/history/
+.lnngfar/runtime/
