@@ -81,6 +81,15 @@ importers:
         specifier: workspace:*
         version: link:../types
 
+  packages/template:
+    dependencies:
+      '@lnngfar/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@lnngfar/types':
+        specifier: workspace:*
+        version: link:../types
+
   packages/types: {}
 
   packages/workspace-manager:

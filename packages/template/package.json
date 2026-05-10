@@ -1,0 +1,5 @@
+{
+  "name": "@lnngfar/template","version":"0.1.0","private":true,
+  "main":"./src/index.ts","scripts":{"test":"vitest run"},
+  "dependencies":{"@lnngfar/logger":"workspace:*","@lnngfar/types":"workspace:*"}
+}
