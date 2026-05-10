@@ -1,0 +1,17 @@
+{
+  "name": "@lnngfar/cli",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/cli.ts",
+  "bin": { "lnngfar": "./src/cli.ts" },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@lnngfar/runtime": "workspace:*",
+    "@lnngfar/workspace-manager": "workspace:*",
+    "@lnngfar/logger": "workspace:*",
+    "@lnngfar/types": "workspace:*"
+  }
+}

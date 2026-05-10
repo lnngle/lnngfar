@@ -30,6 +30,21 @@ importers:
         specifier: ^1.2.0
         version: 1.6.1(@types/node@20.19.40)
 
+  packages/cli:
+    dependencies:
+      '@lnngfar/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@lnngfar/runtime':
+        specifier: workspace:*
+        version: link:../runtime
+      '@lnngfar/types':
+        specifier: workspace:*
+        version: link:../types
+      '@lnngfar/workspace-manager':
+        specifier: workspace:*
+        version: link:../workspace-manager
+
   packages/config-loader:
     dependencies:
       '@lnngfar/types':
