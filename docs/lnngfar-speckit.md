@@ -282,14 +282,18 @@ lnngfar verify  # 重新运行 P1 全部测试
 
 ## Commands (MVP)
 
+P3 完成命令框架（registerCommand/runCommand/showPrompt），具体命令实现分散在后续阶段：
+
 ```bash
-lnngfar init              # 初始化项目
-lnngfar stack add/remove  # Stack 管理
-lnngfar spec parse        # Spec 解析
-lnngfar ai                # AI 开发
-lnngfar verify            # 验证
-lnngfar deploy            # 部署
+lnngfar init              # ✅ P3 实现
+lnngfar stack add/remove  # 🔜 P4 实现 (P3 仅注册占位)
+lnngfar spec parse        # 🔜 P6 实现 (P3 仅注册占位)
+lnngfar ai                # 🔜 P8 实现 (P3 仅注册占位)
+lnngfar verify            # 🔜 P10 实现 (P3 仅注册占位)
+lnngfar deploy            # 🔜 P12 实现 (P3 仅注册占位)
 ```
+
+> 未实现的命令在 P3 通过 stub 输出 `"lnngfar <command>: 将在 P{N} 阶段实现"`。
 
 ## speckit 执行流程
 
@@ -377,12 +381,27 @@ far-web-java@0.1
 
 ## speckit 执行流程
 
+P4 包含两个子模块，通过一个统一的 spec 文件描述，依次执行：
+
 ```
-/speckit.specify   → P4-stack spec + P4-far-web-java spec (两个 spec)
-/speckit.plan      → Stack System + far-web-java 实现 plan
-/speckit.tasks     → 任务分解 (先 Stack System，再 far-web-java)
+# 1. 编写合并 spec
+/speckit.specify   → 编写 P4-stack-system spec (包含 Stack System + far-web-java@0.1 两个子模块)
+
+# 2. 生成统一 plan
+/speckit.plan      → 生成 plan，分两部分：
+                      Part A: Stack Loader/Installer/Validator
+                      Part B: far-web-java@0.1 最小 Stack
+
+# 3. 任务分解 (先 A 后 B)
+/speckit.tasks     → 任务分解：先完成 Stack System，再构建 far-web-java
+
+# 4. 逐任务实现
 /speckit.implement → 逐任务实现
-/speckit.checklist  → 质量检查
+
+# 5. 质量检查
+/speckit.checklist  → 质量检查 (覆盖 Stack System + far-web-java 加载测试)
+
+# 6. 代码审查
 /speckit.analyze   → 代码审查
 ```
 
@@ -1247,12 +1266,17 @@ export function syncRegistry(registry: RegistryConfig): Promise<void>
 - 注册中心同步测试
 - 包版本管理测试
 
-## 最终回归验证
+## 回归验证
 
 ```bash
-lnngfar verify  # P1-P15 全部测试
+lnngfar verify  # P1-P14 全部测试
+```
 
-# 端到端集成测试
+## 端到端集成测试
+
+P15 完成后，执行完整集成测试：
+
+```bash
 lnngfar init my-test-app
 lnngfar stack add far-web-java
 lnngfar spec parse specs/product/user.md
