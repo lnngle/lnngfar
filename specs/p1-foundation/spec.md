@@ -1,6 +1,6 @@
 # Feature Specification: lnngfar Foundation
 
-**Feature Branch**: `001-p1-foundation`  
+**Feature Branch**: `p1-foundation`  
 **Created**: 2026-05-10  
 **Status**: Done  
 **Input**: 建立 lnngfar Monorepo 基础工程和开发工具链，包含 4 个核心 package。

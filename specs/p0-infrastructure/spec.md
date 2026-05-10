@@ -1,6 +1,6 @@
 # Feature Specification: P0 Infrastructure Setup
 
-**Feature Branch**: `000-p0-infrastructure`  
+**Feature Branch**: `p0-infrastructure`  
 **Created**: 2026-05-10  
 **Status**: Done  
 **Input**: 准备 speckit 开发环境，验证工具链，优化 Hook 配置。

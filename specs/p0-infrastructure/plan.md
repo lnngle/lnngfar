@@ -1,6 +1,6 @@
 # Implementation Plan: P0 Infrastructure
 
-**Branch**: `000-p0-infrastructure` | **Date**: 2026-05-10 | **Spec**: [spec.md](spec.md)
+**Branch**: `p0-infrastructure` | **Date**: 2026-05-10 | **Spec**: [spec.md](spec.md)
 
 ## Summary
 
@@ -32,7 +32,7 @@ lnngfar/
 │   └── runtime/               ← Created
 ├── specs/
 │   ├── constitution.md
-│   ├── 000-p0-infrastructure/ ← This spec
-│   └── 001-p1-foundation/
+│   ├── p0-infrastructure/ ← This spec
+│   └── p1-foundation/
 └── docs/
 ```
