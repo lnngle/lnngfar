@@ -10,4 +10,12 @@ describe('lifecycle',()=>{
     updateProjectState({ modules: { user: 'developing' } });
     expect(getCurrentState().modules.user).toBe('developing');
   });
+  it('should transition through phases',async()=>{
+    await startLifecycle('init');
+    expect(getCurrentPhase()).toBe('init');
+    await startLifecycle('verify');
+    expect(getCurrentPhase()).toBe('verify');
+    await startLifecycle('deploy');
+    expect(getCurrentPhase()).toBe('deploy');
+  });
 });

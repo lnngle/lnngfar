@@ -23,3 +23,10 @@ describe('composeSkills',()=>{
     expect(composeSkills([s1,s2])).toBe('A\n\nB');
   });
 });
+
+describe('loadSkillsFromStack',()=>{
+  it('should return empty for missing skills dir',()=>{
+    const skills = loadSkillsFromStack('/tmp/nonexistent');
+    expect(skills).toEqual([]);
+  });
+});

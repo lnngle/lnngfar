@@ -9,7 +9,7 @@ export interface SpecDocument { path: string; status: string; entities: string[]
 export function parseSpec(path: string): SpecDocument {
   if (!existsSync(path)) throw new Error(`Spec not found: ${path}`);
   const content = readFileSync(path, 'utf-8');
-  const status = content.match(/status:\s*(\w+)/)?.[1] || 'unknown';
+  const status = content.match(/\*?\*?status\*?\*?:\s*(\w+)/i)?.[1] || 'unknown';
   const entities = (content.match(/^###\s+(.+)/gm) || []).map((s) => s.replace('### ', '').trim());
   const requirements = (content.match(/FR-\d+/g) || []);
   return { path, status, entities, requirements };

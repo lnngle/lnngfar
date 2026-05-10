@@ -1,0 +1,5 @@
+name: coding
+version: 1.0
+type: rule
+priority: 10
+prompt: "Follow coding rules"

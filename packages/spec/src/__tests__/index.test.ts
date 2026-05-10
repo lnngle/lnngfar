@@ -1,5 +1,5 @@
 import { describe,it,expect } from 'vitest';
-import { parseSpec, indexSpecs, loadSpecContext } from '../index';
+import { parseSpec, indexSpecs, loadSpecContext, syncSpecs } from '../index';
 import { resolve } from 'node:path';
 
 const specsRoot = resolve(__dirname, '../../../../specs');
@@ -25,5 +25,14 @@ describe('loadSpecContext',()=>{
     const ctx = loadSpecContext('p1-foundation', specsRoot);
     expect(ctx.status).toBe('done');
     expect(ctx.entities.length).toBeGreaterThan(0);
+  });
+});
+
+describe('syncSpecs',()=>{
+  it('should sync spec status',async()=>{
+    await expect(syncSpecs('p1-foundation', specsRoot)).resolves.toBeUndefined();
+  });
+  it('should throw for unknown module',async()=>{
+    await expect(syncSpecs('nope', specsRoot)).rejects.toThrow();
   });
 });
