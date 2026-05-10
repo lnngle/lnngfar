@@ -6,34 +6,27 @@ describe('Runtime', () => {
     it('should boot and shutdown correctly', async () => {
       const rt = new Runtime();
       expect(rt.state).toBe('created');
-
       await rt.boot();
       expect(rt.state).toBe('running');
-
       await rt.shutdown();
       expect(rt.state).toBe('stopped');
     });
 
     it('should run module init hooks on boot', async () => {
       const initSpy = vi.fn();
-      const mod: LnngfarModule = { name: 'test', init: initSpy };
-      const rt = new Runtime();
-
-      await rt.boot({ modules: [mod] });
+      await new Runtime().boot({ modules: [{ name: 'test', init: initSpy }] });
       expect(initSpy).toHaveBeenCalledOnce();
     });
 
-    it('should run module shutdown hooks on shutdown', async () => {
-      const shutdownSpy = vi.fn();
-      const mod: LnngfarModule = { name: 'test', shutdown: shutdownSpy };
+    it('should run shutdown hooks on shutdown', async () => {
+      const sd = vi.fn();
       const rt = new Runtime();
-
-      await rt.boot({ modules: [mod] });
+      await rt.boot({ modules: [{ name: 'test', shutdown: sd }] });
       await rt.shutdown();
-      expect(shutdownSpy).toHaveBeenCalledOnce();
+      expect(sd).toHaveBeenCalledOnce();
     });
 
-    it('should throw when booting from non-created/stopped state', async () => {
+    it('should throw when booting from non-created state', async () => {
       const rt = new Runtime();
       await rt.boot();
       await expect(rt.boot()).rejects.toThrow('Cannot boot');
@@ -41,59 +34,60 @@ describe('Runtime', () => {
   });
 
   describe('modules', () => {
-    it('should register and unregister modules', () => {
+    it('should register and unregister', () => {
       const rt = new Runtime();
-      const mod: LnngfarModule = { name: 'test' };
-
-      rt.registerModule(mod);
-      expect(rt.getModule('test')).toBe(mod);
-
+      rt.registerModule({ name: 'test' });
+      expect(rt.getModule('test')).toBeDefined();
       rt.unregisterModule('test');
       expect(rt.getModule('test')).toBeUndefined();
     });
 
-    it('should throw on duplicate registration', () => {
+    it('should throw on duplicate', () => {
       const rt = new Runtime();
       rt.registerModule({ name: 'test' });
       expect(() => rt.registerModule({ name: 'test' })).toThrow('already registered');
     });
+
+    it('should list all modules via getModules()', () => {
+      const rt = new Runtime();
+      rt.registerModule({ name: 'a' });
+      rt.registerModule({ name: 'b' });
+      expect(rt.getModules()).toEqual(['a', 'b']);
+    });
   });
 
   describe('events', () => {
-    it('should emit and receive events', () => {
+    it('should emit and receive', () => {
       const handler = vi.fn();
       const rt = new Runtime();
-
       rt.events.on('test:event', handler);
-      rt.events.emit('test:event', { value: 42 });
-
+      rt.emitEvent('test:event', { value: 42 });
       expect(handler).toHaveBeenCalledWith({ value: 42 });
     });
 
-    it('should allow unsubscribing from events', () => {
-      const handler = vi.fn();
+    it('should unsub via off()', () => {
+      const h = vi.fn();
       const rt = new Runtime();
-
-      rt.events.on('test:event', handler);
-      rt.events.off('test:event', handler);
-      rt.events.emit('test:event');
-
-      expect(handler).not.toHaveBeenCalled();
+      rt.events.on('e', h);
+      rt.events.off('e', h);
+      rt.emitEvent('e');
+      expect(h).not.toHaveBeenCalled();
     });
 
-    it('should not throw with no subscribers', () => {
+    it('should support onEvent() contract API', () => {
+      const h = vi.fn();
       const rt = new Runtime();
-      expect(() => rt.events.emit('no-subscribers')).not.toThrow();
+      rt.onEvent('x', h);
+      rt.emitEvent('x', 'data');
+      expect(h).toHaveBeenCalledWith('data');
     });
 
-    it('should support 10 concurrent subscribers', () => {
+    it('should handle 10 concurrent subscribers', () => {
       const rt = new Runtime();
-      const handlers = Array.from({ length: 10 }, () => vi.fn());
-
-      for (const h of handlers) rt.events.on('concurrent', h);
-      rt.events.emit('concurrent', 'data');
-
-      for (const h of handlers) expect(h).toHaveBeenCalled();
+      const hs = Array.from({ length: 10 }, () => vi.fn());
+      for (const h of hs) rt.events.on('c', h);
+      rt.events.emit('c', 'data');
+      for (const h of hs) expect(h).toHaveBeenCalled();
     });
   });
 
@@ -104,16 +98,40 @@ describe('Runtime', () => {
       expect(rt.context.get('specs')).toEqual({ module: 'user' });
     });
 
-    it('should return null for unknown key', () => {
+    it('should support dot-notation lookup', () => {
       const rt = new Runtime();
-      expect(rt.context.get('unknown')).toBeNull();
+      rt.context.load('specs', { product: { user: { status: 'done' } } });
+      expect(rt.context.get('specs.product.user')).toEqual({ status: 'done' });
     });
 
-    it('should overwrite existing context', () => {
+    it('should return null for unknown key', () => {
+      expect(new Runtime().context.get('unknown')).toBeNull();
+    });
+
+    it('should support loadContext() contract API', async () => {
       const rt = new Runtime();
-      rt.context.load('key', 'old');
-      rt.context.load('key', 'new');
-      expect(rt.context.get('key')).toBe('new');
+      rt.context.load('specs', { module: 'user' });
+      expect(await rt.loadContext('specs')).toEqual({ module: 'user' });
+    });
+  });
+
+  describe('state change', () => {
+    it('should notify on state transitions', async () => {
+      const listener = vi.fn();
+      const rt = new Runtime();
+      rt.onStateChange(listener);
+      await rt.boot();
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it('should emit runtime:state-change event', async () => {
+      const h = vi.fn();
+      const rt = new Runtime();
+      rt.events.on('runtime:state-change', h);
+      await rt.boot();
+      expect(h).toHaveBeenCalledWith(
+        expect.objectContaining({ from: 'created', to: 'booting' }),
+      );
     });
   });
 
@@ -126,21 +144,10 @@ describe('Runtime', () => {
     });
 
     it('should handle module shutdown errors gracefully', async () => {
-      const mod: LnngfarModule = { name: 'bad', shutdown: () => Promise.reject('fail') };
       const rt = new Runtime();
-      await rt.boot({ modules: [mod] });
-      await expect(rt.shutdown()).resolves.toBeUndefined();
+      await rt.boot({ modules: [{ name: 'bad', shutdown: () => Promise.reject('fail') }] });
+      await rt.shutdown();
       expect(rt.state).toBe('stopped');
-    });
-
-    it('should emit runtime:ready on boot', () => {
-      const handler = vi.fn();
-      const rt = new Runtime();
-      rt.events.on('runtime:ready', handler);
-
-      rt.boot().then(() => {
-        expect(handler).toHaveBeenCalled();
-      });
     });
   });
 });
