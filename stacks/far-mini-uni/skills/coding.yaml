@@ -1,0 +1,2 @@
+name: coding version: 1.0 type: rule priority: 10
+rules: [use-composition-api, prefer-typescript, responsive-px-to-rpx]

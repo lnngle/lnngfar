@@ -1,0 +1,21 @@
+name: far-mini-uni
+version: 0.1.0
+displayName: uni-app Cross-platform
+description: 跨端小程序技术栈
+type: mobile
+technologies:
+  framework: uni-app
+  language: typescript
+  ui: uni-ui
+  state: pinia
+  extra: uview-plus
+templates:
+  page:
+    - uni-page
+    - uni-request
+    - uni-store
+  component:
+    - mobile-layout
+skills:
+  - coding
+  - testing

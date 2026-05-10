@@ -1,0 +1,2 @@
+name: testing version: 1.0 type: rule priority: 5
+rules: [test-each-service-method, mock-external-deps, cover-edge-cases]

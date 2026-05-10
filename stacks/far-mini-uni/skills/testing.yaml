@@ -1,0 +1,2 @@
+name: testing version: 1.0 type: rule priority: 5
+rules: [test-page-components, mock-api-calls, verify-navigation]

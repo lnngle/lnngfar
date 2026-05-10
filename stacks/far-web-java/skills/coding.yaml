@@ -1,0 +1,2 @@
+name: coding version: 1.0 type: rule priority: 10
+rules: [use-constructor-injection, add-transactional, validate-input, no-hardcoded-strings]

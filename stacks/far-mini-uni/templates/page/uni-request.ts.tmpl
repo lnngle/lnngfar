@@ -1,0 +1,1 @@
+export const request=async<T>(url:string,opts?:RequestInit):Promise<T>=>{const res=await uni.request({url,data:opts?.body});return res.data as T}

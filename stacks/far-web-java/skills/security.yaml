@@ -1,0 +1,2 @@
+name: security version: 1.0 type: rule priority: 20
+rules: [validate-jwt, sanitize-input, no-sql-injection, csrf-protection]

@@ -1,0 +1,1 @@
+<template><el-form ref="formRef":model="form":rules="rules"label-width="100px"><el-form-item v-for="f in fields":key="f.prop":label="f.label":prop="f.prop"><el-input v-model="form[f.prop]"/></el-form-item><el-button type="primary"@click="submit">Submit</el-button></el-form></template>

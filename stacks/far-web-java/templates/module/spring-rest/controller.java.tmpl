@@ -1,0 +1,8 @@
+@RestController @RequestMapping("/api/{{module}}") @RequiredArgsConstructor
+public class {{Entity}}Controller{ private final {{Entity}}Service service;
+  @GetMapping List<{{Entity}}VO> list({{Entity}}Query q){return service.list(q);}
+  @GetMapping("/{id}") {{Entity}}VO get(@PathVariable Long id){return service.get(id);}
+  @PostMapping {{Entity}}VO create(@Valid @RequestBody {{Entity}}DTO d){return service.create(d);}
+  @PutMapping("/{id}") {{Entity}}VO update(@PathVariable Long id,@Valid @RequestBody {{Entity}}DTO d){return service.update(id,d);}
+  @DeleteMapping("/{id}") void delete(@PathVariable Long id){service.delete(id);}
+}
