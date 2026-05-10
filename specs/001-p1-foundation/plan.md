@@ -1,6 +1,6 @@
 # Implementation Plan: lnngfar Foundation
 
-**Branch**: `001-foundation` | **Date**: 2026-05-10 | **Spec**: [spec.md](spec.md)
+**Branch**: `001-p1-foundation` | **Date**: 2026-05-10 | **Spec**: [spec.md](spec.md)
 
 ## Summary
 
@@ -36,7 +36,7 @@
 ### Documentation (this feature)
 
 ```text
-specs/001-foundation/
+specs/001-p1-foundation/
 ├── spec.md              # Feature specification (User Stories + FR + SC)
 ├── plan.md              # This file (implementation plan)
 ├── research.md          # Phase 0 research (pnpm, vitest, logger design)
@@ -87,7 +87,7 @@ lnngfar/
 │
 ├── specs/                    # Spec documents
 │   ├── constitution.md
-│   └── 001-foundation/
+│   └── 001-p1-foundation/
 │
 ├── .lnngfar/                 # lnngfar runtime data (P0 created)
 │   ├── ai/
