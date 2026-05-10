@@ -1,6 +1,7 @@
 // @lnngfar/logger - 统一日志模块
 
-import type { Logger, LogLevel } from '@lnngfar/types';
+import type { Logger } from '@lnngfar/types';
+import { LogLevel } from '@lnngfar/types';
 import { inspect } from 'node:util';
 
 export function createLogger(name: string, level: LogLevel = LogLevel.INFO): Logger {
