@@ -30,6 +30,21 @@ importers:
         specifier: ^1.2.0
         version: 1.6.1(@types/node@20.19.40)
 
+  packages/ai-runtime:
+    dependencies:
+      '@lnngfar/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@lnngfar/runtime':
+        specifier: workspace:*
+        version: link:../runtime
+      '@lnngfar/spec-engine':
+        specifier: workspace:*
+        version: link:../spec
+      '@lnngfar/types':
+        specifier: workspace:*
+        version: link:../types
+
   packages/cli:
     dependencies:
       '@lnngfar/logger':
@@ -50,6 +65,18 @@ importers:
 
   packages/config-loader:
     dependencies:
+      '@lnngfar/types':
+        specifier: workspace:*
+        version: link:../types
+
+  packages/lifecycle:
+    dependencies:
+      '@lnngfar/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@lnngfar/runtime':
+        specifier: workspace:*
+        version: link:../runtime
       '@lnngfar/types':
         specifier: workspace:*
         version: link:../types
@@ -107,6 +134,18 @@ importers:
       '@lnngfar/logger':
         specifier: workspace:*
         version: link:../logger
+      '@lnngfar/types':
+        specifier: workspace:*
+        version: link:../types
+
+  packages/testing:
+    dependencies:
+      '@lnngfar/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@lnngfar/runtime':
+        specifier: workspace:*
+        version: link:../runtime
       '@lnngfar/types':
         specifier: workspace:*
         version: link:../types

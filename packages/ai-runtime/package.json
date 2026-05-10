@@ -1,0 +1,4 @@
+{
+  "name":"@lnngfar/ai-runtime","version":"0.1.0","private":true,"main":"./src/index.ts","scripts":{"test":"vitest run"},
+  "dependencies":{"@lnngfar/runtime":"workspace:*","@lnngfar/spec-engine":"workspace:*","@lnngfar/logger":"workspace:*","@lnngfar/types":"workspace:*"}
+}
