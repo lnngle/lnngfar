@@ -69,6 +69,15 @@ importers:
         specifier: workspace:*
         version: link:../types
 
+  packages/spec:
+    dependencies:
+      '@lnngfar/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@lnngfar/types':
+        specifier: workspace:*
+        version: link:../types
+
   packages/stack:
     dependencies:
       '@lnngfar/logger':
