@@ -38,6 +38,9 @@ importers:
       '@lnngfar/runtime':
         specifier: workspace:*
         version: link:../runtime
+      '@lnngfar/stack':
+        specifier: workspace:*
+        version: link:../stack
       '@lnngfar/types':
         specifier: workspace:*
         version: link:../types
@@ -62,6 +65,18 @@ importers:
       '@lnngfar/logger':
         specifier: workspace:*
         version: link:../logger
+      '@lnngfar/types':
+        specifier: workspace:*
+        version: link:../types
+
+  packages/stack:
+    dependencies:
+      '@lnngfar/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@lnngfar/runtime':
+        specifier: workspace:*
+        version: link:../runtime
       '@lnngfar/types':
         specifier: workspace:*
         version: link:../types

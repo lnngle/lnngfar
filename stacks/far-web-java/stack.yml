@@ -1,0 +1,27 @@
+name: far-web-java
+version: 0.1.0
+displayName: Vue3 + Spring Boot
+description: 企业级 Web 全栈 (MVP minimal)
+type: fullstack
+technologies:
+  frontend:
+    framework: vue3
+    language: typescript
+    ui: element-plus
+  backend:
+    framework: springboot
+    language: java
+    javaVersion: "17"
+    orm: mybatis-plus
+  database:
+    type: mysql
+    version: "8.0"
+templates:
+  backend:
+    - spring-rest
+    - mybatis-crud
+  frontend:
+    - vue-admin
+skills:
+  - coding
+  - testing

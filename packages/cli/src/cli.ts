@@ -7,6 +7,8 @@ import { LogLevel } from '@lnngfar/types';
 import { registry } from './registry';
 import { initCommand } from './commands/init';
 import { stubs } from './commands/stubs';
+import { handleStack } from './commands/stack';
+import type { Command } from './registry';
 
 const logger = createLogger('cli', LogLevel.INFO);
 
@@ -18,6 +20,7 @@ async function main(): Promise<void> {
     name: 'cli',
     init: async () => {
       registry.register(initCommand);
+      registry.register({ meta: { name: 'stack', description: 'Manage stacks' }, handle: handleStack } as Command);
       for (const stub of stubs) registry.register(stub);
       logger.info('CLI commands registered');
     },
