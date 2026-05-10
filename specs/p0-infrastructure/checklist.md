@@ -30,7 +30,7 @@
 
 - [x] `before_constitution` enabled ✅
 - [x] `before_specify` enabled ✅
-- [x] 14 other hooks disabled ✅
+- [x] 16 other hooks disabled ✅ (18 total, 2 enabled)
 
 ## Gate Decision
 

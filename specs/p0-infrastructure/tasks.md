@@ -23,8 +23,7 @@
 ## Phase 3: Hook Configuration
 
 - [x] **T007** Disable auto-commit hooks in `.specify/extensions.yml`
-  - 14 hooks → `enabled: false`
-  - Keep: `before_constitution` + `before_specify` enabled ✅
+  - 16 hooks → `enabled: false` (18 total, 2 kept enabled)
 
 ## Phase 4: Documentation
 
